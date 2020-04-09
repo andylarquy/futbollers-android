@@ -16,7 +16,7 @@
         android:allowBackup="true">
         <!-- Ni idea de que es allowBackup, TODO: Averiguarlo-->
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
