@@ -37,9 +37,10 @@ android {
 
 dependencies {
 
-
-
+    //RetroFit - Me robo el Gson
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+
+    //Volley
     implementation "com.android.volley:volley:1.1.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])

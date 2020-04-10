@@ -22,14 +22,9 @@ class LoginActivity : AppCompatActivity() {
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.setUsuarioLogueado(usuarioLogueado)
 
-        //TODO: Revisar. Creo que esto sobra
-        binding.setLifecycleOwner(this)
-
         btn_login.setOnClickListener {
-            Log.i("LoginActivity", "Voy a la API con mi usuario de entrada:"+usuarioLogueado)
+            Log.i("LoginActivity", "Voy a la API con mi usuario de entrada: $usuarioLogueado \n")
             loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado)
-
-
         }
 
     }
@@ -37,21 +32,8 @@ class LoginActivity : AppCompatActivity() {
     fun callbackUsuarioLogueado(usuario: Usuario){
         usuarioLogueado = usuario
 
-        if(usuarioLogueado.id !== null){
-
-            Toast.makeText(this@LoginActivity,
-                "id: "+usuarioLogueado.id.toString()
-                    +" nombre: "+usuarioLogueado.nombre
-                    +" sexo: "+usuarioLogueado.sexo
-                    +" posicion: "+usuarioLogueado.posicion
-                    +" email: "+usuarioLogueado.email
-                    +" lat: "+usuarioLogueado.lat
-                    +" lon: "+usuarioLogueado.lon
-            , Toast.LENGTH_SHORT).show()
-    }else{
-            Toast.makeText(this@LoginActivity, "Si la API Rest no esta mockeada o bien fallo la comunicacion o bien las credenciales son invalidas", Toast.LENGTH_SHORT).show()
-        }
-
+        //GoTo HomeActivty
+        Toast.makeText(this@LoginActivity, "Bienvenido ${usuarioLogueado.nombre}!!\nTODO: GoTo HomeActivity", Toast.LENGTH_LONG).show()
     }
 }
 

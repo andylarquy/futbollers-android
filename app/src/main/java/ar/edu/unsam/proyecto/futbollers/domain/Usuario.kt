@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder
 import org.json.JSONObject
 
 class Usuario: BaseObservable() {
-    var id: Int? = null
+    var id: String? = null
 
     var nombre: String? = null
     var password: String? = null
