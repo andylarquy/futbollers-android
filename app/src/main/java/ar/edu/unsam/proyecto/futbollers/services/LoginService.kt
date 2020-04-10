@@ -5,9 +5,7 @@ import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import ar.edu.unsam.proyecto.futbollers.LoginActivity
 import ar.edu.unsam.proyecto.futbollers.services.Constants.BASE_URL
-import ar.edu.unsam.proyecto.futbollers.services.Constants.BASE_URL_MOCK
 import com.android.volley.*
 
 import com.android.volley.toolbox.JsonObjectRequest

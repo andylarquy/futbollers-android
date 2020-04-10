@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable name="usuarioLogueado" type="ar.edu.unsam.proyecto.futbollers.domain.Usuario" />
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LoginActivity">
+        tools:context=".activities.LoginActivity">
 
         <ImageView
             android:id="@+id/imageView"
@@ -61,18 +62,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
-                android:layout_marginLeft="100dp"
-                android:layout_marginTop="324dp"
-                android:autofillHints=""
-                android:ems="10"
-                android:text="@{usuarioLogueado.email}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
         <Button
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
@@ -83,6 +73,25 @@
             android:background="@drawable/btn_primary_outline"
 
             android:text="@string/submit_login"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/text_signUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="84dp"
+            android:layout_marginLeft="84dp"
+            android:layout_marginTop="480dp"
+            android:autofillHints=""
+            android:ems="10"
+
+            android:gravity="center"
+            android:text="@string/text_signUp"
+            android:textColor="#5ba2d9"
+            android:textSize="20dp"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
