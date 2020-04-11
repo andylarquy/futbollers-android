@@ -4,4 +4,16 @@
     <string name="input_password">Password</string>
     <string name="submit_login">Login</string>
     <string name="text_signUp"> <u>Sign Up</u> </string>
+
+    <!-- Pantalla de sign up -->
+
+    <string name="text_titulo_signUp">Registrarse</string>
+    <string name="input_nombre">Nombre</string>
+    <string name="input_sexo">Sexo</string>
+    <string name="input_posicion">Posición</string>
+    <string name="submit_signUp">Registrarse</string>
+
+
+
+
 </resources>

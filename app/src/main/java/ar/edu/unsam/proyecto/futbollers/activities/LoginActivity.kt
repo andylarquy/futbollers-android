@@ -16,6 +16,7 @@ import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.databinding.ActivityLoginBinding
 import ar.edu.unsam.proyecto.futbollers.services.LoginService
 
+
 class LoginActivity : AppCompatActivity() {
     var usuarioLogueado:Usuario = Usuario()
     private var loginService: LoginService = LoginService
