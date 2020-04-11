@@ -3,6 +3,6 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">https://my-json-server.typicode.com/andylarquy/rest-api-futbollers</domain>
         <domain includeSubdomains="true">https://my-json-server.typicode.com</domain>
-        <domain includeSubdomains="true">192.168.0.143</domain>
+        <domain includeSubdomains="true">192.168.0.21</domain>
     </domain-config>
 </network-security-config>

@@ -2,6 +2,7 @@ package ar.edu.unsam.proyecto.futbollers.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -9,11 +10,13 @@ import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.databinding.ActivityLoginBinding
 import ar.edu.unsam.proyecto.futbollers.databinding.ActivitySignUpBinding
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
+import ar.edu.unsam.proyecto.futbollers.services.SignUpService
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
 
     val usuarioNuevo: Usuario = Usuario()
+    val signUpService: SignUpService = SignUpService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +26,16 @@ class SignUpActivity : AppCompatActivity() {
         binding.setUsuarioNuevo(usuarioNuevo)
 
         btn_signUp.setOnClickListener(){
-            Toast.makeText(this@SignUpActivity, usuarioNuevo.nombre, Toast.LENGTH_LONG).show()
+            signUpService.postUsuarioNuevo(this@SignUpActivity, usuarioNuevo, ::callbackSignUpUsuario)
+            Log.i("SignUpActivity", "Raviol")
 
         }
 
+    }
+
+    fun callbackSignUpUsuario(){
+        //GoTo Login con el usuario creado
+        Toast.makeText(this@SignUpActivity, "Bienvenido"+ usuarioNuevo.nombre, Toast.LENGTH_LONG).show()
     }
 
 
