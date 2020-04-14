@@ -39,9 +39,11 @@ object LoginService {
     if (error is AuthFailureError) {
        Toast.makeText(context, "Las credenciales son invalidas", Toast.LENGTH_SHORT).show()
     } else if (error is ClientError) {
-       Toast.makeText(context, "No se pudo conectar con el servidor, vuelva a intentar mas tarde", Toast.LENGTH_SHORT).show()
+       Toast.makeText(context, "El dispositivo no se pudo conectar con el servidor, vuelva a intentar mas tarde", Toast.LENGTH_SHORT).show()
     } else if(error is NoConnectionError){
        Toast.makeText(context, "Revise su conexion a internet", Toast.LENGTH_SHORT).show()
+    }else if(error is TimeoutError){
+       Toast.makeText(context, "No se pudo conectar con el servidor, vuelva a intentar mas tarde", Toast.LENGTH_SHORT).show()
     }
 
  }

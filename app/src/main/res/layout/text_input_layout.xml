@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="hint"
+            type="java.lang.String" />
+
+        <variable
+            name="text"
+            type="java.lang.String" />
+
+        <variable
+            name="inputType"
+            type="Integer" />
+    </data>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="235dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="268dp"
+        android:hint="@{hint}"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@={text}"
+            android:inputType="@{inputType}"
+
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</layout>

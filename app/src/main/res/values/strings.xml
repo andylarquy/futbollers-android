@@ -9,9 +9,10 @@
 
     <string name="text_titulo_signUp">Registrarse</string>
     <string name="input_nombre">Nombre</string>
-    <string name="input_sexo">Sexo</string>
     <string name="input_posicion">Posición</string>
     <string name="submit_signUp">Registrarse</string>
+
+    <string name="text_sexo">Sexo</string>
 
 
 

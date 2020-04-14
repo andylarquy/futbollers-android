@@ -37,6 +37,9 @@ android {
 
 dependencies {
 
+    //Google Material
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
+
     //RetroFit - Me robo el Gson
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
 
