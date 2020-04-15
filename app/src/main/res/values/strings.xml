@@ -14,6 +14,10 @@
 
     <string name="text_sexo">Sexo</string>
 
+    <string name="bottom_navigation_menu_equipo_text">Equipos</string>
+    <string name="bottom_navigation_menu_partido_text">Partidos</string>
+    <string name="bottom_navigation_menu_chat_text">Chat</string>
+
 
 
 

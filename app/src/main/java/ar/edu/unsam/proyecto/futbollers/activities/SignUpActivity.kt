@@ -1,5 +1,6 @@
 package ar.edu.unsam.proyecto.futbollers.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -39,10 +40,7 @@ class SignUpActivity : AppCompatActivity() {
                 ::callbackSignUpUsuario
             )
 
-
         }
-
-
 
         val adapter = ArrayAdapter<String>(this, R.layout.dropdown_menu_popup_item, POSICIONES)
         combo_posiciones.setAdapter(adapter)
@@ -50,6 +48,9 @@ class SignUpActivity : AppCompatActivity() {
     }
         fun callbackSignUpUsuario() {
             //GoTo Login con el usuario creado
+            val intent = Intent(this, LoginActivity::class.java).apply{}
+            startActivity(intent)
+
             //TODO: VALIDAR CAMPOS
             Toast.makeText(
                 this@SignUpActivity,

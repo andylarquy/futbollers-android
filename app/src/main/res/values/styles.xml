@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="navTextActive"  parent="Widget.Design.NavigationView">
+        <item name="itemTextColor">@color/white</item>
+    </style>
+
+    <style name="navTextInActive"  parent="Widget.Design.NavigationView">
+        <item name="itemTextColor">@color/purpeInactive</item>
+    </style>
+
+
 </resources>

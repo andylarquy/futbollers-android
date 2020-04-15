@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_partido"
+        android:enabled="true"
+        android:icon="@drawable/ic_sports_soccer_24dp"
+        android:title="@string/bottom_navigation_menu_partido_text"/>
+
+    <item
+        android:id="@+id/action_equipo"
+        android:enabled="true"
+        android:icon="@drawable/ic_people_black_24dp"
+        android:title="@string/bottom_navigation_menu_equipo_text"/>
+    <item
+        android:id="@+id/action_chat"
+        android:enabled="true"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="@string/bottom_navigation_menu_chat_text"/>
+
+</menu>
