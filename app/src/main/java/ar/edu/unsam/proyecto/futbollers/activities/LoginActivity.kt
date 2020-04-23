@@ -39,16 +39,11 @@ class LoginActivity : AppCompatActivity() {
 
         btn_login.setOnClickListener {
             Log.i("LoginActivity", "Voy a la API con mi usuario de entrada: $usuarioLogueado \n")
-            loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado)
-        }
+                loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueado)
 
-        try {
+        }
+            setContentView(R.layout.activity_blank)
             loginWithStoredCredentials()
-        }catch (e: Exception){
-            Log.i("LoginActivity", "[DEBUG]: Error AutoLogin: "+e.message)
-            Toast.makeText(this@LoginActivity, "Hubo un error al intentar iniciar sesion automaticamente, por favor vuelva a ingresar", Toast.LENGTH_LONG).show()
-        }
-
 
     }
 
@@ -61,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
         val password = sharedPref.getString("password", null)
         usuarioLogueado.email = email
         usuarioLogueado.password = password
-        loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado)
+        loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueado)
     }
 
     fun guardarCredenciales(email: String?, password: String?){
@@ -81,6 +76,10 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
         Toast.makeText(this@LoginActivity, "Bienvenido ${usuarioLogueado.nombre}!!\nTODO: GoTo HomeActivity", Toast.LENGTH_LONG).show()
+    }
+
+    fun callbackErrorUsuarioLogueado(error: Exception){
+        setContentView(R.layout.activity_login)
     }
 }
 

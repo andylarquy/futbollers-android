@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="white">#FFFFFF</color>
     <color name="purpeInactive">#C099FF</color>
+    <color name="loadingSpinner">#3E9EF0</color>
+    <color name="loadingBackground">#272626</color>
 </resources>

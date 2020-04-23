@@ -11,10 +11,11 @@ import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
+import java.lang.Exception
 
 object LoginService {
 
- fun getUsuarioLogueado(context: Context, usuario: Usuario, callback: (Usuario) -> Unit) {
+ fun getUsuarioLogueado(context: Context, usuario: Usuario, callback: (Usuario) -> Unit, callbackError: (Exception) -> Unit) {
 
     val queue = Volley.newRequestQueue(context)
     val url = "$BASE_URL/usuario/login"
@@ -27,14 +28,14 @@ object LoginService {
           callback(nuevoUsuario)
        },
        Response.ErrorListener {
-          handleError(context, it)
+          handleError(context, it, callbackError)
        })
     request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
 
     queue.add(request)
  }
 
- fun handleError(context: Context, error: VolleyError) {
+ fun handleError(context: Context, error: VolleyError, callbackError: (Exception) -> Unit) {
     Log.i("LoginActivity", "[DEBUG]: API Rest Error: +" + error.toString())
     if (error is AuthFailureError) {
        Toast.makeText(context, "Las credenciales son invalidas", Toast.LENGTH_SHORT).show()
@@ -45,6 +46,8 @@ object LoginService {
     }else if(error is TimeoutError){
        Toast.makeText(context, "No se pudo conectar con el servidor, vuelva a intentar mas tarde", Toast.LENGTH_SHORT).show()
     }
+
+    callbackError(error)
 
  }
 
