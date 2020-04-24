@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -12,19 +13,22 @@ import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.databinding.ActivityLoginBinding
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.LoginService
+import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import kotlinx.android.synthetic.main.activity_login.*
 
 
 
 class LoginActivity : AppCompatActivity() {
-    private var usuarioLogueado:Usuario = Usuario()
+    var usuarioLogueado:Usuario = UsuarioLogueado.usuario
     private var loginService: LoginService = LoginService
+
+    val activityLogin = R.layout.activity_login
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(activityLogin)
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this,
-            R.layout.activity_login
+            activityLogin
         )
         binding.setUsuarioLogueado(usuarioLogueado)
 
@@ -39,10 +43,21 @@ class LoginActivity : AppCompatActivity() {
 
         btn_login.setOnClickListener {
             Log.i("LoginActivity", "Voy a la API con mi usuario de entrada: $usuarioLogueado \n")
-                loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueado)
+
+            // RENDER PANTALLA DE CARGA
+            loading_spinner.alpha = 1F
+            loading_spinner_parent.alpha = 1F
+            loading_spinner_parent.visibility = View.VISIBLE
+
+            loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueado)
 
         }
-            setContentView(R.layout.activity_blank)
+
+            // RENDER PANTALLA DE CARGA
+            loading_spinner.alpha = 1F
+            loading_spinner_parent.alpha = 1F
+            loading_spinner_parent.visibility = View.VISIBLE
+
             loginWithStoredCredentials()
 
     }
@@ -68,18 +83,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun callbackUsuarioLogueado(usuario: Usuario){
-        usuarioLogueado = usuario
+        UsuarioLogueado.usuario = usuario
 
         guardarCredenciales(usuarioLogueado.email, usuarioLogueado.password)
         //GoTo HomeActivty
         val intent = Intent(this,HomeActivity::class.java).apply{}
         startActivity(intent)
         finish()
-        Toast.makeText(this@LoginActivity, "Bienvenido ${usuarioLogueado.nombre}!!\nTODO: GoTo HomeActivity", Toast.LENGTH_LONG).show()
+        Log.i("LoginActivity", UsuarioLogueado.usuario.id)
     }
 
     fun callbackErrorUsuarioLogueado(error: Exception){
-        setContentView(R.layout.activity_login)
+        // DESACTIVA RENDER PANTALLA DE CARGA
+        loading_spinner_parent.visibility = View.INVISIBLE
     }
 }
 

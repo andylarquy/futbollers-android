@@ -1,13 +1,16 @@
 package ar.edu.unsam.proyecto.futbollers.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.fragments.ChatFragment
 import ar.edu.unsam.proyecto.futbollers.fragments.EquipoFragment
-import ar.edu.unsam.proyecto.futbollers.fragments.PartidoFragment
+import ar.edu.unsam.proyecto.futbollers.fragments.PartidoFragment.PartidoFragment
+import ar.edu.unsam.proyecto.futbollers.services.PartidoService
+import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import kotlinx.android.synthetic.main.activity_home.*
 
 
@@ -21,7 +24,8 @@ class HomeActivity: AppCompatActivity(){
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             var fragment: Fragment? = null;
             if (item.itemId == R.id.action_partido) {
-                fragment = PartidoFragment()
+                fragment =
+                    PartidoFragment()
             } else if (item.itemId == R.id.action_equipo) {
                 fragment = EquipoFragment()
             } else if (item.itemId == R.id.action_chat) {
@@ -32,12 +36,16 @@ class HomeActivity: AppCompatActivity(){
 
             true
         }
+
     }
+
 
     private fun setInitialFragment() {
         val fragmentTransaction: FragmentTransaction =
             supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.main_fragment_placeholder, PartidoFragment())
+        fragmentTransaction.add(R.id.main_fragment_placeholder,
+            PartidoFragment()
+        )
         fragmentTransaction.commit()
     }
 

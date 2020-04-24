@@ -13,9 +13,12 @@ class Usuario: BaseObservable() {
 
     var nombre: String? = null
     var password: String? = null
+    var foto: String? = null
     var email:String? = null
     var lat: Double? = null
     var lon: Double? = null
+
+
 
     @get:Bindable
     var posicion: String? = null

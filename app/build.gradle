@@ -37,6 +37,15 @@ android {
 
 dependencies {
 
+    //Picasso - Para levantar fotos desde una url
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Recycle View - Me lo robode androidX
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    //Card View - Me lo robo de androidX
+    implementation 'androidx.cardview:cardview:1.0.0'
+
     //Google Material
     implementation 'com.google.android.material:material:1.2.0-alpha05'
 
