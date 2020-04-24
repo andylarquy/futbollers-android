@@ -20,8 +20,24 @@ https://www.youtube.com/watch?v=CsxpHOQKk8c&list=PLlxmoA0rQ-Lw5k_QCqVl3rsoJOnb_0
 
 https://medium.com/@Estequiel/c%C3%B3mo-utilizar-data-binding-en-android-bb06e644bea7
 
+## Para two-way databinding:
+Two-way es que si lo cambias en la vista cambia el dominio y si cambias el dominio cambia la vista.
+Por defecto el bindeo es one-way, cambia en la vista y cambia en el dominio.
+Para que sea two way chusmea esto (O copialo de la clase de dominio Usuario):
+
+https://developer.android.com/topic/libraries/data-binding/observability
+
+Si la clase de dominio que tiene two-way ademas tiene que parsearse a JSON usar la segunda opcion de ese link (@get:Bindable)
+
+
 ## Equivalente a println
 ```
+Fachero:
 Toast.makeText(this@LoginActivity, "Mensaje", Toast.LENGTH_SHORT).show()
+
+No tan fachero:
 Log.i("LoginActivity","Mensaje")
 ```
+
+## Hilo de stackoverflow sobre GPS para ir mirando
+https://stackoverflow.com/questions/17290246/get-users-current-location-using-gps
