@@ -1,5 +1,6 @@
 package ar.edu.unsam.proyecto.futbollers.fragments.EquipoFragment
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,15 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
+import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import com.squareup.picasso.Picasso
 
 
 class EquipoAdapter : RecyclerView.Adapter<EquipoAdapter.EquipoViewHolder?>() {
-    class EquipoViewHolder internal constructor(itemView: View) :
+
+    val usuarioLogueado = UsuarioLogueado.usuario
+
+   class EquipoViewHolder internal constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var cv: CardView
         //var nombreEquipo1: TextView
@@ -22,12 +27,18 @@ class EquipoAdapter : RecyclerView.Adapter<EquipoAdapter.EquipoViewHolder?>() {
         var equipo_nombre: TextView
         var equipo_foto: ImageView
         var owner_icon: ImageView
+        var abandon_icon: ImageView
+        var trash_icon: ImageView
+        var edit_icon: ImageView
 
         init {
             cv = itemView.findViewById(R.id.cv)
             equipo_nombre = itemView.findViewById(R.id.equipo_nombre)
             equipo_foto = itemView.findViewById(R.id.equipo_foto) as ImageView
             owner_icon = itemView.findViewById(R.id.owner_icon) as ImageView
+            abandon_icon = itemView.findViewById(R.id.abandon_icon)
+            trash_icon = itemView.findViewById(R.id.trash_icon)
+            edit_icon = itemView.findViewById(R.id.edit_icon)
         }
 
     }
@@ -45,15 +56,29 @@ class EquipoAdapter : RecyclerView.Adapter<EquipoAdapter.EquipoViewHolder?>() {
     }
 
     override fun onBindViewHolder(equipoViewHolder: EquipoViewHolder, i: Int) {
-        //personViewHolder.personName.setText(partidos.get(i).name)
-        //personViewHolder.personAge.setText(partidos.get(i).age)
 
-        //Es como decir equipoViewHolder.equipo_foto = equipo.get(i).equipo.foto
+        //Esto esta mal...
+        // https://pbs.twimg.com/media/EMwGgNJXsAQWH4o.jpg
+
+        if(equipos!!.get(i).esOwnerById(usuarioLogueado)){
+            equipoViewHolder.owner_icon.setImageResource(R.drawable.ic_portrait_black_24dp)
+            //TODO: Darle comportamiento a los botones
+            equipoViewHolder.trash_icon.setImageResource(R.drawable.ic_delete_black_24dp)
+            equipoViewHolder.edit_icon.setImageResource(R.drawable.ic_create_black_24dp)
+        }else{
+            equipoViewHolder.owner_icon.setImageResource(0)
+            equipoViewHolder.trash_icon.setImageResource(0)
+            equipoViewHolder.edit_icon.setImageResource(0)
+        }
+
+        equipoViewHolder.abandon_icon.setImageResource(R.drawable.ic_exit_to_app_black_24dp)
         equipoViewHolder.equipo_nombre.setText(equipos!!.get(i).nombre)
         Picasso.get().load(equipos!!.get(i).foto).into(equipoViewHolder.equipo_foto)
 
-        //TODO: Transformer para owner
+
 
     }
+
+
 
 }

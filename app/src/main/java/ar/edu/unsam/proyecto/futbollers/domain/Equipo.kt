@@ -7,4 +7,8 @@ class Equipo {
 
     var owner: Usuario? = null
     var integrantes: List<Usuario>? = ArrayList<Usuario>()
+
+    fun esOwnerById(usuario: Usuario): Boolean{
+        return owner!!.id.equals(usuario.id)
+    }
 }
