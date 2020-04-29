@@ -1,16 +1,13 @@
 package ar.edu.unsam.proyecto.futbollers.activities
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.fragments.ChatFragment
-import ar.edu.unsam.proyecto.futbollers.fragments.EquipoFragment
+import ar.edu.unsam.proyecto.futbollers.fragments.EquipoFragment.EquipoFragment
 import ar.edu.unsam.proyecto.futbollers.fragments.PartidoFragment.PartidoFragment
-import ar.edu.unsam.proyecto.futbollers.services.PartidoService
-import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import kotlinx.android.synthetic.main.activity_home.*
 
 

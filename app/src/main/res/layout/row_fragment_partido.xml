@@ -23,63 +23,98 @@
     card_view:contentPaddingLeft="5dp"
     >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="16dp">
+
+        <TextView
+            android:id="@+id/empresa_nombre"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            >
+
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:ellipsize="end"
+            android:textSize="18sp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/partido_foto"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            tools:layout_editor_absoluteX="-4dp"
+            tools:layout_editor_absoluteY="64dp" />
 
 
-            <ImageView
-                android:id="@+id/partido_foto"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="16dp"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/equipo1_nombre"
+            android:layout_width="83dp"
+            android:layout_height="50dp"
 
-            <TextView
-                android:id="@+id/empresa_nombre"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginLeft="48dp"
-                android:ellipsize="end"
-                android:textSize="20dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="128dp"
+            android:layout_marginRight="128dp"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
-                card_view:layout_constraintStart_toEndOf="@+id/partido_foto"
-                card_view:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/versus"
+            android:layout_width="16dp"
+            android:layout_height="15dp"
 
-            <TextView
-                android:id="@+id/empresa_direccion_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="160dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginRight="100dp"
+            android:ellipsize="end"
+            android:text="vs"
+            android:textSize="12sp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
-                android:text="Direccion:"
-                android:textSize="14dp"
+        <TextView
+            android:id="@+id/equipo2_nombre"
+            android:layout_width="80dp"
+            android:layout_height="46dp"
 
-                card_view:layout_constraintStart_toEndOf="@+id/partido_foto"
-                card_view:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/empresa_direccion"
-                android:layout_width="115dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="160dp"
+        <TextView
+            android:id="@+id/empresa_direccion_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-                android:textSize="14dp"
+            android:layout_marginEnd="128dp"
+            android:layout_marginRight="128dp"
+            android:layout_marginBottom="16dp"
+            android:text="Direccion:"
+            android:textSize="14sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent" />
 
-                card_view:layout_constraintStart_toEndOf="@+id/empresa_direccion_field"
-                card_view:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/empresa_direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="13sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/empresa_direccion_field" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
