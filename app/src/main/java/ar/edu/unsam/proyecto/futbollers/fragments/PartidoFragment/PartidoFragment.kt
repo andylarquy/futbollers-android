@@ -50,7 +50,6 @@ class PartidoFragment: Fragment(){
         partidoAdapter.partidos!!.addAll(partidos)
         partidoAdapter.notifyDataSetChanged()
         Log.i("HomeActivity", partidoAdapter.partidos!!.map { it.empresa!!.foto }.toString())
-        Log.i("HomeActivity", "Boludo, creo que salio todo bien")
     }
 
 }
