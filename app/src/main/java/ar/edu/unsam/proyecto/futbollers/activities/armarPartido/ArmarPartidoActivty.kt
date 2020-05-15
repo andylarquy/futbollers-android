@@ -1,15 +1,19 @@
 package ar.edu.unsam.proyecto.futbollers.activities.ArmarPartido
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirCancha.ElegirCanchaFragment
+import ivb.com.materialstepper.progressMobileStepper
 
-class ArmarPartidoActivty : AppCompatActivity() {
-    val activityArmarPartido = R.layout.activity_armar_partido
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(activityArmarPartido)
-
+class ArmarPartidoActivty : progressMobileStepper() {
+    override fun onStepperCompleted() {
+        true
     }
+
+    override fun init(): MutableList<Class<*>> {
+        val stepperFragmentList: MutableList<Class<*>> = ArrayList()
+        stepperFragmentList.add(ElegirCanchaFragment::class.java)
+        return stepperFragmentList
+    }
+
 }
