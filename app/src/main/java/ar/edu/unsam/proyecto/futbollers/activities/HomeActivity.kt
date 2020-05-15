@@ -21,8 +21,7 @@ class HomeActivity: AppCompatActivity(){
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             var fragment: Fragment? = null;
             if (item.itemId == R.id.action_partido) {
-                fragment =
-                    PartidoFragment()
+                fragment = PartidoFragment()
             } else if (item.itemId == R.id.action_equipo) {
                 fragment = EquipoFragment()
             } else if (item.itemId == R.id.action_chat) {

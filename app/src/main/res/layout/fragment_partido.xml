@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/activity_loading_screen"
+        android:id="@+id/loading_spinner"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/partidos_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_above="@id/bottom_navigation"
         android:clipToPadding="false"
         android:paddingBottom="56dp"
         android:scrollbars="vertical"
