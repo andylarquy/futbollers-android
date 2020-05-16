@@ -45,44 +45,64 @@
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
+
             <TextView
                 android:id="@+id/superficie_field"
-                android:layout_width="48dp"
-                android:layout_height="12dp"
+                android:layout_width="64dp"
+                android:layout_height="21dp"
                 android:text="Superficie:"
-                android:textSize="10sp"
+                android:textSize="13sp"
 
 
-                tools:layout_editor_absoluteX="191dp"
-                tools:layout_editor_absoluteY="22dp" />
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.645"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintVertical_bias="0.187" />
 
             <TextView
                 android:id="@+id/superficie"
                 android:layout_width="86dp"
-                android:layout_height="15dp"
-                tools:layout_editor_absoluteX="248dp"
-                tools:layout_editor_absoluteY="22dp" />
+                android:layout_height="24dp"
+
+                android:textSize="13sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.98"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintVertical_bias="0.19" />
+
 
             <TextView
                 android:id="@+id/cantidad_maxima_field"
-                android:layout_width="46dp"
-                android:layout_height="28dp"
+                android:layout_width="107dp"
+                android:layout_height="16dp"
                 android:text="Cantidad maxima:"
-                android:textSize="10sp"
+                android:textSize="13sp"
 
 
-                tools:layout_editor_absoluteX="191dp"
-                tools:layout_editor_absoluteY="72dp" />
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.762"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintVertical_bias="0.427" />
 
             <TextView
                 android:id="@+id/cantidad_maxima"
-                android:layout_width="86dp"
-                android:layout_height="12dp"
-                android:textSize="10sp"
+                android:layout_width="45dp"
+                android:layout_height="19dp"
+                android:textSize="13sp"
 
 
-                tools:layout_editor_absoluteX="248dp"
-                tools:layout_editor_absoluteY="88dp" />
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.986"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintVertical_bias="0.433" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
