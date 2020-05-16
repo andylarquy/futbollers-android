@@ -1,6 +1,6 @@
-package ar.edu.unsam.proyecto.futbollers.activities.ArmarPartido
+package ar.edu.unsam.proyecto.futbollers.activities.armarPartido
 
-import ar.edu.unsam.proyecto.futbollers.activities.ArmarPartido.steps.elegirCancha.ElegirCanchaFragment
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirCancha.ElegirCanchaFragment
 import ivb.com.materialstepper.progressMobileStepper
 
 class ArmarPartidoActivty : progressMobileStepper() {

@@ -1,13 +1,12 @@
-package ar.edu.unsam.proyecto.futbollers.activities.Home
+package ar.edu.unsam.proyecto.futbollers.activities.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.ChatFragment
-import ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.EquipoFragment.EquipoFragment
-import ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.PartidoFragment.PartidoFragment
+import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.ChatFragment
+import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment.EquipoFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
 
@@ -21,7 +20,7 @@ class HomeActivity: AppCompatActivity(){
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             var fragment: Fragment? = null;
             if (item.itemId == R.id.action_partido) {
-                fragment = PartidoFragment()
+                fragment = ar.edu.unsam.proyecto.futbollers.activities.home.fragments.PartidoFragment.EquipoFragment()
             } else if (item.itemId == R.id.action_equipo) {
                 fragment = EquipoFragment()
             } else if (item.itemId == R.id.action_chat) {
@@ -40,7 +39,7 @@ class HomeActivity: AppCompatActivity(){
         val fragmentTransaction: FragmentTransaction =
             supportFragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.main_fragment_placeholder,
-            PartidoFragment()
+            ar.edu.unsam.proyecto.futbollers.activities.home.fragments.PartidoFragment.EquipoFragment()
         )
         fragmentTransaction.commit()
     }

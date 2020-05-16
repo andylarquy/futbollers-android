@@ -37,6 +37,9 @@ android {
 
 dependencies {
 
+    //Creo que esta biblioteca es una de las mejores cosas q me paso en la vida
+    implementation "com.leodroidcoder:generic-adapter:1.0.1"
+
     //Biblioteca para Stepper
     implementation 'ivb.com.materialstepper:material-stepper:0.0.2'
 

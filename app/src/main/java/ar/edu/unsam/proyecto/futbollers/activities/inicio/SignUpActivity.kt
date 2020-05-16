@@ -1,4 +1,4 @@
-package ar.edu.unsam.proyecto.futbollers.activities.Inicio
+package ar.edu.unsam.proyecto.futbollers.activities.inicio
 
 import android.content.Intent
 import android.os.Bundle
