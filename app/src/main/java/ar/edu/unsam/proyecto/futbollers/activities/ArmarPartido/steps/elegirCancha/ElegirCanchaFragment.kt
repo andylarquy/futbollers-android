@@ -1,11 +1,10 @@
-package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirCancha
+package ar.edu.unsam.proyecto.futbollers.activities.ArmarPartido.steps.elegirCancha
 
 import ar.edu.unsam.proyecto.futbollers.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ivb.com.materialstepper.stepperFragment
 import kotlinx.android.synthetic.main.fragment_elegir_cancha.*

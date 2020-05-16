@@ -1,6 +1,5 @@
-package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirCancha
+package ar.edu.unsam.proyecto.futbollers.activities.ArmarPartido.steps.elegirCancha
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

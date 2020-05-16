@@ -1,4 +1,4 @@
-package ar.edu.unsam.proyecto.futbollers.fragments.PartidoFragment
+package ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.PartidoFragment
 
 import android.content.Intent
 import android.os.Bundle

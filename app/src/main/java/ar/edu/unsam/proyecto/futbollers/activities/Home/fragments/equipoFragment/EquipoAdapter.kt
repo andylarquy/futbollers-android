@@ -1,6 +1,5 @@
-package ar.edu.unsam.proyecto.futbollers.fragments.EquipoFragment
+package ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.EquipoFragment
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

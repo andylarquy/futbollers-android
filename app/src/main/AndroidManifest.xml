@@ -17,11 +17,11 @@
         <!-- Ni idea de que es allowBackup, TODO: Averiguarlo-->
 
 
-        <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.HomeActivity" />
+        <activity android:name=".activities.Inicio.SignUpActivity" />
+        <activity android:name=".activities.Home.HomeActivity" />
         <activity android:name=".activities.ArmarPartido.ArmarPartidoActivty" />
 
-        <activity android:name=".activities.LoginActivity" >
+        <activity android:name=".activities.Inicio.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

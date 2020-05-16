@@ -7,7 +7,7 @@
     <data>
         <variable name="usuarioNuevo" type="ar.edu.unsam.proyecto.futbollers.domain.Usuario" />
         <variable name="posicionModel" type="java.lang.String" />
-        <import type="ar.edu.unsam.proyecto.futbollers.activities.SignUpActivity" />
+        <import type="ar.edu.unsam.proyecto.futbollers.activities.Inicio.SignUpActivity" />
         <import type="android.text.InputType"/>
     </data>
 

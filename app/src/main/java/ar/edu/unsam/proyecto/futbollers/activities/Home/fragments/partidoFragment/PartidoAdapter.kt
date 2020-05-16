@@ -1,4 +1,4 @@
-package ar.edu.unsam.proyecto.futbollers.fragments.PartidoFragment
+package ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.PartidoFragment
 
 import android.view.LayoutInflater
 import android.view.View

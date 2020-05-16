@@ -1,13 +1,13 @@
-package ar.edu.unsam.proyecto.futbollers.activities
+package ar.edu.unsam.proyecto.futbollers.activities.Home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.fragments.ChatFragment
-import ar.edu.unsam.proyecto.futbollers.fragments.EquipoFragment.EquipoFragment
-import ar.edu.unsam.proyecto.futbollers.fragments.PartidoFragment.PartidoFragment
+import ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.ChatFragment
+import ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.EquipoFragment.EquipoFragment
+import ar.edu.unsam.proyecto.futbollers.activities.Home.fragments.PartidoFragment.PartidoFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
 

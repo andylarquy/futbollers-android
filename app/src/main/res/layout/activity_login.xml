@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.LoginActivity">
+        tools:context=".activities.Inicio.LoginActivity">
 
         <RelativeLayout
             android:id="@+id/loading_spinner_parent"
