@@ -31,34 +31,42 @@
 
         <ImageView
             android:id="@+id/equipo_foto"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="135dp"
+            android:layout_height="129dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            tools:layout_editor_absoluteX="4dp"
-            tools:layout_editor_absoluteY="16dp" />
-
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.078"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.0" />
 
         <TextView
-        android:id="@+id/equipo_nombre"
-        android:layout_width="150dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
+            android:id="@+id/equipo_nombre"
+            android:layout_width="150dp"
+            android:layout_height="24dp"
 
-        android:layout_marginRight="16dp"
-        android:ellipsize="end"
-        android:textSize="20dp"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintTop_toTopOf="parent" />
+            android:ellipsize="end"
+            android:textSize="18sp"
+
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.99"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.078" />
 
         <ImageView
             android:id="@+id/owner_icon"
             android:layout_width="27dp"
             android:layout_height="27dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.047"
             card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="1.0"
             card_view:srcCompat="@drawable/ic_portrait_black_24dp"
             tools:ignore="VectorDrawableCompat" />
 
@@ -66,10 +74,12 @@
             android:id="@+id/abandon_icon"
             android:layout_width="31dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="4dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.952"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="1.0"
             card_view:srcCompat="@drawable/ic_exit_to_app_black_24dp"
             tools:ignore="VectorDrawableCompat" />
 
@@ -77,10 +87,12 @@
             android:id="@+id/trash_icon"
             android:layout_width="30dp"
             android:layout_height="29dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginRight="48dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.82"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="1.0"
             card_view:srcCompat="@drawable/ic_delete_black_24dp"
             tools:ignore="VectorDrawableCompat" />
 
@@ -88,10 +100,12 @@
             android:id="@+id/edit_icon"
             android:layout_width="28dp"
             android:layout_height="29dp"
-            android:layout_marginEnd="88dp"
-            android:layout_marginRight="88dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.682"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="1.0"
             card_view:srcCompat="@drawable/ic_create_black_24dp"
             tools:ignore="VectorDrawableCompat" />
 

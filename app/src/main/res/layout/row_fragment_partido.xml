@@ -33,75 +33,92 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
 
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
             android:ellipsize="end"
             android:textSize="18sp"
+            android:gravity="center"
+
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent" />
+            card_view:layout_constraintHorizontal_bias="0.851"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.072" />
+
 
         <ImageView
             android:id="@+id/partido_foto"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="127dp"
+            android:layout_height="144dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            tools:layout_editor_absoluteX="-4dp"
-            tools:layout_editor_absoluteY="64dp" />
-
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.018"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/equipo1_nombre"
-            android:layout_width="83dp"
-            android:layout_height="50dp"
+            android:layout_width="71dp"
+            android:layout_height="44dp"
 
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="128dp"
-            android:layout_marginRight="128dp"
             android:ellipsize="end"
             android:textSize="12sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent" />
+            card_view:layout_constraintHorizontal_bias="0.588"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.621" />
 
         <TextView
             android:id="@+id/versus"
             android:layout_width="16dp"
             android:layout_height="15dp"
 
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginRight="100dp"
             android:ellipsize="end"
+            android:gravity="center"
             android:text="vs"
             android:textSize="12sp"
+
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent" />
+            card_view:layout_constraintHorizontal_bias="0.736"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.484" />
 
         <TextView
             android:id="@+id/equipo2_nombre"
-            android:layout_width="80dp"
-            android:layout_height="46dp"
+            android:layout_width="71dp"
+            android:layout_height="44dp"
 
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
             android:ellipsize="end"
+            android:gravity="center"
             android:textSize="12sp"
+
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent" />
+            card_view:layout_constraintHorizontal_bias="0.979"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="0.577" />
 
         <TextView
             android:id="@+id/empresa_direccion_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginEnd="128dp"
-            android:layout_marginRight="128dp"
-            android:layout_marginBottom="16dp"
             android:text="Direccion:"
             android:textSize="14sp"
+            android:gravity="center"
+
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent" />
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.572"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/empresa_direccion"
@@ -109,11 +126,15 @@
             android:layout_height="wrap_content"
 
             android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginBottom="16dp"
             android:textSize="13sp"
+            android:gravity="center"
+
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/empresa_direccion_field" />
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.0"
+            card_view:layout_constraintStart_toEndOf="@+id/empresa_direccion_field"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

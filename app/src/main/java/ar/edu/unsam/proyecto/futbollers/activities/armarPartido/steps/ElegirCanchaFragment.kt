@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
+import ar.edu.unsam.proyecto.futbollers.services.CanchaService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
@@ -36,7 +37,10 @@ class ElegirCanchaFragment: stepperFragment(), OnRecyclerItemClickListener {
     var rv = canchas_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
+        val canchaService = CanchaService
+
 
         //val usuarioLogueado = UsuarioLogueado.usuario
 
@@ -45,14 +49,29 @@ class ElegirCanchaFragment: stepperFragment(), OnRecyclerItemClickListener {
 
         val llm = LinearLayoutManager(context)
         rv.layoutManager = llm
-
         canchaAdapter = context?.let { CanchaAdapter(it, this) }!!
         rv.adapter = canchaAdapter
-        canchaAdapter.items = canchasHardcodeadas()
+
+        //Render pantalla de carga
+        loading_spinner?.visibility = View.VISIBLE
+
+        canchaService.getCanchas(context!!, ::callBackCanchas)
 
     }
 
+    fun callBackCanchas(canchas: MutableList<Cancha>){
+        canchaAdapter.items?.clear()
+        canchaAdapter.items = canchas
+        canchaAdapter.notifyDataSetChanged()
+
+        //Desactivo pantalla de carga
+        loading_spinner?.visibility = View.INVISIBLE
+        Log.i("ArmarPartidoActivity", canchaAdapter.items.size.toString())
+
+    }
+    /*
     fun canchasHardcodeadas(): MutableList<Cancha> {
+
         var debugCancha = Cancha()
         debugCancha.foto = "https://i.imgur.com/8tKp3V1.jpg"
         debugCancha.id = "C1"
@@ -61,6 +80,8 @@ class ElegirCanchaFragment: stepperFragment(), OnRecyclerItemClickListener {
 
         return mutableListOf(debugCancha)
     }
+    */
+
 
     override fun onItemClick(position: Int) {
         val canchaSeleccionada: Cancha = canchaAdapter.getItem(position)
@@ -105,4 +126,3 @@ class CanchaAdapter(context: Context, listener: ElegirCanchaFragment) : GenericR
         return CanchaViewHolder(inflate(R.layout.row_cancha, parent), listener)
     }
 }
-
