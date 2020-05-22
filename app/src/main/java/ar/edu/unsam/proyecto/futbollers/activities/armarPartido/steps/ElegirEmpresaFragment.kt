@@ -15,6 +15,10 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.empresaSeleccionada
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.hideStepperNavigation
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.showStepperNavigation
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.stepForward
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import ar.edu.unsam.proyecto.futbollers.services.EmpresaService
 import com.leodroidcoder.genericadapter.BaseViewHolder
@@ -22,10 +26,13 @@ import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
 import com.squareup.picasso.Picasso
 import com.stepstone.stepper.BlockingStep
+import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.StepperLayout.*
 import com.stepstone.stepper.VerificationError
+import kotlinx.android.synthetic.main.activity_armar_partido.stepperLayout
 import kotlinx.android.synthetic.main.fragment_elegir_empresa.*
 import kotlinx.android.synthetic.main.row_empresa.view.*
+
 
 
 class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListener {
@@ -55,6 +62,7 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         empresaService.getEmpresas(context!!, ::callBackEmpresa)
 
+
     }
 
     fun callBackEmpresa(empresa: MutableList<Empresa>){
@@ -64,19 +72,14 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         //Desactivo pantalla de carga
         loading_spinner?.visibility = View.INVISIBLE
-        Log.i("ArmarPartidoActivity", empresaAdapter.items.size.toString())
 
     }
 
     override fun onItemClick(position: Int) {
-        val empresaSeleccionada: Empresa = empresaAdapter.getItem(position)
-
-        val intent = Intent(activity, ElegirCanchaFragment::class.java).apply{}
-
-        startActivity(intent)
-
-        Log.i("ArmarPartidoActivty", "TODO: Darle comportamiento al click (no va a ser tan facil)")
-        Toast.makeText(context, "TODO: Seleccionar empresa (con id: "+empresaSeleccionada.id+")", Toast.LENGTH_SHORT).show()
+        empresaSeleccionada = empresaAdapter.getItem(position)
+        Toast.makeText(context, empresaSeleccionada!!.id!!, Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "TODO: Seleccionar empresa (con id: "+empresaSeleccionada?.id+")", Toast.LENGTH_SHORT).show()
+        stepForward()
     }
 
     override fun onNextClicked(callback: OnNextClickedCallback) {
@@ -84,11 +87,10 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {
-        Toast.makeText(this.context, "Eh puto! Terminooo!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this.context, "FIN!!", Toast.LENGTH_SHORT).show()
     }
 
     override fun onBackClicked(callback: OnBackClickedCallback) {
-        Toast.makeText(this.context, "Que reculas cagon", Toast.LENGTH_SHORT).show()
         callback.goToPrevStep()
     }
 
@@ -96,7 +98,9 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
         return null
     }
 
-    override fun onSelected() {}
+    override fun onSelected() {
+        hideStepperNavigation()
+    }
 
     override fun onError(error: VerificationError) {}
 

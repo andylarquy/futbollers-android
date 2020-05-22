@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEmpresaFragment
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanchaFragment
+import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -17,10 +18,11 @@ import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 import kotlinx.android.synthetic.main.activity_armar_partido.*
 
+var mStepperLayout: StepperLayout? = null
+var empresaSeleccionada: Empresa? = null
+
 class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 
-
-    var mStepperLayout: StepperLayout? = null
     private var mStepperAdapter: StepperAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,7 @@ class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
         mStepperAdapter = StepperAdapter(supportFragmentManager, this)
         mStepperLayout!!.adapter = mStepperAdapter
         mStepperLayout!!.setListener(this)
+
     }
 
     override fun onStepSelected(newStepPosition: Int) {
@@ -59,7 +62,7 @@ class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 }
 
 
-val CANTIDAD_DE_STEPS: Int = 2
+const val CANTIDAD_DE_STEPS: Int = 2
 
 class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm,
     context
@@ -98,10 +101,24 @@ class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentSt
                 .setTitle("Elegir Sede")
                 .create()
             1 -> return StepViewModel.Builder(context)
-                .setTitle("Elegir Cancha") //can be a CharSequence instead
+                .setTitle("Elegir Cancha")
                 .create()
         }
         return StepViewModel.Builder(context).create()
     }
 
+}
+
+fun showStepperNavigation(){
+    mStepperLayout!!.setShowBottomNavigation(true)
+}
+
+fun hideStepperNavigation(){
+    mStepperLayout!!.setShowBottomNavigation(false)
+    mStepperLayout!!.adapter.createStep(1)
+}
+
+fun stepForward(){
+    val currentStep = mStepperLayout!!.currentStepPosition
+    mStepperLayout!!.currentStepPosition = currentStep + 1
 }

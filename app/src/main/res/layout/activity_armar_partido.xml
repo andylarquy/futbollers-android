@@ -6,15 +6,16 @@
     android:layout_height="match_parent">
 
     <com.stepstone.stepper.StepperLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/stepperLayout"
-        app:ms_stepperType="tabs"
-        app:ms_backButtonText="ATRAS"
-        app:ms_nextButtonText="SIGUIENTE"
-        app:ms_nextButtonColor="@color/colorPrimary"
-        app:ms_completeButtonText="FIN"
-        >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/stepperLayout"
+    app:ms_stepperType="tabs"
+    app:ms_backButtonText="ATRAS"
+    app:ms_nextButtonText="SIGUIENTE"
+    app:ms_nextButtonColor="@color/colorPrimary"
+    app:ms_completeButtonText="FIN"
+    app:ms_showBottomNavigation="true"
+    >
         <!-- Che, mogobobo cambiaste esto y lo rompiste -->
     </com.stepstone.stepper.StepperLayout>
 
