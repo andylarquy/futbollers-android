@@ -18,7 +18,7 @@ object LoginService {
  fun getUsuarioLogueado(context: Context, usuario: Usuario, callback: (Usuario) -> Unit, callbackError: (Exception) -> Unit) {
 
     val queue = Volley.newRequestQueue(context)
-    val url = "$BASE_URL/usuario/login"
+    val url = "$BASE_URL/login"
 
     val request = JsonObjectRequest(
        Request.Method.POST, url, Usuario().toJson(usuario),
