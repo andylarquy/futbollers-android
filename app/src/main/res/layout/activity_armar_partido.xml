@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.stepstone.stepper.StepperLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/stepperLayout"
+        app:ms_stepperType="tabs"
+        app:ms_backButtonText="ATRAS"
+        app:ms_nextButtonText="SIGUIENTE"
+        app:ms_nextButtonColor="@color/colorPrimary"
+        app:ms_completeButtonText="FIN"
+        >
+        <!-- Che, mogobobo cambiaste esto y lo rompiste -->
+    </com.stepstone.stepper.StepperLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

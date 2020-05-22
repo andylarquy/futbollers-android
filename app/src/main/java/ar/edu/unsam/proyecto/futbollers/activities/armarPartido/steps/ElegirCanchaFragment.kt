@@ -1,8 +1,8 @@
-package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirCancha
+package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps
 
 import android.content.Context
-import ar.edu.unsam.proyecto.futbollers.R
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,23 +11,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.services.CanchaService
-import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
 import com.squareup.picasso.Picasso
-import ivb.com.materialstepper.stepperFragment
+import com.stepstone.stepper.BlockingStep
+import com.stepstone.stepper.StepperLayout.*
+import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.fragment_elegir_cancha.*
 import kotlinx.android.synthetic.main.row_cancha.view.*
 
 
-class ElegirCanchaFragment: stepperFragment(), OnRecyclerItemClickListener {
-    override fun onNextButtonHandler(): Boolean {
-        return true
-    }
+class ElegirCanchaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_elegir_cancha, container, false)
@@ -69,25 +69,32 @@ class ElegirCanchaFragment: stepperFragment(), OnRecyclerItemClickListener {
         Log.i("ArmarPartidoActivity", canchaAdapter.items.size.toString())
 
     }
-    /*
-    fun canchasHardcodeadas(): MutableList<Cancha> {
-
-        var debugCancha = Cancha()
-        debugCancha.foto = "https://i.imgur.com/8tKp3V1.jpg"
-        debugCancha.id = "C1"
-        debugCancha.cantidadJugadores = 5
-        debugCancha.superficie = "sintetico"
-
-        return mutableListOf(debugCancha)
-    }
-    */
-
 
     override fun onItemClick(position: Int) {
         val canchaSeleccionada: Cancha = canchaAdapter.getItem(position)
-        Log.i("ElegirCanchaFragment", "TODO: Darle comportamiento al click (no va a ser tan facil)")
         Toast.makeText(context, "TODO: Seleccionar cancha (con id: "+canchaSeleccionada.id+")", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onNextClicked(callback: OnNextClickedCallback) {
+        Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+    }
+
+    override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {
+        Toast.makeText(this.context, "Eh puto! Terminooo!!", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(callback: OnBackClickedCallback) {
+        Toast.makeText(this.context, "Que reculas cagon", Toast.LENGTH_SHORT).show()
+        callback.goToPrevStep()
+    }
+
+    override fun verifyStep(): VerificationError? {
+        return null
+    }
+
+    override fun onSelected() {}
+
+    override fun onError(error: VerificationError) {}
 }
 
 

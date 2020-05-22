@@ -21,6 +21,7 @@
         <activity android:name=".activities.home.HomeActivity" />
         <activity android:name=".activities.armarPartido.ArmarPartidoActivty" />
 
+
         <activity android:name=".activities.inicio.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,8 +1,9 @@
 package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps
 
 import android.content.Context
-import ar.edu.unsam.proyecto.futbollers.R
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,23 +12,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import ar.edu.unsam.proyecto.futbollers.domain.Cancha
+import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import ar.edu.unsam.proyecto.futbollers.services.EmpresaService
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
 import com.squareup.picasso.Picasso
-import ivb.com.materialstepper.stepperFragment
+import com.stepstone.stepper.BlockingStep
+import com.stepstone.stepper.StepperLayout.*
+import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.fragment_elegir_empresa.*
 import kotlinx.android.synthetic.main.row_empresa.view.*
 
 
-class ElegirEmpresaFragment: stepperFragment(), OnRecyclerItemClickListener {
-    override fun onNextButtonHandler(): Boolean {
-        return true
-    }
+class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_elegir_empresa, container, false)
@@ -40,9 +41,6 @@ class ElegirEmpresaFragment: stepperFragment(), OnRecyclerItemClickListener {
 
         super.onViewCreated(view, savedInstanceState)
         val empresaService = EmpresaService
-
-
-        //val usuarioLogueado = UsuarioLogueado.usuario
 
         rv = empresas_list
         rv.setHasFixedSize(true)
@@ -72,9 +70,36 @@ class ElegirEmpresaFragment: stepperFragment(), OnRecyclerItemClickListener {
 
     override fun onItemClick(position: Int) {
         val empresaSeleccionada: Empresa = empresaAdapter.getItem(position)
+
+        val intent = Intent(activity, ElegirCanchaFragment::class.java).apply{}
+
+        startActivity(intent)
+
         Log.i("ArmarPartidoActivty", "TODO: Darle comportamiento al click (no va a ser tan facil)")
         Toast.makeText(context, "TODO: Seleccionar empresa (con id: "+empresaSeleccionada.id+")", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onNextClicked(callback: OnNextClickedCallback) {
+        Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+    }
+
+    override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {
+        Toast.makeText(this.context, "Eh puto! Terminooo!!", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackClicked(callback: OnBackClickedCallback) {
+        Toast.makeText(this.context, "Que reculas cagon", Toast.LENGTH_SHORT).show()
+        callback.goToPrevStep()
+    }
+
+    override fun verifyStep(): VerificationError? {
+        return null
+    }
+
+    override fun onSelected() {}
+
+    override fun onError(error: VerificationError) {}
+
 }
 
 
