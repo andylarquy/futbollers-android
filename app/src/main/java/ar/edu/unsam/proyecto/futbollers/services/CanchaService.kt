@@ -4,12 +4,15 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
+import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.Exception
 
 object CanchaService {
 
@@ -38,6 +41,29 @@ object CanchaService {
 
         queue.add(request)
 
+    }
+
+    fun getCanchasDeLaEmpresa(context: Context, idEmpresa: String, callback: (MutableList<Cancha>) -> Unit) {
+
+        Log.i("ArmarPartidoActivity", idEmpresa)
+
+        val queue = Volley.newRequestQueue(context)
+        val url = "${Constants.BASE_URL}/empresas-canchas/"
+
+        val request = JsonArrayRequest(
+            Request.Method.GET, url+idEmpresa, null,
+            Response.Listener<JSONArray> { response ->
+                val canchas = Gson().fromJson(response.toString(), Array<Cancha>::class.java)
+                Log.i("ArmarPartidoActivity", canchas.map { cancha -> cancha.foto }.toString()
+                )
+                callback(canchas.toMutableList())
+            },
+            Response.ErrorListener {
+                handleError(context, it)
+            })
+        request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
+
+        queue.add(request)
     }
 
     fun handleError(context: Context, error: VolleyError) {

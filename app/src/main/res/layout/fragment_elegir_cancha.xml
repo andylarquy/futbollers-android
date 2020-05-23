@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <include
         android:id="@+id/loading_spinner"
         layout="@layout/activity_loading_screen"
@@ -18,21 +19,35 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.027" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/canchas_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingBottom="56dp"
-        android:scrollbars="vertical"
 
+
+    <include
+        android:id="@+id/cancha_seleccionada"
+        layout="@layout/row_cancha"
+        android:layout_width="326dp"
+        android:layout_height="111dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:context="com.google.samples.apps.sunflower.GardenActivity"
-        tools:listitem="@layout/row_cancha" />
+        app:layout_constraintVertical_bias="0.185" />
+
+    <Button
+        android:id="@+id/btn_seleccionar_cancha"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="241dp"
+        android:layout_height="44dp"
+        android:text="Cancha"
+        android:textSize="17sp"
+        app:icon="@drawable/ic_add_purple_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.088" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

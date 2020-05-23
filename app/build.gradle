@@ -37,6 +37,9 @@ android {
 
 dependencies {
 
+    //Biblioteca para Dialogs
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+
     //Circular Image View
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
 
