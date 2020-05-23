@@ -37,20 +37,23 @@ android {
 
 dependencies {
 
+    //Circular Image View
+    implementation 'com.mikhaellopez:circularimageview:4.2.0'
+
     //Biblioteca para stepper
     implementation 'com.stepstone.stepper:material-stepper:4.3.1'
 
     //Creo que esta biblioteca es una de las mejores cosas q me paso en la vida
+    //Simple Recycler View
     implementation "com.leodroidcoder:generic-adapter:1.0.1"
 
-    //Biblioteca para Stepper (Te queremos igual)
-    // Te voy a extrañar - Buena biblioteca mejor persona
+    //Antigua Biblioteca para Stepper (Te queremos igual)
     //implementation 'ivb.com.materialstepper:material-stepper:0.0.2'
 
     //Picasso - Para levantar fotos desde una url
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    //Recycle View - Me lo robode androidX
+    //Recycle View - Me lo robo de androidX
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     //Card View - Me lo robo de androidX

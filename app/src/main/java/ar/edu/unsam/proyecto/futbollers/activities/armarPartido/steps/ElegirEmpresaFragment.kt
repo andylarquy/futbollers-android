@@ -1,23 +1,20 @@
 package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.empresaSeleccionada
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.hideStepperNavigation
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.showStepperNavigation
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.stepForward
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import ar.edu.unsam.proyecto.futbollers.services.EmpresaService
@@ -26,13 +23,10 @@ import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
 import com.squareup.picasso.Picasso
 import com.stepstone.stepper.BlockingStep
-import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.StepperLayout.*
 import com.stepstone.stepper.VerificationError
-import kotlinx.android.synthetic.main.activity_armar_partido.stepperLayout
 import kotlinx.android.synthetic.main.fragment_elegir_empresa.*
 import kotlinx.android.synthetic.main.row_empresa.view.*
-
 
 
 class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListener {
@@ -55,6 +49,10 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
         val llm = LinearLayoutManager(context)
         rv.layoutManager = llm
         empresaAdapter = context?.let { EmpresaAdapter(it, this) }!!
+
+        val dividerItemDecoration = DividerItemDecoration(rv.context, llm.orientation)
+        rv.addItemDecoration(dividerItemDecoration)
+
         rv.adapter = empresaAdapter
 
         //Render pantalla de carga
@@ -115,8 +113,6 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
 
 class EmpresaViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) : BaseViewHolder<Empresa, OnRecyclerItemClickListener>(itemView, listener) {
 
-
-    private val cv: CardView = itemView.cv
     private val nombre: TextView = itemView.nombre
     private val direccion: TextView = itemView.direccion
     private val empresaFoto: ImageView = itemView.empresa_foto
@@ -124,7 +120,6 @@ class EmpresaViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
     init {
         listener?.run {
             itemView.setOnClickListener { onItemClick(adapterPosition) }
-            cv.setOnClickListener { onItemClick(adapterPosition) }
         }
 
     }

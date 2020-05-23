@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.empresaSeleccionada
@@ -54,6 +55,10 @@ class ElegirCanchaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListene
         val llm = LinearLayoutManager(context)
         rv.layoutManager = llm
         canchaAdapter = context?.let { CanchaAdapter(it, this) }!!
+
+        val dividerItemDecoration = DividerItemDecoration(rv.context, llm.orientation)
+        rv.addItemDecoration(dividerItemDecoration)
+
         rv.adapter = canchaAdapter
 
         //Render pantalla de carga
@@ -111,8 +116,6 @@ class ElegirCanchaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListene
 
 class CanchaViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) : BaseViewHolder<Cancha, OnRecyclerItemClickListener>(itemView, listener) {
 
-
-    private val cv: CardView = itemView.cv
     private val cantidadMaxima: TextView = itemView.cantidad_maxima
     private val superficie: TextView = itemView.superficie
     private val canchaFoto: ImageView = itemView.cancha_foto
@@ -120,9 +123,7 @@ class CanchaViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) :
     init {
         listener?.run {
             itemView.setOnClickListener { onItemClick(adapterPosition) }
-            cv.setOnClickListener { onItemClick(adapterPosition) }
         }
-
     }
 
     override fun onBind(item: Cancha) {
