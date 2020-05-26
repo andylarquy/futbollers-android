@@ -2,7 +2,7 @@
 
 
 ## API REST de prueba
-https://my-json-server.typicode.com/andylarquy/rest-api-futbollers
+https://my-json-server.typicode.com/andylarquy/mock-rest-api-futbollers
 
 ## CheatSheets felices de Kotlin
 ![alt-text](https://miro.medium.com/max/2000/1*6g2SlQkOWnR1JSekh5NCFQ.png)
@@ -41,3 +41,6 @@ Log.i("LoginActivity","Mensaje")
 
 ## Hilo de stackoverflow sobre GPS para ir mirando
 https://stackoverflow.com/questions/17290246/get-users-current-location-using-gps
+
+## Biblioteca copada para ventanas modales
+https://github.com/afollestad/material-dialogs

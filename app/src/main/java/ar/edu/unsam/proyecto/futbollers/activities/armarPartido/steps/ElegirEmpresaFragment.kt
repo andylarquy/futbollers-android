@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.canchaSeleccionada
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.empresaSeleccionada
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.hideStepperNavigation
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.stepForward
@@ -75,6 +76,7 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
 
     override fun onItemClick(position: Int) {
         empresaSeleccionada = empresaAdapter.getItem(position)
+        canchaSeleccionada = null
         //Toast.makeText(context, "TODO: Seleccionar empresa (con id: "+empresaSeleccionada?.id+")", Toast.LENGTH_SHORT).show()
         stepForward()
     }

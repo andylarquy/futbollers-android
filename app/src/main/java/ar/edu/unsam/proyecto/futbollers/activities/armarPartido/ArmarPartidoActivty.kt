@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEmpresaFragment
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanchaFragment
+import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_armar_partido.*
 
 var mStepperLayout: StepperLayout? = null
 var empresaSeleccionada: Empresa? = null
+var canchaSeleccionada: Cancha? = null
 
 class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 

@@ -9,22 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.canchaSeleccionada
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.empresaSeleccionada
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.hideStepperNavigation
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.showStepperNavigation
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.services.CanchaService
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.list.customListAdapter
-import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
@@ -33,7 +26,6 @@ import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout.*
 import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.dialog_seleccionar_cancha.*
-import kotlinx.android.synthetic.main.activity_armar_partido.*
 import kotlinx.android.synthetic.main.fragment_elegir_cancha.*
 import kotlinx.android.synthetic.main.row_cancha.view.*
 
@@ -73,6 +65,11 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         btn_seleccionar_cancha.setOnClickListener() {
             dialogCanchas!!.show()
+
+            if(canchaAdapter.items.isEmpty()){
+                loading_spinner?.visibility = View.VISIBLE
+            }
+
         }
 
     }
@@ -82,29 +79,31 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         canchaAdapter.items = canchas
         canchaAdapter.notifyDataSetChanged()
 
-        Toast.makeText(context, canchas.map{cancha -> cancha.foto}.toString(), Toast.LENGTH_SHORT).show()
-
         //Desactivo pantalla de carga
-        loading_spinner!!.visibility = View.INVISIBLE
-        Log.i("ArmarPartidoActivity", canchaAdapter.items.size.toString())
+        loading_spinner?.visibility = View.INVISIBLE
 
     }
 
     override fun onItemClick(position: Int) {
-        val canchaSeleccionada: Cancha = canchaAdapter.getItem(position)
+        canchaSeleccionada = canchaAdapter.getItem(position)
         dialogCanchas?.dismiss()
 
-        Toast.makeText(context, canchaSeleccionada.id, Toast.LENGTH_SHORT).show()
-
+        showCanchaSeleccionada()
     }
 
     override fun onSelected() {
         showStepperNavigation()
 
         //Render pantalla de carga
-        loading_spinner!!.visibility = View.VISIBLE
+        loading_spinner?.visibility = View.VISIBLE
 
         canchaService.getCanchasDeLaEmpresa(context!!, empresaSeleccionada!!.id!!, ::callBackCanchas)
+
+        if(canchaSeleccionada === null){
+            hideCanchaSeleccionada()
+        }
+
+        canchaAdapter.items = ArrayList()
 }
 
     override fun onNextClicked(callback: OnNextClickedCallback) {
@@ -122,8 +121,24 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
     }
 
     override fun onError(error: VerificationError) {}
-}
 
+    fun showCanchaSeleccionada(){
+
+        if(canchaSeleccionada !== null) {
+
+            Picasso.get().load(canchaSeleccionada!!.foto).into(cancha_seleccionada.cancha_foto)
+            cancha_seleccionada.superficie.text = canchaSeleccionada!!.superficie
+            cancha_seleccionada.cantidad_maxima.text = canchaSeleccionada!!.cantidadJugadores.toString()
+            cancha_seleccionada.visibility = View.VISIBLE
+        }else{
+            hideCanchaSeleccionada()
+        }
+    }
+
+    fun hideCanchaSeleccionada(){
+        cancha_seleccionada.visibility = View.INVISIBLE
+    }
+}
 
 //RECOMIENDO CERRAR ESTOS ARCHIVOS, SON AUXILIARES
 // (CORTESIA DE com.leodroidcoder:generic-adapter:1.0.1
