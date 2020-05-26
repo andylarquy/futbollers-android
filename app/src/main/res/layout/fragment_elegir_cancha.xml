@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout>
+    <data>
+        <variable name="codigoPromocional" type="java.lang.String" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,7 +37,59 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.088" />
 
+    <Button
+        android:id="@+id/btn_seleccionar_fecha"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="241dp"
+        android:layout_height="44dp"
+        android:text="Fecha de reserva"
+        android:textSize="17sp"
+        app:icon="@drawable/ic_event_note_purple_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.439" />
 
+    <TextView
+        android:id="@+id/texto_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text=""
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_seleccionar_fecha"
+        app:layout_constraintVertical_bias="0.006" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_codigo_promocion"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="295dp"
+        android:layout_height="55dp"
+
+        android:hint="@string/input_codigo_promocion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/texto_fecha"
+        app:layout_constraintVertical_bias="0.117">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_field_codigo_promocion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@={codigoPromocional}"
+            android:inputType="text"
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

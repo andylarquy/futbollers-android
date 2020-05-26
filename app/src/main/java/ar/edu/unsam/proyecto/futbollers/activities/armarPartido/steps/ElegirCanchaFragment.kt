@@ -3,20 +3,25 @@ package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil.setContentView
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.canchaSeleccionada
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.empresaSeleccionada
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.showStepperNavigation
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.*
+import ar.edu.unsam.proyecto.futbollers.databinding.FragmentElegirCanchaBinding
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.services.CanchaService
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.datetime.dateTimePicker
 import com.afollestad.materialdialogs.list.customListAdapter
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
@@ -28,6 +33,9 @@ import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.dialog_seleccionar_cancha.*
 import kotlinx.android.synthetic.main.fragment_elegir_cancha.*
 import kotlinx.android.synthetic.main.row_cancha.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListener {
@@ -37,6 +45,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.fragment_elegir_cancha, container, false)
     }
 
@@ -45,15 +54,19 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
     //Setup Dialog
     var dialogCanchas: MaterialDialog? = null
+    var dialogFecha:MaterialDialog? = null
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
         //val usuarioLogueado = UsuarioLogueado.usuario
-
         canchaAdapter = CanchaAdapter(context!!, this)
 
         cancha_seleccionada.visibility = View.INVISIBLE
+        texto_fecha.visibility = View.INVISIBLE
+
+
 
 
         dialogCanchas = context?.let { context ->
@@ -61,6 +74,22 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
                 .title(text = "Selecciona la cancha")
                 .message(text = "Listado de canchas")
                 .customListAdapter(canchaAdapter)
+        }
+
+        dialogFecha = context?.let{ context ->
+
+            val minDate = Calendar.getInstance()
+            minDate.add(Calendar.DATE, 3)
+
+            MaterialDialog(context)
+                .dateTimePicker(minDateTime = minDate, show24HoursView = true) { _, dateTime ->
+                    // Use dateTime (Calendar)
+                    fechaSeleccionada = dateTime
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault())
+
+                    texto_fecha.text = dateFormat.format(fechaSeleccionada!!.time)
+                    texto_fecha.visibility = View.VISIBLE
+                }
         }
 
         btn_seleccionar_cancha.setOnClickListener() {
@@ -71,6 +100,22 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
             }
 
         }
+
+        btn_seleccionar_fecha.setOnClickListener(){
+            dialogFecha!!.show()
+        }
+
+        input_field_codigo_promocion.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(nuevoTexto: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                codigoPromocionalSeleccionado = nuevoTexto.toString()
+            }
+        })
+
+
 
     }
 
@@ -103,14 +148,24 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
             hideCanchaSeleccionada()
         }
 
+        //Reset fields
         canchaAdapter.items = ArrayList()
+        input_field_codigo_promocion.setText("")
+        texto_fecha.text = ""
 }
 
     override fun onNextClicked(callback: OnNextClickedCallback) {
         Handler().postDelayed({ callback.goToNextStep() }, 1000L)
     }
 
-    override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {}
+    override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {
+        Toast.makeText(
+            context,
+            "TODO: Siguiente paso (codigo promocional: $codigoPromocionalSeleccionado)",
+            Toast.LENGTH_SHORT
+        ).show()
+
+    }
 
     override fun onBackClicked(callback: OnBackClickedCallback) {
         callback.goToPrevStep()

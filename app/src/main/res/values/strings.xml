@@ -18,6 +18,9 @@
     <string name="bottom_navigation_menu_partido_text">Partidos</string>
     <string name="bottom_navigation_menu_chat_text">Chat</string>
 
+    <!-- Elegir Cancha -->
+    <string name="text_display_fecha">%1$s/%2$s/%3$s - %4$s:%5$s</string>
+    <string name="input_codigo_promocion">Código promocional</string>
 
 
 

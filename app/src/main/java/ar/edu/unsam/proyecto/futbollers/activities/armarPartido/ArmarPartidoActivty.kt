@@ -18,10 +18,13 @@ import com.stepstone.stepper.VerificationError
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 import kotlinx.android.synthetic.main.activity_armar_partido.*
+import java.util.*
 
 var mStepperLayout: StepperLayout? = null
 var empresaSeleccionada: Empresa? = null
 var canchaSeleccionada: Cancha? = null
+var fechaSeleccionada: Calendar? = null
+var codigoPromocionalSeleccionado: String? = null
 
 class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 
