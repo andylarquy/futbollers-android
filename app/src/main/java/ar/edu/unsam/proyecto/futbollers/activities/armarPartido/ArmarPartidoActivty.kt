@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEmpresaFragment
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanchaFragment
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEquipoLocalFragment
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import com.stepstone.stepper.Step
@@ -24,7 +25,7 @@ var mStepperLayout: StepperLayout? = null
 var empresaSeleccionada: Empresa? = null
 var canchaSeleccionada: Cancha? = null
 var fechaSeleccionada: Calendar? = null
-var codigoPromocionalSeleccionado: String? = null
+var codigoPromocionalSeleccionado: String = ""
 
 class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 
@@ -67,7 +68,7 @@ class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 }
 
 
-const val CANTIDAD_DE_STEPS: Int = 2
+const val CANTIDAD_DE_STEPS: Int = 3
 
 class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm,
     context
@@ -90,6 +91,14 @@ class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentSt
                 b2.putInt(CURRENT_STEP_POSITION_KEY, position)
                 step2.arguments = b2
                 return step2
+            }
+
+            2 -> {
+                val step3 = ElegirEquipoLocalFragment()
+                val b3 = Bundle()
+                b3.putInt(CURRENT_STEP_POSITION_KEY, position)
+                step3.arguments = b3
+                return step3
             }
         }
         return null

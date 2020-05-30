@@ -30,6 +30,7 @@ import com.squareup.picasso.Picasso
 import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout.*
 import com.stepstone.stepper.VerificationError
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_seleccionar_cancha.*
 import kotlinx.android.synthetic.main.fragment_elegir_cancha.*
 import kotlinx.android.synthetic.main.row_cancha.view.*
@@ -89,6 +90,8 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
                     texto_fecha.text = dateFormat.format(fechaSeleccionada!!.time)
                     texto_fecha.visibility = View.VISIBLE
+
+                    //TODO: Ir al back a validar la fecha
                 }
         }
 
@@ -154,18 +157,48 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         texto_fecha.text = ""
 }
 
+    fun validarCampos(): Boolean{
+        var status = true
+
+        //Validar Cancha
+        if(canchaSeleccionada === null){
+            status = false
+            Toasty.error(context!!, "Debe seleccionar una cancha.", Toast.LENGTH_SHORT, true).show();
+        }
+
+        //Validar Promocion
+        if(codigoPromocionalSeleccionado != ""){
+            status = false
+            //TODO: Ir al back a validar el codigo
+            Toasty.error(context!!, "El codigo promocional no es valido.", Toast.LENGTH_SHORT, true).show();
+        }
+
+        if(fechaSeleccionada === null){
+            status = false
+            Toasty.error(context!!, "Debe ingresar una fecha.", Toast.LENGTH_SHORT, true).show();
+        }
+
+        //TODO: Ir al back a validar la fecha
+        if(false){
+            status = false
+            Toasty.error(context!!, "Esta fecha de reserva ya está ocupada.", Toast.LENGTH_SHORT, true).show();
+        }
+
+        return status
+    }
+
     override fun onNextClicked(callback: OnNextClickedCallback) {
-        Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+
+        val status = validarCampos()
+
+        if(status) {
+            Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+        }else{
+            //TODO: No estoy del todo seguro
+        }
     }
 
-    override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {
-        Toast.makeText(
-            context,
-            "TODO: Siguiente paso (codigo promocional: $codigoPromocionalSeleccionado)",
-            Toast.LENGTH_SHORT
-        ).show()
-
-    }
+    override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {}
 
     override fun onBackClicked(callback: OnBackClickedCallback) {
         callback.goToPrevStep()

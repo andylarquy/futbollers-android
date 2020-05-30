@@ -37,8 +37,12 @@ android {
 
 dependencies {
 
-    //Bibliotecas para Dialogs
+    //Bilbioteca para toasts copados
+    implementation 'com.github.GrenderG:Toasty:1.4.2'
+
+    //Bibliotecas para Dialogs - Core
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    //DatePicker
     implementation 'com.afollestad.material-dialogs:datetime:3.1.1'
 
     //Circular Image View
