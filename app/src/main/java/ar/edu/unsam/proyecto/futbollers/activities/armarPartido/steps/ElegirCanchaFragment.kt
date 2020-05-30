@@ -5,21 +5,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.DataBindingUtil.setContentView
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.*
-import ar.edu.unsam.proyecto.futbollers.databinding.FragmentElegirCanchaBinding
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.services.CanchaService
+import ar.edu.unsam.proyecto.futbollers.services.Constants.simpleDateFormatter
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.datetime.dateTimePicker
 import com.afollestad.materialdialogs.list.customListAdapter
@@ -55,7 +53,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
     //Setup Dialog
     var dialogCanchas: MaterialDialog? = null
-    var dialogFecha:MaterialDialog? = null
+    var dialogFecha: MaterialDialog? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,7 +75,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
                 .customListAdapter(canchaAdapter)
         }
 
-        dialogFecha = context?.let{ context ->
+        dialogFecha = context?.let { context ->
 
             val minDate = Calendar.getInstance()
             minDate.add(Calendar.DATE, 3)
@@ -85,10 +83,10 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
             MaterialDialog(context)
                 .dateTimePicker(minDateTime = minDate, show24HoursView = true) { _, dateTime ->
                     // Use dateTime (Calendar)
-                    fechaSeleccionada = dateTime
+                    fechaSeleccionada = dateTime.time
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault())
 
-                    texto_fecha.text = dateFormat.format(fechaSeleccionada!!.time)
+                    texto_fecha.text = dateFormat.format(fechaSeleccionada!!)
                     texto_fecha.visibility = View.VISIBLE
 
                     //TODO: Ir al back a validar la fecha
@@ -98,13 +96,13 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         btn_seleccionar_cancha.setOnClickListener() {
             dialogCanchas!!.show()
 
-            if(canchaAdapter.items.isEmpty()){
+            if (canchaAdapter.items.isEmpty()) {
                 loading_spinner?.visibility = View.VISIBLE
             }
 
         }
 
-        btn_seleccionar_fecha.setOnClickListener(){
+        btn_seleccionar_fecha.setOnClickListener() {
             dialogFecha!!.show()
         }
 
@@ -117,7 +115,6 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
                 codigoPromocionalSeleccionado = nuevoTexto.toString()
             }
         })
-
 
 
     }
@@ -145,9 +142,13 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         //Render pantalla de carga
         loading_spinner?.visibility = View.VISIBLE
 
-        canchaService.getCanchasDeLaEmpresa(context!!, empresaSeleccionada!!.id!!, ::callBackCanchas)
+        canchaService.getCanchasDeLaEmpresa(
+            context!!,
+            empresaSeleccionada!!.id!!,
+            ::callBackCanchas
+        )
 
-        if(canchaSeleccionada === null){
+        if (canchaSeleccionada === null) {
             hideCanchaSeleccionada()
         }
 
@@ -155,47 +156,69 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         canchaAdapter.items = ArrayList()
         input_field_codigo_promocion.setText("")
         texto_fecha.text = ""
-}
+    }
 
-    fun validarCampos(): Boolean{
-        var status = true
+    var statusG = true
+    var fechaRepetida = false
+    fun validarCampos(): Boolean {
 
         //Validar Cancha
-        if(canchaSeleccionada === null){
-            status = false
-            Toasty.error(context!!, "Debe seleccionar una cancha.", Toast.LENGTH_SHORT, true).show();
+        if (canchaSeleccionada === null) {
+            Log.i("ArmarPartidoActivity","Che, la cancha es null")
+            Toasty.error(context!!, "Debe seleccionar una cancha.", Toast.LENGTH_LONG, true).show()
+            statusG = false
         }
 
         //Validar Promocion
-        if(codigoPromocionalSeleccionado != ""){
-            status = false
+        if (codigoPromocionalSeleccionado != "") {
             //TODO: Ir al back a validar el codigo
-            Toasty.error(context!!, "El codigo promocional no es valido.", Toast.LENGTH_SHORT, true).show();
+            if (true) {
+                Toasty.error(context!!, "El codigo promocional no es valido.", Toast.LENGTH_SHORT, true).show()
+            }
         }
 
-        if(fechaSeleccionada === null){
-            status = false
-            Toasty.error(context!!, "Debe ingresar una fecha.", Toast.LENGTH_SHORT, true).show();
+        if (fechaSeleccionada === null) {
+            statusG = false
+            Toasty.error(context!!, "Debe ingresar una fecha.", Toast.LENGTH_SHORT+5, true).show();
         }
 
-        //TODO: Ir al back a validar la fecha
-        if(false){
-            status = false
-            Toasty.error(context!!, "Esta fecha de reserva ya está ocupada.", Toast.LENGTH_SHORT, true).show();
+        if (fechaRepetida) {
+            statusG = false
+            Toasty.error(context!!, "Esta fecha de reserva ya está ocupada.", Toast.LENGTH_SHORT, true).show()
         }
 
-        return status
+        Log.i("ArmarPartidoActivity", "Return statusG :$statusG")
+        return statusG
+    }
+
+
+    fun callbackValidarReserva(status: Boolean) {
+        //!status significa que esa fecha esta ocupada
+        fechaRepetida = status
     }
 
     override fun onNextClicked(callback: OnNextClickedCallback) {
 
-        val status = validarCampos()
+        statusG = true
 
-        if(status) {
-            Handler().postDelayed({ callback.goToNextStep() }, 1000L)
-        }else{
-            //TODO: No estoy del todo seguro
+        if (fechaSeleccionada !== null) {
+
+            context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time,::callbackValidarReserva) }
+
+            goToNextStep(callback)
+            //ESTE ELSE ESTA POR ALGO, NO ME ACUERDO QUE, PERO VOS DEJALO
+        } else {
+            goToNextStep(callback)
         }
+    }
+
+    fun goToNextStep(callback: OnNextClickedCallback){
+        Handler().postDelayed({
+            val status = validarCampos()
+            if (status) {
+                callback.goToNextStep()
+            }
+        }, 1L)
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {}
@@ -210,20 +233,21 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
     override fun onError(error: VerificationError) {}
 
-    fun showCanchaSeleccionada(){
+    fun showCanchaSeleccionada() {
 
-        if(canchaSeleccionada !== null) {
+        if (canchaSeleccionada !== null) {
 
             Picasso.get().load(canchaSeleccionada!!.foto).into(cancha_seleccionada.cancha_foto)
             cancha_seleccionada.superficie.text = canchaSeleccionada!!.superficie
-            cancha_seleccionada.cantidad_maxima.text = canchaSeleccionada!!.cantidadJugadores.toString()
+            cancha_seleccionada.cantidad_maxima.text =
+                canchaSeleccionada!!.cantidadJugadores.toString()
             cancha_seleccionada.visibility = View.VISIBLE
-        }else{
+        } else {
             hideCanchaSeleccionada()
         }
     }
 
-    fun hideCanchaSeleccionada(){
+    fun hideCanchaSeleccionada() {
         cancha_seleccionada.visibility = View.INVISIBLE
     }
 }

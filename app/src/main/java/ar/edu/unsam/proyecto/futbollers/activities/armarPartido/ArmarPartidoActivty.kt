@@ -24,7 +24,7 @@ import java.util.*
 var mStepperLayout: StepperLayout? = null
 var empresaSeleccionada: Empresa? = null
 var canchaSeleccionada: Cancha? = null
-var fechaSeleccionada: Calendar? = null
+var fechaSeleccionada: Date? = null
 var codigoPromocionalSeleccionado: String = ""
 
 class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
