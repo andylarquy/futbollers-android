@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.*
-import org.json.JSONObject
-import java.lang.Exception
 
 fun handleError(context: Context, error: VolleyError, lambdaManejoErrores: (Context, Int) -> Unit) {
 

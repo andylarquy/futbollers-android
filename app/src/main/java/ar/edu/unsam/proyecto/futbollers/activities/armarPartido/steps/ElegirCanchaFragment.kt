@@ -16,7 +16,9 @@ import androidx.fragment.app.Fragment
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.*
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
+import ar.edu.unsam.proyecto.futbollers.domain.Promocion
 import ar.edu.unsam.proyecto.futbollers.services.CanchaService
+import ar.edu.unsam.proyecto.futbollers.services.PromocionService
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.datetime.dateTimePicker
 import com.afollestad.materialdialogs.list.customListAdapter
@@ -43,16 +45,17 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_elegir_cancha, container, false)
     }
 
     lateinit var canchaAdapter: CanchaAdapter
     val canchaService = CanchaService
+    val promocionService = PromocionService
 
     //Setup Dialog
     var dialogCanchas: MaterialDialog? = null
     var dialogFecha: MaterialDialog? = null
+    var codigoPromocionalSeleccionado: String = ""
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,7 +88,6 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
                     texto_fecha.text = dateFormat.format(fechaSeleccionada!!)
                     texto_fecha.visibility = View.VISIBLE
 
-                    //TODO: Ir al back a validar la fecha
                 }
         }
 
@@ -137,45 +139,51 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         //Render pantalla de carga
         loading_spinner?.visibility = View.VISIBLE
 
-        canchaService.getCanchasDeLaEmpresa(
-            context!!,
-            empresaSeleccionada!!.id!!,
-            ::callBackCanchas
-        )
+        canchaService.getCanchasDeLaEmpresa(context!!, empresaSeleccionada!!.id!!, ::callBackCanchas)
+
 
         if (canchaSeleccionada === null) {
             hideCanchaSeleccionada()
         }
 
-        //Reset fields
+        //Reset fields - TODO: Mejorar
         canchaAdapter.items = ArrayList()
+
         input_field_codigo_promocion.setText("")
+        promocionSeleccionada = null
+
         texto_fecha.text = ""
+        fechaSeleccionada = null
+
     }
 
     var statusG = true
     var fechaRepetida = false
+    var codigoPromocionalInvalido = false
+
     fun validarCampos(): Boolean {
 
-        //Validar Cancha
-        if (canchaSeleccionada === null) {
-            Toasty.error(context!!, "Debe seleccionar una cancha.", Toast.LENGTH_LONG, true).show()
-            statusG = false
-        }
-
-        //Validar Promocion
-        if (codigoPromocionalSeleccionado != "") {
-            //TODO: Ir al back a validar el codigo
-            if (false) {
-                Toasty.error(context!!, "El codigo promocional no es valido.", Toast.LENGTH_SHORT, true).show()
-            }
-        }
-
+        //Validar Fecha nula
         if (fechaSeleccionada === null) {
             statusG = false
             Toasty.error(context!!, "Debe ingresar una fecha.", Toast.LENGTH_SHORT+5, true).show();
         }
 
+        //Validar Cancha
+        if (canchaSeleccionada === null) {
+            statusG = false
+            Toasty.error(context!!, "Debe seleccionar una cancha.", Toast.LENGTH_LONG, true).show()
+        }
+
+        //Validar Promocion (back)
+        if (codigoPromocionalSeleccionado != "") {
+            if (codigoPromocionalInvalido) {
+                statusG = false
+                Toasty.error(context!!, "El codigo promocional no es valido.", Toast.LENGTH_SHORT, true).show()
+            }
+        }
+
+        //Validar fecha repetida (Back)
         if (fechaRepetida) {
             statusG = false
             Toasty.error(context!!, "Esta fecha de reserva ya está ocupada.", Toast.LENGTH_SHORT, true).show()
@@ -189,17 +197,27 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         //!status significa que esa fecha esta ocupada
         fechaRepetida = !canchaDisponible
-        Log.i("ArmarPartidoActivity", "fechaRepetida = "+fechaRepetida)
+    }
+
+    fun callbackCodigoPromocional(promocion: Promocion?){
+        promocionSeleccionada = promocion
+        if(promocion === null) {
+            codigoPromocionalInvalido = true
+        }
+
     }
 
     override fun onNextClicked(callback: OnNextClickedCallback) {
 
+        //Reseteo los flags cada vez que clickeas
         statusG = true
+        fechaRepetida = false
+        codigoPromocionalInvalido = false
 
         if (fechaSeleccionada !== null) {
 
-            context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time,::callbackValidarReserva) }
-            context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time,::callbackValidarReserva) }
+            context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time, ::callbackValidarReserva) }
+            context?.let { promocionService.getPromocionByCodigo(it, codigoPromocionalSeleccionado, ::callbackCodigoPromocional) }
 
             goToNextStep(callback)
             //ESTE ELSE ESTA POR ALGO, NO ME ACUERDO QUE, PERO VOS DEJALO
@@ -212,6 +230,11 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         Handler().postDelayed({
             val status = validarCampos()
             if (status) {
+                //Si hay un codigo de promocion
+                if(!codigoPromocionalInvalido){
+                    Toasty.success(context!!, promocionSeleccionada?.descripcion+" ("+ promocionSeleccionada?.porcentajeDescuento.toString()+"% OFF)", Toast.LENGTH_SHORT, true).show();
+                }
+
                 callback.goToNextStep()
             }
         }, 2000L)

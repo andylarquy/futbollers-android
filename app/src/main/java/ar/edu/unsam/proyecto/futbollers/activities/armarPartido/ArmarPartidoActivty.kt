@@ -13,6 +13,7 @@ import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanc
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEquipoLocalFragment
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
+import ar.edu.unsam.proyecto.futbollers.domain.Promocion
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -25,7 +26,7 @@ var mStepperLayout: StepperLayout? = null
 var empresaSeleccionada: Empresa? = null
 var canchaSeleccionada: Cancha? = null
 var fechaSeleccionada: Date? = null
-var codigoPromocionalSeleccionado: String = ""
+var promocionSeleccionada: Promocion? = null
 
 class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 
@@ -44,16 +45,10 @@ class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 
     }
 
-    override fun onStepSelected(newStepPosition: Int) {
-
-    }
+    override fun onStepSelected(newStepPosition: Int) {}
 
     override fun onError(verificationError: VerificationError?) {
-        Toast.makeText(
-            this,
-            "Que rompiste Seba!" + verificationError!!.errorMessage,
-            Toast.LENGTH_SHORT
-        ).show()
+        Toast.makeText(this, "Error inesperado!" + verificationError!!.errorMessage, Toast.LENGTH_SHORT).show()
 
     }
 
@@ -114,8 +109,13 @@ class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentSt
             0 -> return StepViewModel.Builder(context)
                 .setTitle("Elegir Sede")
                 .create()
+
             1 -> return StepViewModel.Builder(context)
-                .setTitle("Elegir Cancha")
+            .setTitle("Elegir Cancha")
+            .create()
+
+            2 -> return StepViewModel.Builder(context)
+                .setTitle("Elegir Equipo Local")
                 .create()
         }
         return StepViewModel.Builder(context).create()
