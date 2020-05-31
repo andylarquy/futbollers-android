@@ -47,8 +47,7 @@ class LoginActivity : AppCompatActivity() {
 
             // RENDER PANTALLA DE CARGA
             loading_spinner.alpha = 1F
-            loading_spinner_parent.alpha = 1F
-            loading_spinner_parent.visibility = View.VISIBLE
+            loading_spinner.visibility = View.VISIBLE
 
             loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueado)
 
@@ -56,8 +55,8 @@ class LoginActivity : AppCompatActivity() {
 
             // RENDER PANTALLA DE CARGA
             loading_spinner.alpha = 1F
-            loading_spinner_parent.alpha = 1F
-            loading_spinner_parent.visibility = View.VISIBLE
+            loading_spinner.alpha = 1F
+            loading_spinner.visibility = View.VISIBLE
 
             loginWithStoredCredentials()
 
@@ -97,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
 
     fun callbackErrorUsuarioLogueado(error: Exception){
         // DESACTIVA RENDER PANTALLA DE CARGA
-        loading_spinner_parent.visibility = View.INVISIBLE
+        loading_spinner.visibility = View.INVISIBLE
     }
 }
 
