@@ -4,7 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
-import ar.edu.unsam.proyecto.futbollers.domain.Equipo
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
@@ -33,7 +34,7 @@ object EmpresaService {
             },
             Response.ErrorListener {
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
-                handleError(context, it)
+                handleError(context, it, ::lambdaManejoErrores)
             })
         request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
 
@@ -41,29 +42,6 @@ object EmpresaService {
 
     }
 
-    fun handleError(context: Context, error: VolleyError) {
+    fun lambdaManejoErrores(context: Context, statusCode: Int) {}
 
-        Log.i("ArmarPartidoActivity", "[DEBUG]: API Rest Error: +" + error)
-        if (error is AuthFailureError) {
-            Toast.makeText(context, "Las credenciales son invalidas", Toast.LENGTH_SHORT).show()
-        } else if (error is NoConnectionError) {
-            Toast.makeText(context, "Revise su conexion a internet", Toast.LENGTH_SHORT).show()
-        } else if (error is ClientError) {
-            val networkResponse = error.networkResponse
-            if (networkResponse.data != null) {
-                Log.i("ArmarPartidoActivity", "[DEBUG]: Server Response: +" + String(networkResponse.data))
-                val jsonError = JSONObject(String(networkResponse.data))
-
-                //TODO: Corregir esto que salio de patron copypaste y lo sigo arrastrando como un forro
-            Toast.makeText(
-                context,
-                "Error inesperado al comunicarse con el servidor",
-                Toast.LENGTH_SHORT
-            ).show()
-
-        }
-
-    }
-
-}
 }

@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.databinding.ActivitySignUpBinding
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
-import ar.edu.unsam.proyecto.futbollers.services.Constants.POSICIONES
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.POSICIONES
 import ar.edu.unsam.proyecto.futbollers.services.SignUpService
 import kotlinx.android.synthetic.main.activity_sign_up.*
 

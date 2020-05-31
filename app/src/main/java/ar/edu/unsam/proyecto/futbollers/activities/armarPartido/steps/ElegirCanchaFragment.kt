@@ -17,7 +17,6 @@ import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.*
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.services.CanchaService
-import ar.edu.unsam.proyecto.futbollers.services.Constants.simpleDateFormatter
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.datetime.dateTimePicker
 import com.afollestad.materialdialogs.list.customListAdapter
@@ -199,6 +198,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         if (fechaSeleccionada !== null) {
 
+            context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time,::callbackValidarReserva) }
             context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time,::callbackValidarReserva) }
 
             goToNextStep(callback)

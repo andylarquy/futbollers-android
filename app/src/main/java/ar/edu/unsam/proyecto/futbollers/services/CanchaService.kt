@@ -3,20 +3,17 @@ package ar.edu.unsam.proyecto.futbollers.services
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.fechaSeleccionada
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
-import ar.edu.unsam.proyecto.futbollers.domain.Usuario
-import ar.edu.unsam.proyecto.futbollers.services.Constants.simpleDateFormatter
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.simpleDateFormatter
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.Exception
-import java.util.*
 
 object CanchaService {
 
@@ -39,42 +36,12 @@ object CanchaService {
             },
             Response.ErrorListener {
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
-                handleError(context, it)
+                handleError(context, it, ::lambdaManejoErrores)
             })
         request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
 
         queue.add(request)
 
-    }
-
-    fun validarFechaDeReserva(context: Context, fecha: Long, callback: (Boolean) -> Unit) {
-        val queue = Volley.newRequestQueue(context)
-
-        val url = "${Constants.BASE_URL}/validar-fecha"
-
-        val fechaParseada = JSONObject("{\"fecha\":\"" +simpleDateFormatter.format(fecha)+ "\"}")
-
-        Log.i("ArmarPartidoActivity",fechaParseada.toString())
-
-        val request = JsonObjectRequest(
-            Request.Method.POST, url, fechaParseada,
-
-            Response.Listener<JSONObject> { response ->
-
-                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Suceeded")
-
-                if(response.getString("status") == "200"){
-                    callback(true)
-                }
-
-            },
-            Response.ErrorListener {
-                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
-                handleErrorFecha(context, it, callback)
-            })
-        request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
-
-        queue.add(request)
     }
 
     fun getCanchasDeLaEmpresa(
@@ -98,30 +65,46 @@ object CanchaService {
                 callback(canchas.toMutableList())
             },
             Response.ErrorListener {
-                handleError(context, it)
+                handleError(context, it, ::lambdaManejoErrores)
             })
         request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
 
         queue.add(request)
     }
 
-    fun handleError(context: Context, error: VolleyError) {
-        Log.i("ArmarPartidoActivity", "[DEBUG]: API Rest Error: +" + error)
-        if (error is AuthFailureError) {
-            Toast.makeText(context, "Las credenciales son invalidas", Toast.LENGTH_SHORT).show()
-        } else if (error is NoConnectionError) {
-            Toast.makeText(context, "Revise su conexion a internet", Toast.LENGTH_SHORT).show()
-        } else if (error is ClientError) {
-            val networkResponse = error.networkResponse
-            if (networkResponse.data != null) {
-                Log.i("ArmarPartidoActivity", "[DEBUG]: Server Response: +" + String(networkResponse.data))
-                val jsonError = JSONObject(String(networkResponse.data))
+    fun lambdaManejoErrores(context: Context, statusCode: Int) {}
 
-                //TODO: Corregir esto que salio de patron copypaste
-            }
-            Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
-        }
+
+    fun validarFechaDeReserva(context: Context, fecha: Long, callback: (Boolean) -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/validar-fecha"
+
+        val fechaParseada = JSONObject("{\"fecha\":\"" + simpleDateFormatter.format(fecha) + "\"}")
+
+        Log.i("ArmarPartidoActivity", fechaParseada.toString())
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, fechaParseada,
+
+            Response.Listener<JSONObject> { response ->
+
+                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                if (response.getString("status") == "200") {
+                    callback(true)
+                }
+
+            },
+            Response.ErrorListener {
+                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleErrorFecha(context, it, callback)
+            })
+        request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
+
+        queue.add(request)
     }
+
 
     fun handleErrorFecha(context: Context, error: VolleyError, callback: (Boolean) -> Unit) {
         Log.i("ArmarPartidoActivity", "[DEBUG]: API Rest Error: +" + error)
@@ -132,13 +115,23 @@ object CanchaService {
         } else if (error is ClientError) {
             val networkResponse = error.networkResponse
             if (networkResponse.data != null) {
-                if(networkResponse.statusCode == 400){
-                    callback(false)
-                }else{
-                    Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
-                    Log.i("ArmarPartidoActivity", "No te asustes, creo que este error inesperado deberia no ser dificil de arreglar")
-                }
 
+                fun lambdaManejoErrores(context: Context, statusCode: Int) {
+
+                    if (statusCode == 400) {
+                        callback(false)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Error inesperado al comunicarse con el servidor",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.i(
+                            "ArmarPartidoActivity",
+                            "No te asustes, creo que este error inesperado deberia no ser dificil de arreglar"
+                        )
+                    }
+                }
                 //TODO: Corregir esto que salio de patron copypaste (spoiler, nunca va a pasar)
             }
         }
