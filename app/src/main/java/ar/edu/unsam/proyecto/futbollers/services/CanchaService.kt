@@ -116,24 +116,15 @@ object CanchaService {
             val networkResponse = error.networkResponse
             if (networkResponse.data != null) {
 
-                fun lambdaManejoErrores(context: Context, statusCode: Int) {
-
-                    if (statusCode == 400) {
+                    if (networkResponse.statusCode == 400) {
                         callback(false)
                     } else {
-                        Toast.makeText(
-                            context,
-                            "Error inesperado al comunicarse con el servidor",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.i(
-                            "ArmarPartidoActivity",
-                            "No te asustes, creo que este error inesperado deberia no ser dificil de arreglar"
-                        )
+                        Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
+                        Log.i("ArmarPartidoActivity", "No te asustes, creo que este error inesperado deberia no ser dificil de arreglar")
                     }
                 }
-                //TODO: Corregir esto que salio de patron copypaste (spoiler, nunca va a pasar)
-            }
+                //TODO: Corregir esto que salio de patron copypaste (spoiler, nunca va a pasar, mentira paso)
+
         }
     }
 

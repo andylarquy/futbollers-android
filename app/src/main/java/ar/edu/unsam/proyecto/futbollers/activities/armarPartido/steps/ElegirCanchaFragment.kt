@@ -194,7 +194,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
 
     fun callbackValidarReserva(canchaDisponible: Boolean) {
-
+        Log.d("ArmarPartidoActivity", "CALLBACK RESERVA: "+canchaDisponible)
         //!status significa que esa fecha esta ocupada
         fechaRepetida = !canchaDisponible
     }
