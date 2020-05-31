@@ -65,9 +65,6 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         cancha_seleccionada.visibility = View.INVISIBLE
         texto_fecha.visibility = View.INVISIBLE
 
-
-
-
         dialogCanchas = context?.let { context ->
             MaterialDialog(context)
                 .title(text = "Selecciona la cancha")
@@ -107,6 +104,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         }
 
         input_field_codigo_promocion.addTextChangedListener(object : TextWatcher {
+            //Estos metodos tienen que estar implementados, burocracia
             override fun afterTextChanged(p0: Editable?) {}
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -115,8 +113,6 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
                 codigoPromocionalSeleccionado = nuevoTexto.toString()
             }
         })
-
-
     }
 
     fun callBackCanchas(canchas: MutableList<Cancha>) {
@@ -164,7 +160,6 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         //Validar Cancha
         if (canchaSeleccionada === null) {
-            Log.i("ArmarPartidoActivity","Che, la cancha es null")
             Toasty.error(context!!, "Debe seleccionar una cancha.", Toast.LENGTH_LONG, true).show()
             statusG = false
         }
@@ -172,7 +167,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         //Validar Promocion
         if (codigoPromocionalSeleccionado != "") {
             //TODO: Ir al back a validar el codigo
-            if (true) {
+            if (false) {
                 Toasty.error(context!!, "El codigo promocional no es valido.", Toast.LENGTH_SHORT, true).show()
             }
         }
@@ -187,14 +182,15 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
             Toasty.error(context!!, "Esta fecha de reserva ya está ocupada.", Toast.LENGTH_SHORT, true).show()
         }
 
-        Log.i("ArmarPartidoActivity", "Return statusG :$statusG")
         return statusG
     }
 
 
-    fun callbackValidarReserva(status: Boolean) {
+    fun callbackValidarReserva(canchaDisponible: Boolean) {
+
         //!status significa que esa fecha esta ocupada
-        fechaRepetida = status
+        fechaRepetida = !canchaDisponible
+        Log.i("ArmarPartidoActivity", "fechaRepetida = "+fechaRepetida)
     }
 
     override fun onNextClicked(callback: OnNextClickedCallback) {
@@ -218,7 +214,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
             if (status) {
                 callback.goToNextStep()
             }
-        }, 1L)
+        }, 2000L)
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {}

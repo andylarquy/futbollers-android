@@ -50,21 +50,23 @@ object CanchaService {
     fun validarFechaDeReserva(context: Context, fecha: Long, callback: (Boolean) -> Unit) {
         val queue = Volley.newRequestQueue(context)
 
-        val url = "${Constants.BASE_URL}/validar-fecha/"
+        val url = "${Constants.BASE_URL}/validar-fecha"
 
-        val fechaParseada = simpleDateFormatter.format(fecha)
+        val fechaParseada = JSONObject("{\"fecha\":\"" +simpleDateFormatter.format(fecha)+ "\"}")
 
-        val request = StringRequest(
-            Request.Method.GET, url+fechaParseada,
+        Log.i("ArmarPartidoActivity",fechaParseada.toString())
 
-            Response.Listener<String> { response ->
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, fechaParseada,
+
+            Response.Listener<JSONObject> { response ->
 
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Suceeded")
 
-                Log.i("ArmarPartidoActivity", response.toString())
-                if(response.equals("{\"status\":200, \"message\":\"ok\"}")){
+                if(response.getString("status") == "200"){
                     callback(true)
                 }
+
             },
             Response.ErrorListener {
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
@@ -112,10 +114,7 @@ object CanchaService {
         } else if (error is ClientError) {
             val networkResponse = error.networkResponse
             if (networkResponse.data != null) {
-                Log.i(
-                    "ArmarPartidoActivity",
-                    "[DEBUG]: Server Response: +" + String(networkResponse.data)
-                )
+                Log.i("ArmarPartidoActivity", "[DEBUG]: Server Response: +" + String(networkResponse.data))
                 val jsonError = JSONObject(String(networkResponse.data))
 
                 //TODO: Corregir esto que salio de patron copypaste
@@ -133,11 +132,13 @@ object CanchaService {
         } else if (error is ClientError) {
             val networkResponse = error.networkResponse
             if (networkResponse.data != null) {
-                Log.i(
-                    "ArmarPartidoActivity",
-                    "[DEBUG]: Server Response: +" + String(networkResponse.data)
-                )
-                callback(false)
+                if(networkResponse.statusCode == 400){
+                    callback(false)
+                }else{
+                    Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
+                    Log.i("ArmarPartidoActivity", "No te asustes, creo que este error inesperado deberia no ser dificil de arreglar")
+                }
+
                 //TODO: Corregir esto que salio de patron copypaste (spoiler, nunca va a pasar)
             }
         }
