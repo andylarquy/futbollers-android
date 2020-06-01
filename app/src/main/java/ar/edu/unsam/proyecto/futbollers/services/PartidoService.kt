@@ -6,13 +6,13 @@ import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONArray
-import org.json.JSONObject
 
 
 object PartidoService {
@@ -26,10 +26,10 @@ object PartidoService {
         val queue = Volley.newRequestQueue(context)
 
         val url = "${Constants.BASE_URL}/partidos/"
-        Log.i("HomeActivity", url + usuario.id)
+        Log.i("HomeActivity", url + usuario.idUsuario)
 
         val request = JsonArrayRequest(
-            Request.Method.GET, url + usuario.id, null,
+            Request.Method.GET, url + usuario.idUsuario, null,
 
             Response.Listener<JSONArray> { response ->
 
@@ -44,7 +44,7 @@ object PartidoService {
                 Log.i("HomeActivity", "[DEBUG]:Communication with API Rest Failed")
                 handleError(context, it, ::lambdaManejoErrores)
             })
-        request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
+        request.retryPolicy = defaultPolicy
 
         queue.add(request)
 

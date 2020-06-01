@@ -94,17 +94,17 @@ class EquipoFragment : Fragment(), OnRecyclerItemClickListener, EquipoMultipleCl
 
     override fun onEditClick(position: Int) {
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
-        Toast.makeText(context, "TODO: Editar equipo (con id: "+equipoSeleccionado.id+")", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "TODO: Editar equipo (con id: "+equipoSeleccionado.idEquipo+")", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDeleteClick(position: Int) {
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
-        Toast.makeText(context, "TODO: Eliminar equipo (con id: "+equipoSeleccionado.id+")", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "TODO: Eliminar equipo (con id: "+equipoSeleccionado.idEquipo+")", Toast.LENGTH_SHORT).show()
     }
 
     override fun onAbandonClick(position: Int) {
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
-        Toast.makeText(context, "TODO: Abandonar equipo (con id: "+equipoSeleccionado.id+")", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "TODO: Abandonar equipo (con id: "+equipoSeleccionado.idEquipo+")", Toast.LENGTH_SHORT).show()
     }
 
 }

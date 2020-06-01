@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.BASE_URL
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
 import com.android.volley.*
 
 import com.android.volley.toolbox.JsonObjectRequest
@@ -30,7 +31,7 @@ object LoginService {
        Response.ErrorListener {
           handleError(context, it, callbackError)
        })
-    request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
+    request.retryPolicy = defaultPolicy
 
     queue.add(request)
  }

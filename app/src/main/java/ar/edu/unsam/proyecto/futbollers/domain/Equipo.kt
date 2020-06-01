@@ -1,7 +1,7 @@
 package ar.edu.unsam.proyecto.futbollers.domain
 
 class Equipo {
-    var id: String? = null
+    var idEquipo: Long? = null
     var nombre: String? = null
     var foto: String? = null
 
@@ -9,6 +9,6 @@ class Equipo {
     var integrantes: List<Usuario>? = ArrayList<Usuario>()
 
     fun esOwnerById(usuario: Usuario): Boolean{
-        return owner!!.id.equals(usuario.id)
+        return owner!!.idUsuario!! == usuario.idUsuario
     }
 }

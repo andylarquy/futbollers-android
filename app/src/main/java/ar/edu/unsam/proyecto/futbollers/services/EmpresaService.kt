@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest
@@ -36,7 +37,7 @@ object EmpresaService {
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
                 handleError(context, it, ::lambdaManejoErrores)
             })
-        request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
+        request.retryPolicy = defaultPolicy
 
         queue.add(request)
 

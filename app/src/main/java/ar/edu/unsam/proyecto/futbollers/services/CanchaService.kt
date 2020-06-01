@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.simpleDateFormatter
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
@@ -38,7 +39,7 @@ object CanchaService {
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
                 handleError(context, it, ::lambdaManejoErrores)
             })
-        request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
+        request.retryPolicy = defaultPolicy
 
         queue.add(request)
 
@@ -46,11 +47,11 @@ object CanchaService {
 
     fun getCanchasDeLaEmpresa(
         context: Context,
-        idEmpresa: String,
+        idEmpresa: Long,
         callback: (MutableList<Cancha>) -> Unit
     ) {
 
-        Log.i("ArmarPartidoActivity", idEmpresa)
+        Log.i("ArmarPartidoActivity",  idEmpresa.toString())
 
         val queue = Volley.newRequestQueue(context)
         val url = "${Constants.BASE_URL}/empresas-canchas/"
@@ -67,7 +68,7 @@ object CanchaService {
             Response.ErrorListener {
                 handleError(context, it, ::lambdaManejoErrores)
             })
-        request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
+        request.retryPolicy = defaultPolicy
 
         queue.add(request)
     }
@@ -100,7 +101,7 @@ object CanchaService {
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
                 handleErrorFecha(context, it, callback)
             })
-        request.retryPolicy = DefaultRetryPolicy(250, 3, 1F)
+        request.retryPolicy = defaultPolicy
 
         queue.add(request)
     }

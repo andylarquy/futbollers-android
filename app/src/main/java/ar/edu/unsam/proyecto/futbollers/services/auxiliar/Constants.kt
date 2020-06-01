@@ -1,5 +1,6 @@
 package ar.edu.unsam.proyecto.futbollers.services.auxiliar
 
+import com.android.volley.DefaultRetryPolicy
 import java.text.SimpleDateFormat
 
 object Constants {
@@ -11,4 +12,7 @@ object Constants {
      val POSICIONES = arrayOf("Arquero","Defensor","Mediocampista","Delantero")
 
      val simpleDateFormatter =  SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
+
+     val defaultPolicy = DefaultRetryPolicy(300, 3, 1F)
+     val longPolicy = DefaultRetryPolicy(500, 3, 1F)
 }

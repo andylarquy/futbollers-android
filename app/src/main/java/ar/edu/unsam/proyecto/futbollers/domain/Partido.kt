@@ -5,8 +5,7 @@ import java.time.LocalDateTime
 
 class Partido {
 
-    var id: String? = null
-    var owner: Usuario? = null
+    var idPartido: Long? = null
 
     var equipo1: Equipo? = null
     var equipo2: Equipo? = null

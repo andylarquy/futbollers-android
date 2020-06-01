@@ -9,7 +9,7 @@ import org.json.JSONObject
 import androidx.databinding.library.baseAdapters.BR
 
 class Usuario: BaseObservable() {
-    var id: String? = null
+    var idUsuario: Long? = null
 
     var nombre: String? = null
     var password: String? = null
@@ -45,7 +45,7 @@ class Usuario: BaseObservable() {
     }
 
     fun createCopy(usuario: Usuario){
-        id = usuario.id
+        idUsuario = usuario.idUsuario
         nombre = usuario.nombre
         sexo = usuario.sexo
         posicion = usuario.posicion

@@ -91,7 +91,6 @@ class LoginActivity : AppCompatActivity() {
             HomeActivity::class.java).apply{}
         startActivity(intent)
         finish()
-        Log.i("LoginActivity", UsuarioLogueado.usuario.id)
     }
 
     fun callbackErrorUsuarioLogueado(error: Exception){

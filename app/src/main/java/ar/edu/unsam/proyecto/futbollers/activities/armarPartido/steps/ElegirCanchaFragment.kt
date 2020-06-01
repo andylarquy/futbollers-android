@@ -139,7 +139,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         //Render pantalla de carga
         loading_spinner?.visibility = View.VISIBLE
 
-        canchaService.getCanchasDeLaEmpresa(context!!, empresaSeleccionada!!.id!!, ::callBackCanchas)
+        canchaService.getCanchasDeLaEmpresa(context!!, empresaSeleccionada!!.idEmpresa!!, ::callBackCanchas)
 
 
         if (canchaSeleccionada === null) {

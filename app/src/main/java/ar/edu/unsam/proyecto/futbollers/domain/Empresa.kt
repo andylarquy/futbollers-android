@@ -4,7 +4,7 @@ import android.location.Location
 
 class Empresa {
 
-    var id: String? = null
+    var idEmpresa: Long? = null
     var nombre: String? = null
 
     //Revisar si tienen q estar
