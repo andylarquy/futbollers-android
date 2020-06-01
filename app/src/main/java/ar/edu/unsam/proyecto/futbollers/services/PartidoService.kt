@@ -7,6 +7,7 @@ import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.mediumPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest
@@ -44,7 +45,7 @@ object PartidoService {
                 Log.i("HomeActivity", "[DEBUG]:Communication with API Rest Failed")
                 handleError(context, it, ::lambdaManejoErrores)
             })
-        request.retryPolicy = defaultPolicy
+        request.retryPolicy = mediumPolicy
 
         queue.add(request)
 
