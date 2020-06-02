@@ -6,6 +6,7 @@ import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.mediumPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.simpleDateFormatter
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
@@ -13,6 +14,7 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import es.dmoral.toasty.Toasty
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -101,7 +103,7 @@ object CanchaService {
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
                 handleErrorFecha(context, it, callback)
             })
-        request.retryPolicy = defaultPolicy
+        request.retryPolicy = mediumPolicy
 
         queue.add(request)
     }
@@ -113,13 +115,17 @@ object CanchaService {
             Toast.makeText(context, "Las credenciales son invalidas", Toast.LENGTH_SHORT).show()
         } else if (error is NoConnectionError) {
             Toast.makeText(context, "Revise su conexion a internet", Toast.LENGTH_SHORT).show()
+        } else if( error is TimeoutError){
+            Toast.makeText(context, "El servidor tardo en responder, vuelva a reintentar mas tarde.", Toast.LENGTH_SHORT).show()
         } else if (error is ClientError) {
             val networkResponse = error.networkResponse
             if (networkResponse.data != null) {
 
                     if (networkResponse.statusCode == 400) {
                         callback(false)
+                        Toasty.error(context!!, "Esta fecha de reserva ya está ocupada.", Toast.LENGTH_SHORT, true).show()
                     } else {
+                        callback(false)
                         Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
                         Log.i("ArmarPartidoActivity", "No te asustes, creo que este error inesperado deberia no ser dificil de arreglar")
                     }

@@ -9,6 +9,9 @@ object Constants {
      //IP DE PRODUCCION
      const val BASE_URL = "https://rest-api-futbollers-heroku.herokuapp.com"
 
+     //DEBUG
+     //const val BASE_URL = "http://192.168.0.28:9000"
+
      val POSICIONES = arrayOf("Arquero","Defensor","Mediocampista","Delantero")
 
      val simpleDateFormatter =  SimpleDateFormat("yyyy-MM-dd'T'HH:mm")

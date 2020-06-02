@@ -6,5 +6,8 @@
         <domain includeSubdomains="true">https://my-json-server.typicode.com</domain>
         <domain includeSubdomains="true">192.168.0.63</domain>
         <domain includeSubdomains="true">localhost</domain>
+
+        <domain includeSubdomains="true">192.168.0.28</domain>
+        <domain includeSubdomains="true">http://192.168.0.28</domain>
     </domain-config>
 </network-security-config>

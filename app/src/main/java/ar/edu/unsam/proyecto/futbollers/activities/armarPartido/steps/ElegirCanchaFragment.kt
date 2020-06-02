@@ -186,7 +186,6 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         //Validar fecha repetida (Back)
         if (fechaRepetida) {
             statusG = false
-            Toasty.error(context!!, "Esta fecha de reserva ya está ocupada.", Toast.LENGTH_SHORT, true).show()
         }
 
         return statusG
@@ -237,7 +236,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
                 callback.goToNextStep()
             }
-        }, 2000L)
+        }, 3100L)
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {}

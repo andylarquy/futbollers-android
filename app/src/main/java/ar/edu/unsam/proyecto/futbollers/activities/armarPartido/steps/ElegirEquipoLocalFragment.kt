@@ -8,8 +8,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -74,51 +77,6 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
         integranteAdapter = context?.let { IntegranteAdapter(it, this) }!!
         rv.adapter = integranteAdapter
 
-
-/*
-        val debugIntegrante = Usuario()
-        val debugIntegrante2 = Usuario()
-        val debugIntegrante3 = Usuario()
-        val debugIntegrante4 = Usuario()
-        val debugIntegrante5 = Usuario()
-
-        debugIntegrante.foto = "https://i.imgur.com/VLaR5Q4.jpg"
-        debugIntegrante.email = "soyJose@mail.com"
-        debugIntegrante.idUsuario = 100
-        debugIntegrante.posicion = "arquero"
-        debugIntegrante.nombre = "Jose"
-
-        debugIntegrante2.foto = "https://i.imgur.com/b0MB70u.jpg"
-        debugIntegrante2.email = "queCara@papa.com"
-        debugIntegrante2.idUsuario = 101
-        debugIntegrante2.posicion = "me equivoque de aula"
-        debugIntegrante2.nombre = "Verga!"
-
-        debugIntegrante3.foto = "https://i.imgur.com/7Yg6Yzx.jpg"
-        debugIntegrante3.email = "sebaEs@unpeligro.com"
-        debugIntegrante3.idUsuario = 102
-        debugIntegrante3.posicion = "aguatero"
-        debugIntegrante3.nombre = "WTF"
-
-        debugIntegrante4.foto = "https://i.imgur.com/zakkTea.jpg"
-        debugIntegrante4.email = "queMiedo@estafoto.com"
-        debugIntegrante4.idUsuario = 103
-        debugIntegrante4.posicion = "delantero"
-        debugIntegrante4.nombre = "Mira quien llego"
-
-        debugIntegrante5.foto = "https://i.imgur.com/mbcLcB7.png"
-        debugIntegrante5.email = "queMiedo@estafoto2.com"
-        debugIntegrante5.idUsuario = 104
-        debugIntegrante5.posicion = "defensor"
-        debugIntegrante5.nombre = "Black guy"
-
-        val debugIntegrantes = mutableListOf(debugIntegrante, debugIntegrante2, debugIntegrante3, debugIntegrante4, debugIntegrante5)
-
-        integranteAdapter.items = debugIntegrantes
-        integranteAdapter.notifyDataSetChanged()
-
- */
-
         btn_agregar_equipo.setOnClickListener(){
             dialogEquipo!!.show()
         }
@@ -129,6 +87,9 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
         elegirEquipoAdapter.clear()
         elegirEquipoAdapter.items = equipos
         elegirEquipoAdapter.notifyDataSetChanged()
+
+        //Oculto el spinner
+        loading_spinner.visibility = INVISIBLE
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback) {
@@ -160,6 +121,8 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
                 .message(text = "Con "+canchaSeleccionada!!.cantidadJugadoresPorEquipo() +" integrantes")
                 .customListAdapter(elegirEquipoAdapter)
         }
+
+        loading_spinner.visibility = VISIBLE
     }
 
     override fun onError(error: VerificationError) {}
