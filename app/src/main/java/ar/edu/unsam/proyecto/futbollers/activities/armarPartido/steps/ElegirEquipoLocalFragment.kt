@@ -35,13 +35,11 @@ import com.squareup.picasso.Picasso
 import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_elegir_equipo_local.*
-import kotlinx.android.synthetic.main.row_cancha.view.*
 import kotlinx.android.synthetic.main.row_elegir_equipo.view.*
 import kotlinx.android.synthetic.main.row_elegir_equipo.view.equipo_foto
-import kotlinx.android.synthetic.main.row_fragment_equipo.view.*
 import kotlinx.android.synthetic.main.row_integrante.view.*
-import org.w3c.dom.Text
 
 class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickListener {
 
@@ -76,12 +74,6 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
         integranteAdapter = context?.let { IntegranteAdapter(it, this) }!!
         rv.adapter = integranteAdapter
 
-        dialogEquipo = context?.let { context ->
-            MaterialDialog(context)
-                .title(text = "Selecciona el equipo")
-                .message(text = "Listado de equipos")
-                .customListAdapter(elegirEquipoAdapter)
-        }
 
 /*
         val debugIntegrante = Usuario()
@@ -160,11 +152,27 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
 
         //Ya que vas para alla cargame los equipos
         equipoService.getEquiposDelUsuario(context!!, usuarioLogueado, ::modalElegirEquipoCallback)
+
+        //Preparo el dialog de equipo
+        dialogEquipo = context?.let { context ->
+            MaterialDialog(context)
+                .title(text = "Selecciona un equipo")
+                .message(text = "Con "+canchaSeleccionada!!.cantidadJugadoresPorEquipo() +" integrantes")
+                .customListAdapter(elegirEquipoAdapter)
+        }
     }
 
     override fun onError(error: VerificationError) {}
+
     override fun onItemClick(position: Int) {
-        TODO("Not yet implemented")
+        val equipo = elegirEquipoAdapter.getItem(position)
+
+        if(equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()){
+            dialogEquipo?.dismiss()
+        }else{
+            Toasty.error(context!!, "La cantidad de jugadores debe ser "+ canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_LONG, true).show()
+        }
+
     }
 
 }
@@ -220,7 +228,7 @@ class ElegirEquipoViewHolder(itemView: View, listener: OnRecyclerItemClickListen
         cantidadJugadores.text = item.integrantes!!.size.toString()
         Picasso.get().load(item.foto).into(equipoFoto)
 
-        if(item.integrantes!!.size != canchaSeleccionada!!.cantidadJugadores!!/2) {
+        if(item.integrantes!!.size != canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
             cantidadJugadores.setTextColor(Color.parseColor("#DB0F13"))
             warnIcon.setImageResource(R.drawable.ic_baseline_warning_red_24)
         }else{

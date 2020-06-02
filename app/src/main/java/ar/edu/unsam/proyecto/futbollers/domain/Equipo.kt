@@ -11,4 +11,8 @@ class Equipo {
     fun esOwnerById(usuario: Usuario): Boolean{
         return owner!!.idUsuario!! == usuario.idUsuario
     }
+
+    fun cantidadDeIntegrantes(): Int{
+        return integrantes!!.size
+    }
 }

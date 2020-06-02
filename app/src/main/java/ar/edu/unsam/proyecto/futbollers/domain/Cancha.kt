@@ -7,4 +7,9 @@ class Cancha {
     var foto: String? = null
     var superficie: String? = null
 
+    fun cantidadJugadoresPorEquipo(): Int{
+        return cantidadJugadores!!/2
+    }
+
+
 }
