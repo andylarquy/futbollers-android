@@ -32,7 +32,8 @@
         android:text="Agregar amigo"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:icon="@drawable/ic_baseline_person_purple_add_24"/>
 
     <Button
         android:id="@+id/btn_agregar_desconocido"

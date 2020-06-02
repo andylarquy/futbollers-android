@@ -13,6 +13,7 @@ import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanc
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEquipoLocalFragment
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
+import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Promocion
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
@@ -27,6 +28,8 @@ var empresaSeleccionada: Empresa? = null
 var canchaSeleccionada: Cancha? = null
 var fechaSeleccionada: Date? = null
 var promocionSeleccionada: Promocion? = null
+var equipoLocalSeleccionado: Equipo? = null
+var equipoVisitanteSeleccionado: Equipo? = null
 
 class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 
