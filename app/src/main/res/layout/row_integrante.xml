@@ -13,14 +13,14 @@
     android:clickable="true"
     android:focusable="true"
 
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     card_view:cardUseCompatPadding="true"
     card_view:cardElevation="5dp"
 
-    card_view:contentPaddingTop="10dp"
-    card_view:contentPaddingBottom="10dp"
-    card_view:contentPaddingRight="10dp"
-    card_view:contentPaddingLeft="5dp"
+    card_view:contentPaddingTop="5dp"
+    card_view:contentPaddingBottom="5dp"
+    card_view:contentPaddingRight="5dp"
+    card_view:contentPaddingLeft="2.5dp"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout

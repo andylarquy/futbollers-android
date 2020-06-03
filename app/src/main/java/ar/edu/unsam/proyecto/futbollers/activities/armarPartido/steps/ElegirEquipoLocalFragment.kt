@@ -39,8 +39,7 @@ import kotlinx.android.synthetic.main.row_elegir_amigo.view.*
 import kotlinx.android.synthetic.main.row_elegir_equipo.view.*
 import kotlinx.android.synthetic.main.row_integrante.view.*
 
-class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultipleClickListener,
-    OnRecyclerItemClickListener {
+class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultipleClickListener, IntegranteClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -144,54 +143,67 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
                 .customListAdapter(elegirAmigosAdapter)
         }
 
-            loading_spinner.visibility = VISIBLE
-        }
+        loading_spinner.visibility = VISIBLE
+
+        totalJugadores.text = "/"+ (canchaSeleccionada?.cantidadJugadores?.div(2)).toString()
+
+        cantidadJugadores.text = integranteAdapter.items.size.toString()
+
+    }
 
         override fun onError(error: VerificationError) {}
 
 
-    override fun onElegirEquipoClick(position: Int) {
-        val equipo = elegirEquipoAdapter.getItem(position)
+        override fun onElegirEquipoClick(position: Int) {
+            val equipo = elegirEquipoAdapter.getItem(position)
 
-        if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
-            equipoLocalSeleccionado = equipo
-            dialogEquipo?.dismiss()
-        } else {
-            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_LONG, true).show()
-        }
+            if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
+                equipoLocalSeleccionado = equipo
+                dialogEquipo?.dismiss()
+            } else {
+             Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_LONG, true).show()
+            }
+
     }
 
     override fun onElegirAmigoClick(position: Int) {
-        val integrante = elegirAmigosAdapter.getItem(position)
+            val integrante = elegirAmigosAdapter.getItem(position)
 
-        if (integrante !in integranteAdapter.items) {
-            integranteAdapter.items.add(integrante)
-            integranteAdapter.notifyDataSetChanged()
-            dialogAmigos?.dismiss()
-        } else {
-            Toasty.error(context!!, "El integrante ya fue añadido", Toast.LENGTH_LONG, true).show()
-        }
+            if (integrante !in integranteAdapter.items) {
+                integranteAdapter.items.add(integrante)
+                integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
+                cantidadJugadores.text = integranteAdapter.items.size.toString()
+                dialogAmigos?.dismiss()
+            } else {
+                Toasty.error(context!!, "El integrante ya fue añadido", Toast.LENGTH_LONG, true).show()
+            }
 
+     }
+
+    override fun onDeleteIntegranteClick(position: Int) {
+        val integrante = integranteAdapter.getItem(position)
+        integranteAdapter.remove(integrante)
+        integranteAdapter.notifyItemRemoved(position)
+        cantidadJugadores.text = integranteAdapter.items.size.toString()
     }
 
-
-    override fun onItemClick(position: Int) {}
-
 }
+
 
 //RECOMIENDO CERRAR ESTOS ARCHIVOS, SON AUXILIARES
 // (CORTESIA DE com.leodroidcoder:generic-adapter:1.0.1
 
-    class IntegranteViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) :
-        BaseViewHolder<Usuario, OnRecyclerItemClickListener>(itemView, listener) {
+    class IntegranteViewHolder(itemView: View, listener: IntegranteClickListener?) :
+        BaseViewHolder<Usuario, IntegranteClickListener>(itemView, listener) {
 
         private val integranteNombre: TextView = itemView.integrante_nombre
         private val integranteFoto: ImageView = itemView.integrante_foto
         private val integrantePosicion: TextView = itemView.posicion_integrante
 
+
         init {
             listener?.run {
-                itemView.setOnClickListener { onItemClick(adapterPosition) }
+                itemView.trash_icon.setOnClickListener { onDeleteIntegranteClick(adapterPosition) }
             }
         }
 
@@ -203,7 +215,7 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
     }
 
     class IntegranteAdapter(context: Context, listener: ElegirEquipoLocalFragment) :
-        GenericRecyclerViewAdapter<Usuario, OnRecyclerItemClickListener, IntegranteViewHolder>(
+        GenericRecyclerViewAdapter<Usuario, IntegranteClickListener, IntegranteViewHolder>(
             context,
             listener
         ) {
@@ -211,6 +223,10 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
             return IntegranteViewHolder(inflate(R.layout.row_integrante, parent), listener)
         }
     }
+
+interface IntegranteClickListener: BaseRecyclerListener {
+    fun onDeleteIntegranteClick(position: Int)
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
