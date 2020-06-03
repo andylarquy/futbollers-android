@@ -1,8 +1,6 @@
 package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps
 
 import android.content.Context
-import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -12,7 +10,6 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -20,12 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.canchaSeleccionada
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.equipoLocalSeleccionado
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.hideStepperNavigation
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.showStepperNavigation
-import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment.EquipoAdapter
-import ar.edu.unsam.proyecto.futbollers.activities.inicio.SignUpActivity
-import ar.edu.unsam.proyecto.futbollers.domain.Cancha
-
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.EquipoService
@@ -33,6 +25,7 @@ import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioService
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.customListAdapter
+import com.leodroidcoder.genericadapter.BaseRecyclerListener
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
@@ -44,10 +37,10 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_elegir_equipo_local.*
 import kotlinx.android.synthetic.main.row_elegir_amigo.view.*
 import kotlinx.android.synthetic.main.row_elegir_equipo.view.*
-import kotlinx.android.synthetic.main.row_elegir_equipo.view.equipo_foto
 import kotlinx.android.synthetic.main.row_integrante.view.*
 
-class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickListener {
+class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultipleClickListener,
+    OnRecyclerItemClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -156,18 +149,35 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
 
         override fun onError(error: VerificationError) {}
 
-        override fun onItemClick(position: Int) {
-            val equipo = elegirEquipoAdapter.getItem(position)
 
-            if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
-                dialogEquipo?.dismiss()
-            } else {
-                Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_LONG, true).show()
-            }
+    override fun onElegirEquipoClick(position: Int) {
+        val equipo = elegirEquipoAdapter.getItem(position)
 
+        if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
+            equipoLocalSeleccionado = equipo
+            dialogEquipo?.dismiss()
+        } else {
+            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_LONG, true).show()
+        }
+    }
+
+    override fun onElegirAmigoClick(position: Int) {
+        val integrante = elegirAmigosAdapter.getItem(position)
+
+        if (integrante !in integranteAdapter.items) {
+            integranteAdapter.items.add(integrante)
+            integranteAdapter.notifyDataSetChanged()
+            dialogAmigos?.dismiss()
+        } else {
+            Toasty.error(context!!, "El integrante ya fue añadido", Toast.LENGTH_LONG, true).show()
         }
 
     }
+
+
+    override fun onItemClick(position: Int) {}
+
+}
 
 //RECOMIENDO CERRAR ESTOS ARCHIVOS, SON AUXILIARES
 // (CORTESIA DE com.leodroidcoder:generic-adapter:1.0.1
@@ -208,7 +218,7 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
 ////////////////////////// ELEGIR EQUIPO /////////////////////////////////////////////////////////////////
 
     class ElegirEquipoAdapter(context: Context, listener: ElegirEquipoLocalFragment) :
-        GenericRecyclerViewAdapter<Equipo, OnRecyclerItemClickListener, ElegirEquipoViewHolder>(
+        GenericRecyclerViewAdapter<Equipo, ElegirEquipoMultipleClickListener, ElegirEquipoViewHolder>(
             context, listener) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ElegirEquipoViewHolder {
@@ -216,8 +226,10 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
         }
     }
 
-    class ElegirEquipoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) :
-        BaseViewHolder<Equipo, OnRecyclerItemClickListener>(itemView, listener) {
+
+
+    class ElegirEquipoViewHolder(itemView: View, listener: ElegirEquipoMultipleClickListener?) :
+        BaseViewHolder<Equipo, ElegirEquipoMultipleClickListener>(itemView, listener) {
 
         private val nombreEquipo: TextView = itemView.nombre_equipo
         private val cantidadJugadores: TextView = itemView.cantidad_jugadores
@@ -227,7 +239,7 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
 
         init {
             listener?.run {
-                itemView.setOnClickListener { onItemClick(adapterPosition) }
+                itemView.setOnClickListener { onElegirEquipoClick(adapterPosition) }
             }
         }
 
@@ -248,12 +260,14 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
     }
 
 
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// ELEGIR AMIGOS /////////////////////////////////////////////////////////////////
 
     class ElegirAmigoAdapter(context: Context, listener: ElegirEquipoLocalFragment) :
-        GenericRecyclerViewAdapter<Usuario, OnRecyclerItemClickListener, ElegirAmigoViewHolder>(
+        GenericRecyclerViewAdapter<Usuario, ElegirEquipoMultipleClickListener, ElegirAmigoViewHolder>(
             context, listener) {
 
 
@@ -263,8 +277,8 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
         }
     }
 
-    class ElegirAmigoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) :
-        BaseViewHolder<Usuario, OnRecyclerItemClickListener>(itemView, listener) {
+    class ElegirAmigoViewHolder(itemView: View, listener: ElegirEquipoMultipleClickListener?) :
+        BaseViewHolder<Usuario, ElegirEquipoMultipleClickListener>(itemView, listener) {
 
         private val amigoNombre: TextView = itemView.amigo_nombre
         private val posicionAmigo: TextView = itemView.posicion_amigo
@@ -272,7 +286,7 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
 
         init {
             listener?.run {
-                itemView.setOnClickListener { onItemClick(adapterPosition) }
+                itemView.setOnClickListener { onElegirAmigoClick(adapterPosition) }
             }
         }
 
@@ -282,4 +296,11 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, OnRecyclerItemClickL
             Picasso.get().load(item.foto).into(amigoFoto)
         }
     }
+
+interface ElegirEquipoMultipleClickListener : BaseRecyclerListener {
+    fun onElegirEquipoClick(position: Int)
+    fun onElegirAmigoClick(position: Int)
+}
+
+
 
