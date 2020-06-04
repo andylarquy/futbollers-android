@@ -3,6 +3,9 @@ package ar.edu.unsam.proyecto.futbollers.activities.armarPartido
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.annotation.IntRange
 import androidx.appcompat.app.AppCompatActivity
@@ -15,12 +18,14 @@ import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Promocion
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 import kotlinx.android.synthetic.main.activity_armar_partido.*
+import kotlinx.android.synthetic.main.dialog_elegir_equipo_gps.*
 import java.util.*
 
 var mStepperLayout: StepperLayout? = null
