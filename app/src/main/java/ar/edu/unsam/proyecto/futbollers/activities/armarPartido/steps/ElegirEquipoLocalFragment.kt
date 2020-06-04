@@ -4,14 +4,18 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
@@ -92,6 +96,7 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
         }
 
         btn_agregar_equipo_desconocido.setOnClickListener() {
+            Log.i("ArmarPartidoActivity", rangoDeBusquedaEquipo.toString())
             dialogEquipoGPS!!.show()
         }
 
@@ -147,6 +152,13 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
             MaterialDialog(context)
                 .title(text = "Buscar Equipo por GPS")
                 .message(text = "Selecciona parametros de busqueda")
+                .positiveButton(text = "Aceptar"){
+                    rangoDeBusquedaEquipo = it.view.combo_distancia.text.toString().toInt()
+                }
+                .negativeButton(text = "Cancelar"){
+                    it.view.combo_distancia.setText("Distancia...", false)
+                    rangoDeBusquedaEquipo = null
+                }
                 .customView(R.layout.dialog_elegir_equipo_gps)
         }
 
@@ -157,13 +169,15 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
         val adapter = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.DISTANCIAS)
         spinnerDistancia?.setAdapter(adapter)
 
-        spinnerDistancia?.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        spinnerDistancia?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,after: Int) {}
+            override fun afterTextChanged(s: Editable) {}
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                rangoDeBusquedaEquipo = (parent?.getItemAtPosition(pos) as String?)?.toInt()
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                //.toString().Int()... Esas cosas pasan por la biblioteca de material
+                //rangoDeBusquedaEquipo = s.toString().toInt()
             }
-        }
+        })
 
     }
 
