@@ -46,7 +46,12 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         val llm = LinearLayoutManager(context)
         rv.layoutManager = llm
-        empresaAdapter = context?.let { EmpresaAdapter(it, this) }!!
+        empresaAdapter = context?.let {
+            EmpresaAdapter(
+                it,
+                this
+            )
+        }!!
 
         val dividerItemDecoration = DividerItemDecoration(rv.context, llm.orientation)
         rv.addItemDecoration(dividerItemDecoration)
@@ -135,6 +140,9 @@ class EmpresaViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
 class EmpresaAdapter(context: Context, listener: ElegirEmpresaFragment) : GenericRecyclerViewAdapter<Empresa, OnRecyclerItemClickListener, EmpresaViewHolder>(context, listener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmpresaViewHolder {
-        return EmpresaViewHolder(inflate(R.layout.row_empresa, parent), listener)
+        return EmpresaViewHolder(
+            inflate(R.layout.row_empresa, parent),
+            listener
+        )
     }
 }

@@ -3,9 +3,6 @@ package ar.edu.unsam.proyecto.futbollers.activities.armarPartido
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.annotation.IntRange
 import androidx.appcompat.app.AppCompatActivity
@@ -13,19 +10,18 @@ import androidx.fragment.app.FragmentManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEmpresaFragment
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanchaFragment
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEquipoLocalFragment
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo.ElegirEquipoLocalFragment
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo.ElegirEquipoVisitanteFragment
 import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Promocion
-import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 import kotlinx.android.synthetic.main.activity_armar_partido.*
-import kotlinx.android.synthetic.main.dialog_elegir_equipo_gps.*
 import java.util.*
 
 var mStepperLayout: StepperLayout? = null
@@ -71,7 +67,7 @@ class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 }
 
 
-const val CANTIDAD_DE_STEPS: Int = 3
+const val CANTIDAD_DE_STEPS: Int = 4
 
 class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm,
     context
@@ -82,7 +78,8 @@ class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentSt
     override fun createStep(position: Int): Step? {
         when (position) {
             0 -> {
-                val step1 = ElegirEmpresaFragment()
+                val step1 =
+                    ElegirEmpresaFragment()
                 val b1 = Bundle()
                 b1.putInt(CURRENT_STEP_POSITION_KEY, position)
                 step1.arguments = b1
@@ -97,11 +94,20 @@ class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentSt
             }
 
             2 -> {
-                val step3 = ElegirEquipoLocalFragment()
+                val step3 =
+                    ElegirEquipoLocalFragment()
                 val b3 = Bundle()
                 b3.putInt(CURRENT_STEP_POSITION_KEY, position)
                 step3.arguments = b3
                 return step3
+            }
+
+            3 -> {
+                val step4 = ElegirEquipoVisitanteFragment()
+                val b4 = Bundle()
+                b4.putInt(CURRENT_STEP_POSITION_KEY, position)
+                step4.arguments = b4
+                return step4
             }
         }
         return null
@@ -119,11 +125,15 @@ class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentSt
                 .create()
 
             1 -> return StepViewModel.Builder(context)
-            .setTitle("Elegir Cancha")
-            .create()
+                .setTitle("Elegir Cancha")
+                .create()
 
             2 -> return StepViewModel.Builder(context)
                 .setTitle("Elegir Equipo Local")
+                .create()
+
+            3 -> return StepViewModel.Builder(context)
+                .setTitle("Elegir Equipo Visitante")
                 .create()
         }
         return StepViewModel.Builder(context).create()
