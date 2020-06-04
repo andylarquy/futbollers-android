@@ -42,5 +42,20 @@ Log.i("LoginActivity","Mensaje")
 ## Hilo de stackoverflow sobre GPS para ir mirando
 https://stackoverflow.com/questions/17290246/get-users-current-location-using-gps
 
-## Biblioteca copada para ventanas modales
+## Biblioteca espectacular para ventanas modales
 https://github.com/afollestad/material-dialogs
+
+## Atajar un evento de un spinner en Material
+(Recomiendo no usar spinners de material puro, son malisimos)
+
+```
+miSpinner.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,after: Int) {}
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                datoSeleccionado = s.toString()
+                //Y de string castealo a lo que haga falta
+            }
+        })
+```
