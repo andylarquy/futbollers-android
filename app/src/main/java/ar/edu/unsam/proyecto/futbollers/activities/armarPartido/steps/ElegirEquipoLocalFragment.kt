@@ -41,6 +41,7 @@ import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_elegir_equipo_gps.view.*
+import kotlinx.android.synthetic.main.dialog_elegir_jugador_gps.view.*
 import kotlinx.android.synthetic.main.fragment_elegir_equipo_local.*
 import kotlinx.android.synthetic.main.row_elegir_amigo.view.*
 import kotlinx.android.synthetic.main.row_elegir_equipo.view.*
@@ -65,13 +66,20 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
     var rv = integrantes_list
 
     //Setup Dialogs
+    //TODO: Poner lateinit
     var dialogEquipo: MaterialDialog? = null
     var dialogAmigos: MaterialDialog? = null
     var dialogEquipoGPS: MaterialDialog? = null
+    var dialogJugadorGPS: MaterialDialog? = null
 
     //Parametros Equipo GPS
     var rangoDeBusquedaEquipo: Int? = null
     var sexoBusquedaEquipo: String? = null
+
+    //Parametros Jugador GPS
+    var rangoDeBusquedaJugador: Int? = null
+    var sexoBusquedaJugador: String? = null
+    var posicionBusquedaJugador: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -101,6 +109,10 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
             dialogEquipoGPS!!.show()
         }
 
+        btn_agregar_jugador_desconocido.setOnClickListener(){
+            dialogJugadorGPS!!.show()
+        }
+
 
     }
 
@@ -124,6 +136,7 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
         setupDialogEquipo()
         setupDialogAmigos()
         setupDialogEquipoGPS()
+        setupDialogJugadorGPS()
     }
 
 
@@ -194,6 +207,59 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
 
     }
 
+    fun setupDialogJugadorGPS(){
+        //Preparo el dialog de equipo por GPS
+        dialogJugadorGPS = context?.let { context ->
+            MaterialDialog(context)
+                .title(text = "Buscar Jugador por GPS")
+                .message(text = "Selecciona parametros de busqueda")
+                .positiveButton(text = "Aceptar"){
+                    if(parametrosJugadorGPSSonValidos(it.view)) {
+                        rangoDeBusquedaJugador = it.view.combo_distancia_jugador.text.toString().toInt()
+                        sexoBusquedaJugador = it.view.combo_sexo_jugador.text.toString()
+                        posicionBusquedaJugador = it.view.combo_posicion_jugador.text.toString()
+
+                        val nuevoIntegrante = Usuario()
+                        nuevoIntegrante.idUsuario = -1
+                        nuevoIntegrante.sexo = sexoBusquedaEquipo
+                        nuevoIntegrante.foto = "https://i.imgur.com/c9zvT8Z.png"
+                        nuevoIntegrante.posicion = posicionBusquedaJugador
+
+                        integranteAdapter.items.add(nuevoIntegrante)
+                        integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
+                        cantidadJugadores.text = integranteAdapter.items.size.toString()
+
+                    }else{
+                        Toasty.error(context, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
+                    }
+
+                }
+                .negativeButton(text = "Cancelar"){
+                    it.view.combo_distancia.setText("Rango de busqueda", false)
+                    it.view.combo_sexo_equipo.setText("Sexo del equipo", false)
+                    rangoDeBusquedaJugador = null
+                    sexoBusquedaJugador = null
+                    posicionBusquedaJugador = null
+                }
+                .customView(R.layout.dialog_elegir_jugador_gps)
+        }
+
+        val customView = dialogJugadorGPS?.getCustomView()
+
+        val spinnerDistancia = customView?.combo_distancia_jugador
+        val spinnerSexo = customView?.combo_sexo_jugador
+        val spinnerPosicion = customView?.combo_posicion_jugador
+
+        val adapterDistancia = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.DISTANCIAS)
+        spinnerDistancia?.setAdapter(adapterDistancia)
+
+        val adapterSexo = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.SEXO)
+        spinnerSexo?.setAdapter(adapterSexo)
+
+        val adapterPosicion = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.POSICIONES)
+        spinnerPosicion?.setAdapter(adapterPosicion)
+    }
+
     fun parametrosEquipoGPSSonValidos(vistaGPS: View): Boolean{
 
         var valido = true
@@ -203,6 +269,25 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
         }
 
         if(vistaGPS.combo_distancia?.text.toString() == "Sexo del equipo"){
+            valido = false
+        }
+
+        return valido
+    }
+
+    fun parametrosJugadorGPSSonValidos(vistaGPS: View): Boolean{
+
+        var valido = true
+
+        if(vistaGPS.combo_distancia_jugador?.text.toString() == "Rango de busqueda"){
+            valido = false
+        }
+
+        if(vistaGPS.combo_posicion_jugador?.text.toString() == "Posicion del jugador"){
+            valido = false
+        }
+
+        if(vistaGPS.combo_sexo_jugador?.text.toString() == "Sexo del jugador"){
             valido = false
         }
 
@@ -270,8 +355,7 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
                 cantidadJugadores.text = integranteAdapter.items.size.toString()
                 dialogAmigos?.dismiss()
             } else {
-                Toasty.error(context!!, "El integrante ya fue añadido", Toast.LENGTH_LONG, true)
-                    .show()
+                Toasty.error(context!!, "El integrante ya fue añadido", Toast.LENGTH_LONG, true).show()
             }
 
         }
