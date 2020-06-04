@@ -291,8 +291,27 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback) {
+        val equipoTemporal = Equipo()
+        equipoTemporal.integrantes = integranteAdapter.items
+        equipoTemporal.foto = "https://i.imgur.com/Tyf5hJn.png"
+        equipoTemporal.owner = usuarioLogueado
+        equipoTemporal.idEquipo = -1
 
-        Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+        if(esValidoComoEquipoTemporal(equipoTemporal)) {
+            Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+        }
+    }
+
+    fun esValidoComoEquipoTemporal(equipo: Equipo): Boolean{
+        var esValido = true
+
+        if(equipo.cantidadDeIntegrantes() != canchaSeleccionada?.cantidadJugadoresPorEquipo()){
+            esValido = false
+            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_SHORT, true).show()
+        }
+
+        return esValido
+
     }
 
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
@@ -348,7 +367,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
         if (integrante !in integranteAdapter.items) {
             integranteAdapter.items.add(integrante)
-            integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
+            integranteAdapter.notifyDataSetChanged()
             cantidadJugadores.text = integranteAdapter.items.size.toString()
             dialogAmigos?.dismiss()
         } else {

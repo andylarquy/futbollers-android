@@ -15,4 +15,5 @@ class Equipo {
     fun cantidadDeIntegrantes(): Int{
         return integrantes!!.size
     }
+
 }
