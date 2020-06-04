@@ -71,6 +71,7 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
 
     //Parametros Equipo GPS
     var rangoDeBusquedaEquipo: Int? = null
+    var sexoBusquedaEquipo: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -153,11 +154,29 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
                 .title(text = "Buscar Equipo por GPS")
                 .message(text = "Selecciona parametros de busqueda")
                 .positiveButton(text = "Aceptar"){
-                    rangoDeBusquedaEquipo = it.view.combo_distancia.text.toString().toInt()
+                    if(parametrosEquipoGPSSonValidos(it.view)) {
+                        rangoDeBusquedaEquipo = it.view.combo_distancia.text.toString().toInt()
+                        sexoBusquedaEquipo = it.view.combo_sexo_equipo.text.toString()
+
+                        val nuevoUsuario = Usuario()
+                        nuevoUsuario.idUsuario = -1
+                        nuevoUsuario.sexo = sexoBusquedaEquipo
+
+                        val nuevoEquipo = Equipo()
+                        nuevoEquipo.idEquipo = -1
+                        nuevoEquipo.foto = "https://i.imgur.com/c9zvT8Z.png"
+                        nuevoEquipo.owner = nuevoUsuario
+
+                    }else{
+                        Toasty.error(context, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
+                    }
+
                 }
                 .negativeButton(text = "Cancelar"){
-                    it.view.combo_distancia.setText("Distancia...", false)
+                    it.view.combo_distancia.setText("Rango de busqueda", false)
+                    it.view.combo_sexo_equipo.setText("Sexo del equipo", false)
                     rangoDeBusquedaEquipo = null
+                    sexoBusquedaEquipo = null
                 }
                 .customView(R.layout.dialog_elegir_equipo_gps)
         }
@@ -165,20 +184,29 @@ class ElegirEquipoLocalFragment : Fragment(), BlockingStep, ElegirEquipoMultiple
         val customView = dialogEquipoGPS?.getCustomView()
 
         val spinnerDistancia = customView?.combo_distancia
+        val spinnerSexo = customView?.combo_sexo_equipo
 
-        val adapter = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.DISTANCIAS)
-        spinnerDistancia?.setAdapter(adapter)
+        val adapterDistancia = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.DISTANCIAS)
+        spinnerDistancia?.setAdapter(adapterDistancia)
 
-        spinnerDistancia?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int,after: Int) {}
-            override fun afterTextChanged(s: Editable) {}
+        val adapterSexo = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.SEXO)
+        spinnerSexo?.setAdapter(adapterSexo)
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                //.toString().Int()... Esas cosas pasan por la biblioteca de material
-                //rangoDeBusquedaEquipo = s.toString().toInt()
-            }
-        })
+    }
 
+    fun parametrosEquipoGPSSonValidos(vistaGPS: View): Boolean{
+
+        var valido = true
+
+        if(vistaGPS.combo_distancia?.text.toString() == "Rango de busqueda"){
+            valido = false
+        }
+
+        if(vistaGPS.combo_distancia?.text.toString() == "Sexo del equipo"){
+            valido = false
+        }
+
+        return valido
     }
 
         override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback) {

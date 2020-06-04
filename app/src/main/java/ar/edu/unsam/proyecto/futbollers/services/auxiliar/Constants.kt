@@ -15,6 +15,7 @@ object Constants {
 
      val POSICIONES = arrayOf("Arquero","Defensor","Mediocampista","Delantero")
      val DISTANCIAS = arrayOf("3","5","10","20")
+     val SEXO = arrayOf("Masculino", "Femenino", "Mixto")
 
      val simpleDateFormatter =  SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
 
