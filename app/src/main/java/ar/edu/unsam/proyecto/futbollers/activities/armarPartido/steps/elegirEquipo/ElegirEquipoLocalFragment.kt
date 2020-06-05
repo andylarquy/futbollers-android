@@ -15,6 +15,7 @@ import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.canchaSeleccionada
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.equipoLocalSeleccionado
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.showStepperNavigation
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.stepForward
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.EquipoService
@@ -49,11 +50,10 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     var rv = integrantes_list
 
     //Setup Dialogs
-    //TODO: Poner lateinit
-    var dialogEquipo: MaterialDialog? = null
-    var dialogAmigos: MaterialDialog? = null
-    var dialogEquipoGPS: MaterialDialog? = null
-    var dialogJugadorGPS: MaterialDialog? = null
+    lateinit var dialogEquipo: MaterialDialog
+    lateinit var dialogAmigos: MaterialDialog
+    lateinit var dialogEquipoGPS: MaterialDialog
+    lateinit var dialogJugadorGPS: MaterialDialog
 
     //Parametros Equipo GPS
     var rangoDeBusquedaEquipo: Int? = null
@@ -93,20 +93,20 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
         rv.adapter = integranteAdapter
 
         btn_agregar_equipo.setOnClickListener() {
-            dialogEquipo!!.show()
+            dialogEquipo.show()
         }
 
         btn_agregar_amigo.setOnClickListener() {
-            dialogAmigos!!.show()
+            dialogAmigos.show()
         }
 
         btn_agregar_equipo_desconocido.setOnClickListener() {
             Log.i("ArmarPartidoActivity", rangoDeBusquedaEquipo.toString())
-            dialogEquipoGPS!!.show()
+            dialogEquipoGPS.show()
         }
 
         btn_agregar_jugador_desconocido.setOnClickListener(){
-            dialogJugadorGPS!!.show()
+            dialogJugadorGPS.show()
         }
 
 
@@ -138,28 +138,25 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
     fun setupDialogEquipo() {
         //Preparo el dialog de equipo
-        dialogEquipo = context?.let { context ->
-            MaterialDialog(context)
-                .title(text = "Selecciona un equipo")
-                .message(text = "Con " + canchaSeleccionada!!.cantidadJugadoresPorEquipo() + " integrantes")
-                .customListAdapter(elegirEquipoAdapter)
-        }
+        dialogEquipo = MaterialDialog(context!!)
+            .title(text = "Selecciona un equipo")
+            .message(text = "Con " + canchaSeleccionada!!.cantidadJugadoresPorEquipo() + " integrantes")
+            .customListAdapter(elegirEquipoAdapter)
+
     }
 
     fun setupDialogAmigos() {
         //Preparo el dialog de amigos
-        dialogAmigos = context?.let { context ->
-            MaterialDialog(context)
-                .title(text = "Selecciona un amigo")
-                .message(text = "Listado de amigos")
-                .customListAdapter(elegirAmigosAdapter)
-        }
+        dialogAmigos = MaterialDialog(context!!)
+            .title(text = "Selecciona un amigo")
+            .message(text = "Listado de amigos")
+            .customListAdapter(elegirAmigosAdapter)
+
     }
 
     fun setupDialogEquipoGPS() {
         //Preparo el dialog de equipo por GPS
-        dialogEquipoGPS = context?.let { context ->
-            MaterialDialog(context)
+        dialogEquipoGPS = MaterialDialog(context!!)
                 .title(text = "Buscar Equipo por GPS")
                 .message(text = "Selecciona parametros de busqueda")
                 .positiveButton(text = "Aceptar"){
@@ -176,8 +173,12 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
                         nuevoEquipo.foto = "https://i.imgur.com/c9zvT8Z.png"
                         nuevoEquipo.owner = nuevoUsuario
 
+                        equipoLocalSeleccionado = nuevoEquipo
+
+                        stepForward()
+
                     }else{
-                        Toasty.error(context, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
+                        Toasty.error(context!!, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
                     }
 
                 }
@@ -188,12 +189,12 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
                     sexoBusquedaEquipo = null
                 }
                 .customView(R.layout.dialog_elegir_equipo_gps)
-        }
 
-        val customView = dialogEquipoGPS?.getCustomView()
 
-        val spinnerDistancia = customView?.combo_distancia
-        val spinnerSexo = customView?.combo_sexo_equipo
+        val customView = dialogEquipoGPS.getCustomView()
+
+        val spinnerDistancia = customView.combo_distancia
+        val spinnerSexo = customView.combo_sexo_equipo
 
         val adapterDistancia = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.DISTANCIAS)
         spinnerDistancia?.setAdapter(adapterDistancia)
@@ -205,11 +206,11 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
     fun setupDialogJugadorGPS(){
         //Preparo el dialog de equipo por GPS
-        dialogJugadorGPS = context?.let { context ->
-            MaterialDialog(context)
+        dialogJugadorGPS = MaterialDialog(context!!)
                 .title(text = "Buscar Jugador por GPS")
                 .message(text = "Selecciona parametros de busqueda")
                 .positiveButton(text = "Aceptar"){
+
                     if(parametrosJugadorGPSSonValidos(it.view)) {
                         rangoDeBusquedaJugador = it.view.combo_distancia_jugador.text.toString().toInt()
                         sexoBusquedaJugador = it.view.combo_sexo_jugador.text.toString()
@@ -220,13 +221,14 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
                         nuevoIntegrante.sexo = sexoBusquedaEquipo
                         nuevoIntegrante.foto = "https://i.imgur.com/c9zvT8Z.png"
                         nuevoIntegrante.posicion = posicionBusquedaJugador
+                        nuevoIntegrante.email = rangoDeBusquedaJugador.toString()
 
                         integranteAdapter.items.add(nuevoIntegrante)
                         integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
                         cantidadJugadores.text = integranteAdapter.items.size.toString()
 
                     }else{
-                        Toasty.error(context, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
+                        Toasty.error(context!!, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
                     }
 
                 }
@@ -238,13 +240,13 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
                     posicionBusquedaJugador = null
                 }
                 .customView(R.layout.dialog_elegir_jugador_gps)
-        }
 
-        val customView = dialogJugadorGPS?.getCustomView()
 
-        val spinnerDistancia = customView?.combo_distancia_jugador
-        val spinnerSexo = customView?.combo_sexo_jugador
-        val spinnerPosicion = customView?.combo_posicion_jugador
+        val customView = dialogJugadorGPS.getCustomView()
+
+        val spinnerDistancia = customView.combo_distancia_jugador
+        val spinnerSexo = customView.combo_sexo_jugador
+        val spinnerPosicion = customView.combo_posicion_jugador
 
         val adapterDistancia = ArrayAdapter<String>(context!!, R.layout.dropdown_menu_popup_item, Constants.DISTANCIAS)
         spinnerDistancia?.setAdapter(adapterDistancia)
@@ -295,24 +297,15 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
         equipoTemporal.integrantes = integranteAdapter.items
         equipoTemporal.foto = "https://i.imgur.com/Tyf5hJn.png"
         equipoTemporal.owner = usuarioLogueado
-        equipoTemporal.idEquipo = -1
+        equipoTemporal.idEquipo = -2
 
         if(esValidoComoEquipoTemporal(equipoTemporal)) {
+            equipoLocalSeleccionado = equipoTemporal
             Handler().postDelayed({ callback.goToNextStep() }, 1000L)
         }
     }
 
-    fun esValidoComoEquipoTemporal(equipo: Equipo): Boolean{
-        var esValido = true
 
-        if(equipo.cantidadDeIntegrantes() != canchaSeleccionada?.cantidadJugadoresPorEquipo()){
-            esValido = false
-            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_SHORT, true).show()
-        }
-
-        return esValido
-
-    }
 
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
         Toast.makeText(this.context, "FIN!!", Toast.LENGTH_SHORT).show()
@@ -343,6 +336,8 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
         cantidadJugadores.text = integranteAdapter.items.size.toString()
 
+        elegir_equipo_titulo.text = "Elegir Equipo Local"
+
 
 
     }
@@ -355,7 +350,9 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
         if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
             equipoLocalSeleccionado = equipo
-            dialogEquipo?.dismiss()
+            dialogEquipo.dismiss()
+
+            stepForward()
         } else {
             Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_LONG, true).show()
         }
@@ -369,7 +366,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
             integranteAdapter.items.add(integrante)
             integranteAdapter.notifyDataSetChanged()
             cantidadJugadores.text = integranteAdapter.items.size.toString()
-            dialogAmigos?.dismiss()
+            dialogAmigos.dismiss()
         } else {
             Toasty.error(context!!, "El integrante ya fue añadido", Toast.LENGTH_LONG, true).show()
         }

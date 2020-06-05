@@ -11,9 +11,11 @@ import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.mediumPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONArray
+import org.json.JSONObject
 
 
 object PartidoService {
@@ -51,12 +53,50 @@ object PartidoService {
 
     }
 
+    fun postNuevoPartido(context: Context, partido: Partido, callback: () -> Unit) {
+
+
+        var partidoParseado = Partido().toJson(partido)
+        //Log.i("ArmarPartidoAcitivty",  JSONObject(Constants.simpleDateFormatter.format(partido.fechaDeReserva!!.time)).toString())
+
+        val fechaParseada = Constants.simpleDateFormatter.format(partido.fechaDeReserva!!.time)
+        partidoParseado?.put("fechaDeReserva", fechaParseada)
+
+        Log.i("ArmarPartidoAcitivty", partidoParseado.toString())
+
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/partidos"
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, partidoParseado,
+
+            Response.Listener<JSONObject> { response ->
+                Log.i("ArmarPartidoActivity",response.toString())
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("HomeActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErrores)
+            })
+        request.retryPolicy = mediumPolicy
+
+        queue.add(request)
+
+    }
+
+
     fun lambdaManejoErrores(context: Context, statusCode: Int) {
         //TODO: Corregir esto que salio de patron copypaste
         if (statusCode == 422) {
             Toast.makeText(context, "Ese mail ya pertenece a un usuario", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
+
+            Toast.makeText(
+                context,
+                "Error inesperado al comunicarse con el servidor",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }

@@ -82,7 +82,6 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
         fechaSeleccionada = null
         promocionSeleccionada = null
 
-        //Toast.makeText(context, "TODO: Seleccionar empresa (con id: "+empresaSeleccionada?.id+")", Toast.LENGTH_SHORT).show()
         stepForward()
     }
 

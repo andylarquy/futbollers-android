@@ -39,7 +39,7 @@ class Usuario: BaseObservable() {
     }
 
     fun toJson(o: Usuario?): JSONObject?{
-        val jsonResult = JSONObject(GsonBuilder().serializeNulls().create().toJson(o))
+        val jsonResult = JSONObject(Gson().toJson(o))
         Log.i("LoginActivity", "usuario parseado a Json: "+jsonResult.toString())
         return jsonResult
     }

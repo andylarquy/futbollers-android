@@ -16,4 +16,10 @@ class Equipo {
         return integrantes!!.size
     }
 
+    fun contieneIntegrante(integranteBuscado: Usuario): Boolean {
+        return integrantes!!.any { integrante ->
+            integrante.idUsuario != (-1).toLong() && integrante.idUsuario == integranteBuscado.idUsuario
+        }
+    }
+
 }

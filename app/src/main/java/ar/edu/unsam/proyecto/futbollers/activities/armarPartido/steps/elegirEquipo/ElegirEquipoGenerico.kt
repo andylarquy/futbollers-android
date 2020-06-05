@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.canchaSeleccionada
@@ -16,6 +17,7 @@ import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.squareup.picasso.Picasso
 import com.stepstone.stepper.BlockingStep
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.row_elegir_amigo.view.*
 import kotlinx.android.synthetic.main.row_elegir_equipo.view.*
 import kotlinx.android.synthetic.main.row_integrante.view.*
@@ -24,6 +26,19 @@ import kotlinx.android.synthetic.main.row_integrante.view.*
 abstract class ElegirEquipoGenerico : Fragment(), BlockingStep,
     ElegirEquipoMultipleClickListener,
     IntegranteClickListener{
+
+    fun esValidoComoEquipoTemporal(equipo: Equipo): Boolean{
+        var esValido = true
+
+        if(equipo.cantidadDeIntegrantes() != canchaSeleccionada?.cantidadJugadoresPorEquipo()){
+            esValido = false
+            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_SHORT, true).show()
+        }
+
+        return esValido
+
+    }
+
 }
 
 //RECOMIENDO CERRAR ESTOS ARCHIVOS, SON AUXILIARES

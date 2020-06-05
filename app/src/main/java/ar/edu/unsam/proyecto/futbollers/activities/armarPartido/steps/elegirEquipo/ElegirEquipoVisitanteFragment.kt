@@ -1,9 +1,12 @@
 package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.PointerIcon.getSystemIcon
+import android.view.PointerIcon.load
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -12,12 +15,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.canchaSeleccionada
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.equipoLocalSeleccionado
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.showStepperNavigation
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.*
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
+import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.EquipoService
+import ar.edu.unsam.proyecto.futbollers.services.PartidoService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioService
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
@@ -38,6 +41,8 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_elegir_equipo_local, container, false)
     }
+
+    val partidoService = PartidoService
 
     lateinit var elegirEquipoAdapter: ElegirEquipoAdapter
     lateinit var integranteAdapter: IntegranteAdapter
@@ -67,16 +72,8 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        elegirEquipoAdapter =
-            ElegirEquipoAdapter(
-                context!!,
-                this
-            )
-        elegirAmigosAdapter =
-            ElegirAmigoAdapter(
-                context!!,
-                this
-            )
+        elegirEquipoAdapter = ElegirEquipoAdapter(context!!, this)
+        elegirAmigosAdapter = ElegirAmigoAdapter(context!!, this)
 
         rv = integrantes_list
         rv.setHasFixedSize(true)
@@ -84,12 +81,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         val llm = LinearLayoutManager(context)
         rv.layoutManager = llm
 
-        integranteAdapter = context?.let {
-            IntegranteAdapter(
-                it,
-                this
-            )
-        }!!
+        integranteAdapter = IntegranteAdapter(context!!, this)
         rv.adapter = integranteAdapter
 
         btn_agregar_equipo.setOnClickListener() {
@@ -109,7 +101,6 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
             dialogJugadorGPS!!.show()
         }
 
-
     }
 
     fun modalElegirEquipoCallback(equipos: MutableList<Equipo>) {
@@ -128,7 +119,6 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
     }
 
     fun setupDialogs() {
-
         setupDialogEquipo()
         setupDialogAmigos()
         setupDialogEquipoGPS()
@@ -176,6 +166,10 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
                         nuevoEquipo.foto = "https://i.imgur.com/c9zvT8Z.png"
                         nuevoEquipo.owner = nuevoUsuario
 
+                        equipoVisitanteSeleccionado = nuevoEquipo
+
+                        postPartido()
+
                     }else{
                         Toasty.error(context, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
                     }
@@ -220,6 +214,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
                         nuevoIntegrante.sexo = sexoBusquedaEquipo
                         nuevoIntegrante.foto = "https://i.imgur.com/c9zvT8Z.png"
                         nuevoIntegrante.posicion = posicionBusquedaJugador
+                        nuevoIntegrante.email = rangoDeBusquedaJugador.toString()
 
                         integranteAdapter.items.add(nuevoIntegrante)
                         integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
@@ -292,11 +287,27 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback) {
 
-        Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+
+
+        // TODO: Esto en principio sobra
+        // Handler().postDelayed({ callback.goToNextStep() }, 1000L)
     }
 
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
-        Toast.makeText(this.context, "FIN!!", Toast.LENGTH_SHORT).show()
+        val equipoTemporal = Equipo()
+        equipoTemporal.integrantes = integranteAdapter.items
+        equipoTemporal.foto = "https://i.imgur.com/Tyf5hJn.png"
+        equipoTemporal.owner = usuarioLogueado
+        equipoTemporal.idEquipo = -2
+
+        if(esValidoComoEquipoTemporal(equipoTemporal)) {
+            equipoLocalSeleccionado = equipoTemporal
+            //TODO: Ir al back
+            postPartido()
+            Toast.makeText(this.context, "FIN!! TODO: Ir al back", Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 
     override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback) {
@@ -316,7 +327,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         equipoService.getEquiposDelUsuario(context!!, usuarioLogueado, ::modalElegirEquipoCallback)
 
         //Ah, y me vas a buscar los amigos tambien
-        usuarioService.getAmigosDelUsuario( context!!, usuarioLogueado, ::modalElegirAmigosCallback )
+        usuarioService.getAmigosDelUsuario( context!!, usuarioLogueado, ::modalElegirAmigosCallback)
 
         loading_spinner.visibility = VISIBLE
 
@@ -324,7 +335,18 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
         cantidadJugadores.text = integranteAdapter.items.size.toString()
 
+        elegir_equipo_titulo.text = "Elegir Equipo Visitante"
 
+        //Cambios esteticos para diferenciarlos
+        btn_agregar_equipo.setTextColor(Color.parseColor("#03DAC5"))
+        btn_agregar_amigo.setTextColor(Color.parseColor("#03DAC5"))
+        btn_agregar_equipo_desconocido.setTextColor(Color.parseColor("#03DAC5"))
+        btn_agregar_jugador_desconocido.setTextColor(Color.parseColor("#03DAC5"))
+
+        //Reset parametros generales
+        integranteAdapter.items.clear()
+        cantidadJugadores.text = integranteAdapter.items.size.toString()
+        integranteAdapter.notifyDataSetChanged()
 
     }
 
@@ -335,10 +357,19 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         val equipo = elegirEquipoAdapter.getItem(position)
 
         if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
-            equipoLocalSeleccionado = equipo
-            dialogEquipo?.dismiss()
+
+            if(equipoLocalSeleccionado!!.idEquipo != (-1).toLong() && equipoLocalSeleccionado!!.idEquipo != equipo!!.idEquipo!!.toLong()){
+                dialogEquipo?.dismiss()
+                equipoVisitanteSeleccionado = equipo
+
+                postPartido()
+            }else{
+                Toasty.error(context!!, "Este equipo ya fue elegido como equipo local", Toast.LENGTH_SHORT, true).show()
+            }
+
+
         } else {
-            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_LONG, true).show()
+            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_SHORT, true).show()
         }
 
     }
@@ -347,11 +378,16 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         val integrante = elegirAmigosAdapter.getItem(position)
 
         if (integrante !in integranteAdapter.items) {
-            integranteAdapter.items.add(integrante)
-            integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
-            cantidadJugadores.text = integranteAdapter.items.size.toString()
-            dialogAmigos?.dismiss()
-        } else {
+            if (equipoLocalSeleccionado!!.contieneIntegrante(integrante!!)){
+                Toasty.error(context!!, "El integrante forma parte del equipo local", Toast.LENGTH_SHORT, true).show()
+            }else {
+                integranteAdapter.items.add(integrante)
+                integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
+                cantidadJugadores.text = integranteAdapter.items.size.toString()
+
+                dialogAmigos?.dismiss()
+            }
+        }else{
             Toasty.error(context!!, "El integrante ya fue añadido", Toast.LENGTH_LONG, true).show()
         }
 
@@ -362,6 +398,22 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         integranteAdapter.remove(integrante)
         integranteAdapter.notifyItemRemoved(position)
         cantidadJugadores.text = integranteAdapter.items.size.toString()
+    }
+
+    fun postPartido(){
+        val partido = Partido()
+        partido.equipo1 = equipoLocalSeleccionado
+        partido.equipo2 = equipoVisitanteSeleccionado
+        partido.empresa = empresaSeleccionada
+        partido.canchaReservada = canchaSeleccionada
+        partido.fechaDeReserva = fechaSeleccionada
+
+        partidoService.postNuevoPartido(context!!, partido, ::callbackPostPartido)
+
+    }
+
+    fun callbackPostPartido(){
+        Log.i("ArmarPartidoActivity",  "Mira, creo que anduvo")
     }
 
 
