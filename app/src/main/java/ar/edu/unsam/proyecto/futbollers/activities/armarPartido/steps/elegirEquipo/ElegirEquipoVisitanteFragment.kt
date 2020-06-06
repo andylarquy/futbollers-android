@@ -301,7 +301,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         equipoTemporal.idEquipo = -2
 
         if(esValidoComoEquipoTemporal(equipoTemporal)) {
-            equipoLocalSeleccionado = equipoTemporal
+            equipoVisitanteSeleccionado = equipoTemporal
             //TODO: Ir al back
             postPartido()
             Toast.makeText(this.context, "FIN!! TODO: Ir al back", Toast.LENGTH_SHORT).show()

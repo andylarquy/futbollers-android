@@ -6,6 +6,7 @@ import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.DATE_FORMAT
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.mediumPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
@@ -14,17 +15,16 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.LocalDateTime
+import java.util.*
 
 
 object PartidoService {
 
-    fun getPartidosDelUsuario(
-        context: Context,
-        usuario: Usuario,
-        callback: (MutableList<Partido>) -> Unit
-    ) {
+    fun getPartidosDelUsuario(context: Context, usuario: Usuario, callback: (MutableList<Partido>) -> Unit) {
 
         val queue = Volley.newRequestQueue(context)
 
@@ -36,10 +36,13 @@ object PartidoService {
 
             Response.Listener<JSONArray> { response ->
 
-                val partidos = Gson().fromJson(response.toString(), Array<Partido>::class.java)
+                val gson = GsonBuilder()
+                    .setDateFormat(DATE_FORMAT)
+                    .create()
+
+                val partidos = gson.fromJson(response.toString(), Array<Partido>::class.java)
 
                 Log.i("HomeActivity", "[DEBUG]:Communication with API Rest Suceeded")
-
                 Log.i("HomeActivity", response.toString())
                 callback(partidos.toMutableList())
             },
