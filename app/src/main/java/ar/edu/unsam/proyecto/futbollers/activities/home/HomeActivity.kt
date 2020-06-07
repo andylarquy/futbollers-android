@@ -14,9 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
+import androidx.work.*
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.ChatFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment.EquipoFragment
@@ -54,9 +52,9 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
-        val gpsRequest = PeriodicWorkRequest.Builder(WorkerGPS::class.java, 3, TimeUnit.SECONDS).build()
 
-        WorkManager.getInstance().enqueueUniquePeriodicWork("GPS",  ExistingPeriodicWorkPolicy.REPLACE, gpsRequest);
+        val gpsRequest = OneTimeWorkRequest.Builder(WorkerGPS::class.java).build()
+        WorkManager.getInstance().enqueueUniqueWork("GPS", ExistingWorkPolicy.REPLACE, gpsRequest)
 
         //WorkManager.getInstance().cancelAllWorkByTag("GPS")
 
