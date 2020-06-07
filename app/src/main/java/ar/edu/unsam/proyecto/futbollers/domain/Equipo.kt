@@ -6,7 +6,7 @@ class Equipo {
     var foto: String? = null
 
     var owner: Usuario? = null
-    var integrantes: List<Usuario>? = ArrayList<Usuario>()
+    var integrantes: MutableList<Usuario>? = ArrayList<Usuario>()
 
     fun esOwnerById(usuario: Usuario): Boolean{
         return owner!!.idUsuario!! == usuario.idUsuario
@@ -19,6 +19,12 @@ class Equipo {
     fun contieneIntegrante(integranteBuscado: Usuario): Boolean {
         return integrantes!!.any { integrante ->
             integrante.idUsuario != (-1).toLong() && integrante.idUsuario == integranteBuscado.idUsuario
+        }
+    }
+
+    fun rellenarConUsuario(usuario: Usuario, limite: Int){
+        while(integrantes!!.size < limite){
+            integrantes!!.add(usuario)
         }
     }
 

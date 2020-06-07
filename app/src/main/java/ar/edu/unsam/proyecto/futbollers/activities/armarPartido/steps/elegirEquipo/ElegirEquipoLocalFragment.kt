@@ -167,11 +167,14 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
                         val nuevoUsuario = Usuario()
                         nuevoUsuario.idUsuario = -1
                         nuevoUsuario.sexo = sexoBusquedaEquipo
+                        nuevoUsuario.email = rangoDeBusquedaEquipo.toString()
 
                         val nuevoEquipo = Equipo()
                         nuevoEquipo.idEquipo = -1
                         nuevoEquipo.foto = "https://i.imgur.com/c9zvT8Z.png"
                         nuevoEquipo.owner = nuevoUsuario
+
+                        nuevoEquipo.rellenarConUsuario(nuevoUsuario, canchaSeleccionada!!.cantidadJugadoresPorEquipo())
 
                         equipoLocalSeleccionado = nuevoEquipo
 

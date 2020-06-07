@@ -231,7 +231,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
             if (status) {
                 //Si hay un codigo de promocion
                 if(!codigoPromocionalInvalido){
-                    Toasty.success(context!!, promocionSeleccionada?.descripcion+" ("+ promocionSeleccionada?.porcentajeDescuento.toString()+"% OFF)", Toast.LENGTH_SHORT, true).show();
+                    Toasty.success(context!!, promocionSeleccionada?.descripcion+" ("+ promocionSeleccionada?.porcentajeDescuento.toString()+"% OFF)", Toast.LENGTH_SHORT, true).show()
                 }
 
                 callback.goToNextStep()

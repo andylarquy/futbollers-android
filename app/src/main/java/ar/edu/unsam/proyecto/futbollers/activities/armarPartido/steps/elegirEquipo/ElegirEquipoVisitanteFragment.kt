@@ -1,5 +1,6 @@
 package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -13,9 +14,11 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.app.ShareCompat.getCallingActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.*
+import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
@@ -160,11 +163,14 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
                         val nuevoUsuario = Usuario()
                         nuevoUsuario.idUsuario = -1
                         nuevoUsuario.sexo = sexoBusquedaEquipo
+                        nuevoUsuario.email = rangoDeBusquedaEquipo.toString()
 
                         val nuevoEquipo = Equipo()
                         nuevoEquipo.idEquipo = -1
                         nuevoEquipo.foto = "https://i.imgur.com/c9zvT8Z.png"
-                        nuevoEquipo.owner = nuevoUsuario
+                        nuevoEquipo.owner = usuarioLogueado
+
+                        nuevoEquipo.rellenarConUsuario(nuevoUsuario, canchaSeleccionada!!.cantidadJugadoresPorEquipo())
 
                         equipoVisitanteSeleccionado = nuevoEquipo
 
@@ -413,7 +419,8 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
     }
 
     fun callbackPostPartido(){
-        Log.i("ArmarPartidoActivity",  "Mira, creo que anduvo")
+        Toasty.success(context!!, "¡El partido ha sido creado correctamente!", Toast.LENGTH_SHORT, true).show()
+        activity!!.finish()
     }
 
 

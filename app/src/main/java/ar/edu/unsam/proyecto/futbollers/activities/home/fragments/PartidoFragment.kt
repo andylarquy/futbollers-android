@@ -78,7 +78,7 @@ class EquipoFragment: Fragment(), OnRecyclerItemClickListener {
         })
 
         fab.setOnClickListener {
-            val intent = Intent(activity, ArmarPartidoActivty::class.java).apply{}
+            val intent = Intent(activity, ArmarPartidoActivty::class.java).putExtra("activity", activity!!::class.java.simpleName).apply{}
             startActivity(intent)
         }
 

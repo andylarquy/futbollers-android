@@ -40,7 +40,7 @@ dependencies {
     //Bilbioteca para toasts copados
     implementation 'com.github.GrenderG:Toasty:1.4.2'
 
-    //Bibliotecas para Dialogs - Core
+    //Bibliotecas para Dialogs - Core (Mejor biblioteca de la vida)
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
     //DatePicker
     implementation 'com.afollestad.material-dialogs:datetime:3.1.1'
