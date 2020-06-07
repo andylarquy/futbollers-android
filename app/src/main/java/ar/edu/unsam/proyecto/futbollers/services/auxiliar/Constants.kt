@@ -25,6 +25,8 @@ object Constants {
      val SEXO = arrayOf("Masculino", "Femenino", "Mixto")
      const val DATE_FORMAT = "yyyy-MM-dd'T'HH:mm"
 
+     const val INTERVALO_GPS: Long = 5000
+
      val simpleDateFormatter =  SimpleDateFormat(DATE_FORMAT)
 
 

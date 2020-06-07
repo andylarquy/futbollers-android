@@ -37,6 +37,22 @@ android {
 
 dependencies {
 
+    //Services 1
+    //implementation 'com.hossam.backgroundService:backgroundService:1.2.0'
+
+    //Google Worker
+    implementation "android.arch.work:work-runtime-ktx:2.3.4"
+
+    //Tercera biblioteca GPS
+    implementation 'com.github.delight-im:Android-SimpleLocation:v1.1.0'
+
+    //Segunda biblioteca GPS
+    //implementation 'io.nlopez.smartlocation:library:3.3.3'
+    //implementation 'io.nlopez.smartlocation:rx:3.3.3'
+
+    //Primera biblioteca GPS
+    //implementation 'com.github.safetysystemtechnology:location-tracker-background:v1.3'
+
     //Bilbioteca para toasts copados
     implementation 'com.github.GrenderG:Toasty:1.4.2'
 
