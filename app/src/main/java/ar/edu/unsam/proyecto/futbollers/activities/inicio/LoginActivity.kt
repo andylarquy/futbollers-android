@@ -74,9 +74,10 @@ class LoginActivity : AppCompatActivity() {
         loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueado)
     }
 
-    fun guardarCredenciales(email: String?, password: String?){
+    fun guardarCredenciales(email: String?, password: String?, idUsuario: String?){
         val sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE)
         val sharedPrefEdit: SharedPreferences.Editor = sharedPref.edit()
+        sharedPrefEdit.putString("idUsuario", idUsuario)
         sharedPrefEdit.putString("email", email)
         sharedPrefEdit.putString("password", password)
         sharedPrefEdit.apply()
@@ -85,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
     fun callbackUsuarioLogueado(usuario: Usuario){
         UsuarioLogueado.usuario = usuario
 
-        guardarCredenciales(usuarioLogueado.email, usuarioLogueado.password)
+        guardarCredenciales(usuarioLogueado.email, usuarioLogueado.password, usuarioLogueado.idUsuario.toString())
         //GoTo HomeActivty
         val intent = Intent(this,
             HomeActivity::class.java).apply{}

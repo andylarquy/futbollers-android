@@ -3,12 +3,8 @@ package ar.edu.unsam.proyecto.futbollers.activities.home
 //import br.com.safety.locationlistenerhelper.core.LocationTracker
 
 import android.Manifest
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,10 +14,10 @@ import androidx.work.*
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.ChatFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment.EquipoFragment
+import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.WorkerGPS
 import im.delight.android.location.SimpleLocation
 import kotlinx.android.synthetic.main.activity_home.*
-import java.util.concurrent.TimeUnit
 
 
 class HomeActivity : AppCompatActivity() {
@@ -53,7 +49,11 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        val gpsRequest = OneTimeWorkRequest.Builder(WorkerGPS::class.java).build()
+        val data = Data.Builder().putLong("idUsuario", UsuarioLogueado.usuario.idUsuario!!).build()
+
+        val gpsRequest = OneTimeWorkRequest.Builder(WorkerGPS::class.java)
+            .setInputData(data)
+            .build()
         WorkManager.getInstance().enqueueUniqueWork("GPS", ExistingWorkPolicy.REPLACE, gpsRequest)
 
         //WorkManager.getInstance().cancelAllWorkByTag("GPS")
@@ -108,6 +108,8 @@ class HomeActivity : AppCompatActivity() {
             true
         }
     }
+
+
 
 
     override fun onResume() {
