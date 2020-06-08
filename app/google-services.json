@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "373439344087",
+    "firebase_url": "https://futbollers-1bf58.firebaseio.com",
+    "project_id": "futbollers-1bf58",
+    "storage_bucket": "futbollers-1bf58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373439344087:android:b411cfbc679d73a0bb6f92",
+        "android_client_info": {
+          "package_name": "ar.edu.unsam.proyecto.futbollers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373439344087-op0nlnuhnmjt7rnhikdrs7g9mlpfhjhp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unsam.proyecto.futbollers",
+            "certificate_hash": "2d7efa12fea7e9ec49ce1984e1ea9c245d04b891"
+          }
+        },
+        {
+          "client_id": "373439344087-gnuhn0si9qpjmo040s278rfjj6auehb5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVkGVMMSOOBCRrcZeRca7JFQM3fG3PXQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373439344087-gnuhn0si9qpjmo040s278rfjj6auehb5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
