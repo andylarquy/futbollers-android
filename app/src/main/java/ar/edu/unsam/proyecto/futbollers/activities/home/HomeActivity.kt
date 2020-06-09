@@ -56,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
             .build()
         WorkManager.getInstance().enqueueUniqueWork("GPS", ExistingWorkPolicy.REPLACE, gpsRequest)
 
-        //WorkManager.getInstance().cancelAllWorkByTag("GPS")
+        WorkManager.getInstance().cancelAllWorkByTag("GPS")
 
     }
 

@@ -23,13 +23,18 @@ import com.squareup.picasso.Picasso
 import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout.*
 import com.stepstone.stepper.VerificationError
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_elegir_empresa.*
 import kotlinx.android.synthetic.main.row_empresa.view.*
 
 
-class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListener {
+class ElegirEmpresaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListener {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_elegir_empresa, container, false)
     }
 
@@ -66,7 +71,7 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
 
     }
 
-    fun callBackEmpresa(empresa: MutableList<Empresa>){
+    fun callBackEmpresa(empresa: MutableList<Empresa>) {
         empresaAdapter.items?.clear()
         empresaAdapter.items = empresa
         empresaAdapter.notifyDataSetChanged()
@@ -86,7 +91,12 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
     }
 
     override fun onNextClicked(callback: OnNextClickedCallback) {
-        Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+
+        if (empresaSeleccionada === null) {
+            Toasty.error(context!!, "Debe eleccionar una sede", Toast.LENGTH_SHORT, true).show()
+        } else {
+            Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+        }
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {
@@ -110,13 +120,11 @@ class ElegirEmpresaFragment: Fragment(), BlockingStep, OnRecyclerItemClickListen
 }
 
 
-
-
-
 //RECOMIENDO CERRAR ESTOS ARCHIVOS, SON AUXILIARES
 // (CORTESIA DE com.leodroidcoder:generic-adapter:1.0.1
 
-class EmpresaViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) : BaseViewHolder<Empresa, OnRecyclerItemClickListener>(itemView, listener) {
+class EmpresaViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) :
+    BaseViewHolder<Empresa, OnRecyclerItemClickListener>(itemView, listener) {
 
     private val nombre: TextView = itemView.nombre
     private val direccion: TextView = itemView.direccion
@@ -136,7 +144,11 @@ class EmpresaViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
     }
 }
 
-class EmpresaAdapter(context: Context, listener: ElegirEmpresaFragment) : GenericRecyclerViewAdapter<Empresa, OnRecyclerItemClickListener, EmpresaViewHolder>(context, listener) {
+class EmpresaAdapter(context: Context, listener: ElegirEmpresaFragment) :
+    GenericRecyclerViewAdapter<Empresa, OnRecyclerItemClickListener, EmpresaViewHolder>(
+        context,
+        listener
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmpresaViewHolder {
         return EmpresaViewHolder(

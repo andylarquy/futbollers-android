@@ -10,6 +10,7 @@
     android:layout_height="match_parent"
     android:id="@+id/stepperLayout"
     app:ms_stepperType="tabs"
+        android:clickable="false"
     app:ms_backButtonText="ATRAS"
     app:ms_nextButtonText="SIGUIENTE"
     app:ms_nextButtonColor="@color/colorPrimary"

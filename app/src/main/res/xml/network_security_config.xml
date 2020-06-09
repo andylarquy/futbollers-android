@@ -7,8 +7,12 @@
         <domain includeSubdomains="true">192.168.0.63</domain>
         <domain includeSubdomains="true">localhost</domain>
 
+
         <domain includeSubdomains="true">127.0.0.1</domain>
         <domain includeSubdomains="true">192.168.0.28</domain>
         <domain includeSubdomains="true">http://192.168.0.28</domain>
+
+        <domain includeSubdomains="true">http://190.16.251.41</domain>
+        <domain includeSubdomains="true">190.16.251.41</domain>
     </domain-config>
 </network-security-config>

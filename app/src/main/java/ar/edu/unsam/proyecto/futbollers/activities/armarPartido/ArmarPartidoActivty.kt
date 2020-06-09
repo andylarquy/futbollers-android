@@ -72,7 +72,7 @@ const val CANTIDAD_DE_STEPS: Int = 4
 class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm,
     context
 ) {
-    private val CURRENT_STEP_POSITION_KEY = "messageResourceId"
+    private val CURRENT_STEP_POSITION_KEY = "asd"//messageResourceId
 
 
     override fun createStep(position: Int): Step? {

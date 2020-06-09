@@ -22,6 +22,7 @@
     <string name="text_display_fecha">%1$s/%2$s/%3$s - %4$s:%5$s</string>
     <string name="input_codigo_promocion">Código promocional</string>
 
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
 
 </resources>

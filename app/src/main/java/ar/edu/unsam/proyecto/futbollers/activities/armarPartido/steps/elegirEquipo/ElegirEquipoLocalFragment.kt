@@ -12,10 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.canchaSeleccionada
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.equipoLocalSeleccionado
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.showStepperNavigation
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.stepForward
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.*
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.EquipoService
@@ -323,6 +320,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     }
 
     override fun onSelected() {
+
         showStepperNavigation()
 
         setupDialogs()

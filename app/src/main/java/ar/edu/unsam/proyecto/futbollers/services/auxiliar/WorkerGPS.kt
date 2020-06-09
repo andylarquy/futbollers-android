@@ -34,8 +34,7 @@ class WorkerGPS(context: Context, workerParams: WorkerParameters) : Worker(conte
     override fun doWork(): Result {
         idUsuario = inputData.getLong("idUsuario", 0)
         Log.d("PWLOG", "Let me sleep a moment...");
-        //Thread.sleep(60000 * 5);//5 minutes cycle
-        Thread.sleep(5000)
+        Thread.sleep(60000 * 2);//2 minutes cycle
         doTheActualProcessingWork()
 
         val data = Data.Builder().putLong("idUsuario", idUsuario!!).build()

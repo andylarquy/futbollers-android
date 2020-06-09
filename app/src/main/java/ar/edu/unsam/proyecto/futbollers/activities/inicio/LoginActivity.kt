@@ -15,8 +15,8 @@ import ar.edu.unsam.proyecto.futbollers.databinding.ActivityLoginBinding
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.LoginService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_login.*
-
 
 
 class LoginActivity : AppCompatActivity() {
@@ -38,8 +38,6 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, SignUpActivity::class.java).apply{}
             startActivity(intent)
 
-            Toast.makeText(this@LoginActivity, "TODO: Hacer SignUpActivity", Toast.LENGTH_LONG).show()
-
         }
 
         btn_login.setOnClickListener {
@@ -48,6 +46,8 @@ class LoginActivity : AppCompatActivity() {
             // RENDER PANTALLA DE CARGA
             loading_spinner.alpha = 1F
             loading_spinner.visibility = View.VISIBLE
+
+
 
             loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueado)
 
@@ -84,6 +84,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun callbackUsuarioLogueado(usuario: Usuario){
+
         UsuarioLogueado.usuario = usuario
 
         guardarCredenciales(usuarioLogueado.email, usuarioLogueado.password, usuarioLogueado.idUsuario.toString())

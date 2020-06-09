@@ -134,6 +134,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
     }
 
     override fun onSelected() {
+
         showStepperNavigation()
 
         //Render pantalla de carga

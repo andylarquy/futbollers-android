@@ -20,6 +20,9 @@ object Constants {
      //DEBUG
      const val BASE_URL = "http://192.168.0.28:9000"
 
+     //IP PRODUCCION CASA
+     //const val BASE_URL = "http://190.16.251.41:9000"
+
      val POSICIONES = arrayOf("Arquero","Defensor","Mediocampista","Delantero")
      val DISTANCIAS = arrayOf("3","5","10","20")
      val SEXO = arrayOf("Masculino", "Femenino", "Mixto")
@@ -33,5 +36,7 @@ object Constants {
      val defaultPolicy = DefaultRetryPolicy(300, 3, 1F)
      val mediumPolicy = DefaultRetryPolicy(400, 3, 1F)
      val longPolicy = DefaultRetryPolicy(500, 3, 1F)
+     val partidoPolicy = DefaultRetryPolicy(1000, 1, 1F)
+
 
 }

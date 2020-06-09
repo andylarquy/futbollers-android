@@ -17,6 +17,7 @@ class Usuario: BaseObservable() {
     var email:String? = null
     var lat: Double? = null
     var lon: Double? = null
+    var token: String? = null
 
 
 

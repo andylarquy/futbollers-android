@@ -11,6 +11,7 @@ import com.android.volley.*
 
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.firebase.iid.FirebaseInstanceId
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -18,23 +19,35 @@ object LoginService {
 
  fun getUsuarioLogueado(context: Context, usuario: Usuario, callback: (Usuario) -> Unit, callbackError: (Exception) -> Unit) {
 
-    val queue = Volley.newRequestQueue(context)
-    val url = "$BASE_URL/login"
-
-    val request = JsonObjectRequest(
-       Request.Method.POST, url, Usuario().toJson(usuario),
-       Response.Listener<JSONObject> { response ->
-          val nuevoUsuario = Usuario().fromJson(response.toString())
-          Log.i("LoginActivity", "Respuesta de la API Rest: $response\n")
-          callback(nuevoUsuario)
-       },
-       Response.ErrorListener {
-          handleError(context, it, callbackError)
-       })
-    request.retryPolicy = defaultPolicy
-
-    queue.add(request)
+    FirebaseInstanceId.getInstance().instanceId
+       .addOnSuccessListener { instanceIdResult ->
+          val deviceToken = instanceIdResult.token
+          usuario.token = deviceToken
+          Log.i("HomeActivity", "[DEBUG] Device token: ${usuario.token}")
+          peticionUsuarioLogueado(context, usuario, callback, callbackError)
+       }
  }
+
+   fun peticionUsuarioLogueado(context: Context, usuario: Usuario, callback: (Usuario) -> Unit, callbackError: (Exception) -> Unit){
+      val queue = Volley.newRequestQueue(context)
+      val url = "$BASE_URL/login"
+
+      Log.i("LoginActivity", "[DEBUG] Device token: ${usuario.token}")
+      Log.i("LoginActivity", "[DEBUG] JSON SALIDA: ${Usuario().toJson(usuario)}")
+      val request = JsonObjectRequest(
+         Request.Method.POST, url, Usuario().toJson(usuario),
+         Response.Listener<JSONObject> { response ->
+            val nuevoUsuario = Usuario().fromJson(response.toString())
+            Log.i("LoginActivity", "Respuesta de la API Rest: $response\n")
+            callback(nuevoUsuario)
+         },
+         Response.ErrorListener {
+            handleError(context, it, callbackError)
+         })
+      request.retryPolicy = defaultPolicy
+
+      queue.add(request)
+   }
 
  fun handleError(context: Context, error: VolleyError, callbackError: (Exception) -> Unit) {
     Log.i("LoginActivity", "[DEBUG]: API Rest Error: +" + error.toString())
