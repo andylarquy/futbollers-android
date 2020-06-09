@@ -98,7 +98,7 @@ object PartidoService {
             Toast.makeText(context, "Ese mail ya pertenece a un usuario", Toast.LENGTH_SHORT).show()
         } else {
 
-            Toast.makeText(
+           Toast.makeText(
                 context,
                 "Error inesperado al comunicarse con el servidor",
                 Toast.LENGTH_SHORT

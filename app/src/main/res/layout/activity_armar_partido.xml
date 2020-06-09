@@ -10,14 +10,12 @@
     android:layout_height="match_parent"
     android:id="@+id/stepperLayout"
     app:ms_stepperType="tabs"
-        android:clickable="false"
     app:ms_backButtonText="ATRAS"
     app:ms_nextButtonText="SIGUIENTE"
     app:ms_nextButtonColor="@color/colorPrimary"
     app:ms_completeButtonText="FIN"
     app:ms_showBottomNavigation="true"
     >
-        <!-- Che, mogobobo cambiaste esto y lo rompiste -->
     </com.stepstone.stepper.StepperLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

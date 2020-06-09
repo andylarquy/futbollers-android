@@ -147,8 +147,6 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
             hideCanchaSeleccionada()
         }
 
-        Toast.makeText(context!!, "Eq: "+equipoLocalSeleccionado?.idEquipo+" "+ equipoLocalSeleccionado?.integrantes?.map{it.idUsuario}+ " own: "+equipoLocalSeleccionado?.owner?.nombre, Toast.LENGTH_SHORT).show()
-
     }
 
     var statusG = true

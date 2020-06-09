@@ -72,6 +72,8 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
     var sexoBusquedaJugador: String? = null
     var posicionBusquedaJugador: String? = null
 
+    var todosLosCandidatos: MutableList<Usuario> = ArrayList()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -108,6 +110,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
     fun modalElegirEquipoCallback(equipos: MutableList<Equipo>) {
         elegirEquipoAdapter.clear()
+        equipos.removeAll{it.idEquipo == equipoLocalSeleccionado!!.idEquipo}
         elegirEquipoAdapter.items = equipos
         elegirEquipoAdapter.notifyDataSetChanged()
 
@@ -117,7 +120,20 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
     fun modalElegirAmigosCallback(amigos: MutableList<Usuario>) {
         elegirAmigosAdapter.clear()
-        elegirAmigosAdapter.items = amigos
+
+        amigos.forEach{amigo ->
+            if(!equipoLocalSeleccionado!!.integrantes!!.any{it.idUsuario == amigo.idUsuario}){
+                todosLosCandidatos.add(amigo)
+            }
+        }
+
+
+        amigos.forEach{amigo ->
+            if(!equipoLocalSeleccionado!!.integrantes!!.any{it.idUsuario == amigo.idUsuario} && !integranteAdapter.items.any{it.idUsuario == amigo.idUsuario}){
+                elegirAmigosAdapter.add(amigo)
+            }
+        }
+
         elegirAmigosAdapter.notifyDataSetChanged()
     }
 
@@ -182,8 +198,6 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
                 }
                 .negativeButton(text = "Cancelar"){
-                    it.view.combo_distancia.setText("Rango de busqueda", false)
-                    it.view.combo_sexo_equipo.setText("Sexo del equipo", false)
                     rangoDeBusquedaEquipo = null
                     sexoBusquedaEquipo = null
                 }
@@ -226,14 +240,14 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
                         integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
                         cantidadJugadores.text = integranteAdapter.items.size.toString()
 
+                        refrescarListaDeAmigos()
+
                     }else{
                         Toasty.error(context, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
                     }
 
                 }
                 .negativeButton(text = "Cancelar"){
-                    it.view.combo_distancia.setText("Rango de busqueda", false)
-                    it.view.combo_sexo_equipo.setText("Sexo del equipo", false)
                     rangoDeBusquedaJugador = null
                     sexoBusquedaJugador = null
                     posicionBusquedaJugador = null
@@ -265,7 +279,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
             valido = false
         }
 
-        if(vistaGPS.combo_distancia?.text.toString() == "Sexo del equipo"){
+        if(vistaGPS.combo_sexo_equipo?.text.toString() == "Sexo del equipo"){
             valido = false
         }
 
@@ -308,15 +322,14 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
         if(esValidoComoEquipoTemporal(equipoTemporal)) {
             equipoVisitanteSeleccionado = equipoTemporal
-            //TODO: Ir al back
             postPartido()
-            Toast.makeText(this.context, "FIN!! TODO: Ir al back", Toast.LENGTH_SHORT).show()
         }
 
 
     }
 
     override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback) {
+        equipoVisitanteSeleccionado = null
         callback.goToPrevStep()
     }
 
@@ -330,7 +343,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         setupDialogs()
 
         //Ya que vas para alla cargame los equipos
-        equipoService.getEquiposDelUsuario(context!!, usuarioLogueado, ::modalElegirEquipoCallback)
+        equipoService.getEquiposAdministradosPorElUsuario(context!!, usuarioLogueado, ::modalElegirEquipoCallback)
 
         //Ah, y me vas a buscar los amigos tambien
         usuarioService.getAmigosDelUsuario( context!!, usuarioLogueado, ::modalElegirAmigosCallback)
@@ -354,32 +367,42 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         cantidadJugadores.text = integranteAdapter.items.size.toString()
         integranteAdapter.notifyDataSetChanged()
 
-        Toast.makeText(context!!, "Eq: "+equipoLocalSeleccionado?.idEquipo+" "+ equipoLocalSeleccionado?.integrantes?.map{it.idUsuario}+ " own: "+equipoLocalSeleccionado?.owner?.nombre, Toast.LENGTH_SHORT).show()
-
-    }
+        }
 
     override fun onError(error: VerificationError) {}
 
 
+    //TODO: Delegar en un "validarEquipoClick" feliz (con un flag status)
+    //TODO: Agregar tmb validacion de que usuarioLogueado es el owner
     override fun onElegirEquipoClick(position: Int) {
         val equipo = elegirEquipoAdapter.getItem(position)
 
-        if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
+        if(ningunJugadorDelEquipoSeleccionadoEstaEnElLocal(equipo)){
 
-            if(equipoLocalSeleccionado!!.idEquipo != (-1).toLong() && equipoLocalSeleccionado!!.idEquipo != equipo!!.idEquipo!!.toLong()){
-                dialogEquipo?.dismiss()
-                equipoVisitanteSeleccionado = equipo
+            if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
 
-                postPartido()
-            }else{
-                Toasty.error(context!!, "Este equipo ya fue elegido como equipo local", Toast.LENGTH_SHORT, true).show()
+                if(equipoLocalSeleccionado!!.idEquipo != (-1).toLong() && equipoLocalSeleccionado!!.idEquipo != equipo!!.idEquipo!!.toLong()){
+                        dialogEquipo?.dismiss()
+                        equipoVisitanteSeleccionado = equipo
+
+                        postPartido()
+                    }else{
+                        Toasty.error(context!!, "Este equipo ya fue elegido como equipo local", Toast.LENGTH_SHORT, true).show()
+                    }
+            } else {
+                Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_SHORT, true).show()
             }
 
-
-        } else {
-            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_SHORT, true).show()
+        }else{
+            Toasty.error(context!!, "El equipo seleccionado tiene integrantes que forman parte del equipo local", Toast.LENGTH_SHORT, true).show()
         }
 
+    }
+
+    fun ningunJugadorDelEquipoSeleccionadoEstaEnElLocal(equipo: Equipo):Boolean{
+        return equipo.integrantes!!.all { integrante ->
+            equipoLocalSeleccionado!!.integrantes!!.all{it.idUsuario != integrante.idUsuario}
+            }
     }
 
     override fun onElegirAmigoClick(position: Int) {
@@ -393,6 +416,8 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
                 integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
                 cantidadJugadores.text = integranteAdapter.items.size.toString()
 
+                refrescarListaDeAmigos()
+
                 dialogAmigos?.dismiss()
             }
         }else{
@@ -404,8 +429,25 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
     override fun onDeleteIntegranteClick(position: Int) {
         val integrante = integranteAdapter.getItem(position)
         integranteAdapter.remove(integrante)
-        integranteAdapter.notifyItemRemoved(position)
+        integranteAdapter.notifyDataSetChanged()
         cantidadJugadores.text = integranteAdapter.items.size.toString()
+        refrescarListaDeAmigos()
+    }
+
+    fun refrescarListaDeAmigos(){
+        elegirAmigosAdapter.items.clear()
+
+        todosLosCandidatos.forEach{
+            if(!esIntegrante(it)){
+                elegirAmigosAdapter.items.add(it)
+            }
+        }
+
+        elegirAmigosAdapter.notifyDataSetChanged()
+    }
+
+    fun esIntegrante(usuario: Usuario): Boolean{
+        return integranteAdapter.items.any{it.idUsuario == usuario.idUsuario}
     }
 
     fun postPartido(){
@@ -417,6 +459,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         partido.fechaDeReserva = fechaSeleccionada
 
         partidoService.postNuevoPartido(context!!, partido, ::callbackPostPartido)
+        Log.i("ArmarPartidoActivity", "SE ARMO UN PARTIDO VIEJA")
 
     }
 

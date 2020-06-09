@@ -362,7 +362,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
             cantidadJugadores.text = integranteAdapter.items.size.toString()
         }
 
-        Toast.makeText(context!!, "Eq: "+equipoLocalSeleccionado?.idEquipo+" "+ equipoLocalSeleccionado?.integrantes?.map{it.idUsuario}+ " own: "+equipoLocalSeleccionado?.owner?.nombre, Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onError(error: VerificationError) {}
@@ -434,8 +434,6 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
         }
 
         elegirAmigosAdapter.notifyDataSetChanged()
-
-
     }
 
     fun esIntegrante(usuario: Usuario): Boolean{
