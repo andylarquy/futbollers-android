@@ -121,11 +121,20 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     }
 
     fun modalElegirAmigosCallback(amigos: MutableList<Usuario>) {
+        todosLosCandidatos = ArrayList(amigos)
         elegirAmigosAdapter.clear()
-        elegirAmigosAdapter.items = amigos
+
+        amigos.forEach{ amigo ->
+            if(!integranteAdapter.items.any{it.idUsuario == amigo.idUsuario}){
+                elegirAmigosAdapter.items.add(amigo)
+            }
+        }
+
+        //elegirAmigosAdapter.items = amigos
 
         elegirAmigosAdapter.notifyDataSetChanged()
-        todosLosCandidatos = ArrayList(elegirAmigosAdapter.items)
+        integranteAdapter.notifyDataSetChanged()
+
 
     }
 
@@ -174,7 +183,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
                         val nuevoEquipo = Equipo()
                         nuevoEquipo.idEquipo = -1
                         nuevoEquipo.foto = "https://i.imgur.com/c9zvT8Z.png"
-                        nuevoEquipo.owner = nuevoUsuario
+                        nuevoEquipo.owner = usuarioLogueado
 
                         nuevoEquipo.rellenarConUsuario(nuevoUsuario, canchaSeleccionada!!.cantidadJugadoresPorEquipo())
 
@@ -267,7 +276,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
             valido = false
         }
 
-        if(vistaGPS.combo_distancia?.text.toString() == "Sexo del equipo"){
+        if(vistaGPS.combo_sexo_equipo?.text.toString() == "Sexo del equipo"){
             valido = false
         }
 
@@ -316,7 +325,8 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback) {
         integranteAdapter.items.clear()
         integranteAdapter.notifyDataSetChanged()
-        Toast.makeText(this.context, "TODO: onBackClicked -> Resetear datos del equipo", Toast.LENGTH_SHORT).show()
+
+        equipoLocalSeleccionado = null
         callback.goToPrevStep()
     }
 
@@ -351,6 +361,8 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
             integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
             cantidadJugadores.text = integranteAdapter.items.size.toString()
         }
+
+        Toast.makeText(context!!, "Eq: "+equipoLocalSeleccionado?.idEquipo+" "+ equipoLocalSeleccionado?.integrantes?.map{it.idUsuario}+ " own: "+equipoLocalSeleccionado?.owner?.nombre, Toast.LENGTH_SHORT).show()
     }
 
     override fun onError(error: VerificationError) {}
@@ -362,7 +374,9 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
         if(equipo.owner!!.idUsuario == usuarioLogueado.idUsuario) {
             if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
+
                 equipoLocalSeleccionado = equipo
+
                 dialogEquipo.dismiss()
 
                 stepForward()
@@ -402,7 +416,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
         if(integrante.idUsuario !== usuarioLogueado.idUsuario) {
 
             integranteAdapter.remove(integrante)
-            integranteAdapter.notifyItemRemoved(position)
+            integranteAdapter.notifyDataSetChanged()
             cantidadJugadores.text = integranteAdapter.items.size.toString()
             refrescarListaDeAmigos()
         }else{
@@ -425,7 +439,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     }
 
     fun esIntegrante(usuario: Usuario): Boolean{
-        return integranteAdapter.items.contains(usuario)
+        return integranteAdapter.items.any{it.idUsuario == usuario.idUsuario}
     }
 
 

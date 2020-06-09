@@ -354,6 +354,8 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         cantidadJugadores.text = integranteAdapter.items.size.toString()
         integranteAdapter.notifyDataSetChanged()
 
+        Toast.makeText(context!!, "Eq: "+equipoLocalSeleccionado?.idEquipo+" "+ equipoLocalSeleccionado?.integrantes?.map{it.idUsuario}+ " own: "+equipoLocalSeleccionado?.owner?.nombre, Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onError(error: VerificationError) {}
