@@ -46,6 +46,8 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     val usuarioLogueado = UsuarioLogueado.usuario
     var rv = integrantes_list
 
+    var todosLosCandidatos: List<Usuario> = ArrayList()
+
     //Setup Dialogs
     lateinit var dialogEquipo: MaterialDialog
     lateinit var dialogAmigos: MaterialDialog
@@ -121,7 +123,10 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     fun modalElegirAmigosCallback(amigos: MutableList<Usuario>) {
         elegirAmigosAdapter.clear()
         elegirAmigosAdapter.items = amigos
+
         elegirAmigosAdapter.notifyDataSetChanged()
+        todosLosCandidatos = ArrayList(elegirAmigosAdapter.items)
+
     }
 
     fun setupDialogs() {
@@ -227,18 +232,14 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
                         integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
                         cantidadJugadores.text = integranteAdapter.items.size.toString()
 
+                        refrescarListaDeAmigos()
+
                     }else{
                         Toasty.error(context!!, "Se ha dejado un campo vacío", Toast.LENGTH_SHORT, true).show()
                     }
 
                 }
-                .negativeButton(text = "Cancelar"){
-                    it.view.combo_distancia.setText("Rango de busqueda", false)
-                    it.view.combo_sexo_equipo.setText("Sexo del equipo", false)
-                    rangoDeBusquedaJugador = null
-                    sexoBusquedaJugador = null
-                    posicionBusquedaJugador = null
-                }
+                .negativeButton(text = "Cancelar"){}
                 .customView(R.layout.dialog_elegir_jugador_gps)
 
 
@@ -293,6 +294,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     }
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback) {
+
         val equipoTemporal = Equipo()
         equipoTemporal.integrantes = integranteAdapter.items
         equipoTemporal.foto = "https://i.imgur.com/Tyf5hJn.png"
@@ -312,6 +314,9 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     }
 
     override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback) {
+        integranteAdapter.items.clear()
+        integranteAdapter.notifyDataSetChanged()
+        Toast.makeText(this.context, "TODO: onBackClicked -> Resetear datos del equipo", Toast.LENGTH_SHORT).show()
         callback.goToPrevStep()
     }
 
@@ -326,7 +331,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
         setupDialogs()
 
         //Ya que vas para alla cargame los equipos
-        equipoService.getEquiposDelUsuario(context!!, usuarioLogueado, ::modalElegirEquipoCallback)
+        equipoService.getEquiposAdministradosPorElUsuario(context!!, usuarioLogueado, ::modalElegirEquipoCallback)
 
         //Ah, y me vas a buscar los amigos tambien
         usuarioService.getAmigosDelUsuario( context!!, usuarioLogueado, ::modalElegirAmigosCallback )
@@ -339,23 +344,38 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
         elegir_equipo_titulo.text = "Elegir Equipo Local"
 
-
-
+        //TODO: Metodo agregar integrante
+        //If el usuarioLogueado no es un integrante
+        if(!integranteAdapter.items.contains(usuarioLogueado)) {
+            integranteAdapter.items.add(usuarioLogueado)
+            integranteAdapter.notifyItemInserted(integranteAdapter.items.size)
+            cantidadJugadores.text = integranteAdapter.items.size.toString()
+        }
     }
 
     override fun onError(error: VerificationError) {}
 
 
     override fun onElegirEquipoClick(position: Int) {
+
         val equipo = elegirEquipoAdapter.getItem(position)
 
-        if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
-            equipoLocalSeleccionado = equipo
-            dialogEquipo.dismiss()
+        if(equipo.owner!!.idUsuario == usuarioLogueado.idUsuario) {
+            if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
+                equipoLocalSeleccionado = equipo
+                dialogEquipo.dismiss()
 
-            stepForward()
-        } else {
-            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_LONG, true).show()
+                stepForward()
+            } else {
+                Toasty.error(
+                    context!!,
+                    "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(),
+                    Toast.LENGTH_SHORT,
+                    true
+                ).show()
+            }
+        }else{
+            Toasty.error(context!!, "Como hiciste eso? Solo podes agregar equipos de los que sos owner!", Toast.LENGTH_SHORT, true).show()
         }
 
     }
@@ -367,6 +387,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
             integranteAdapter.items.add(integrante)
             integranteAdapter.notifyDataSetChanged()
             cantidadJugadores.text = integranteAdapter.items.size.toString()
+            refrescarListaDeAmigos()
             dialogAmigos.dismiss()
         } else {
             Toasty.error(context!!, "El integrante ya fue añadido", Toast.LENGTH_LONG, true).show()
@@ -375,10 +396,36 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
     }
 
     override fun onDeleteIntegranteClick(position: Int) {
+
         val integrante = integranteAdapter.getItem(position)
-        integranteAdapter.remove(integrante)
-        integranteAdapter.notifyItemRemoved(position)
-        cantidadJugadores.text = integranteAdapter.items.size.toString()
+
+        if(integrante.idUsuario !== usuarioLogueado.idUsuario) {
+
+            integranteAdapter.remove(integrante)
+            integranteAdapter.notifyItemRemoved(position)
+            cantidadJugadores.text = integranteAdapter.items.size.toString()
+            refrescarListaDeAmigos()
+        }else{
+            Toasty.error(context!!, "Debes formar parte del equipo local para continuar", Toast.LENGTH_SHORT, true).show()
+        }
+    }
+
+    fun refrescarListaDeAmigos(){
+        elegirAmigosAdapter.items.clear()
+
+        todosLosCandidatos.forEach{
+            if(!esIntegrante(it)){
+                elegirAmigosAdapter.items.add(it)
+            }
+        }
+
+        elegirAmigosAdapter.notifyDataSetChanged()
+
+
+    }
+
+    fun esIntegrante(usuario: Usuario): Boolean{
+        return integranteAdapter.items.contains(usuario)
     }
 
 

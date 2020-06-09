@@ -12,10 +12,7 @@ import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEmpr
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanchaFragment
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo.ElegirEquipoLocalFragment
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo.ElegirEquipoVisitanteFragment
-import ar.edu.unsam.proyecto.futbollers.domain.Cancha
-import ar.edu.unsam.proyecto.futbollers.domain.Empresa
-import ar.edu.unsam.proyecto.futbollers.domain.Equipo
-import ar.edu.unsam.proyecto.futbollers.domain.Promocion
+import ar.edu.unsam.proyecto.futbollers.domain.*
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -31,6 +28,9 @@ var fechaSeleccionada: Date? = null
 var promocionSeleccionada: Promocion? = null
 var equipoLocalSeleccionado: Equipo? = null
 var equipoVisitanteSeleccionado: Equipo? = null
+
+var amigosPosibles: MutableList<Usuario>? = ArrayList()
+var equiposPosibles: MutableList<Equipo>? = ArrayList()
 
 class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
 

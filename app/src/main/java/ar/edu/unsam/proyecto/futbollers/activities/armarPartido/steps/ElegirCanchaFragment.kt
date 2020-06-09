@@ -142,19 +142,10 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         canchaService.getCanchasDeLaEmpresa(context!!, empresaSeleccionada!!.idEmpresa!!, ::callBackCanchas)
 
-
+        //Ocultar si corresponde la card de la cancha
         if (canchaSeleccionada === null) {
             hideCanchaSeleccionada()
         }
-
-        //Reset fields - TODO: Mejorar
-        canchaAdapter.items = ArrayList()
-
-        input_field_codigo_promocion.setText("")
-        promocionSeleccionada = null
-
-        texto_fecha.text = ""
-        fechaSeleccionada = null
 
     }
 
@@ -237,12 +228,23 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
                 callback.goToNextStep()
             }
-        }, 3600L)
+        }, 1000L)
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {}
 
     override fun onBackClicked(callback: OnBackClickedCallback) {
+
+        //Clear fields
+        canchaAdapter.items = ArrayList()
+        canchaSeleccionada = null
+
+        input_field_codigo_promocion.setText("")
+        promocionSeleccionada = null
+
+        texto_fecha.text = ""
+        fechaSeleccionada = null
+
         callback.goToPrevStep()
     }
 

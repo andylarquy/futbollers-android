@@ -46,6 +46,33 @@ object EquipoService {
 
     }
 
+    fun getEquiposAdministradosPorElUsuario(context: Context, usuarioLogueado: Usuario, callback: (MutableList<Equipo>) -> Unit){
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/equipos-owner/"
+        Log.i("HomeActivity", url + usuario.idUsuario)
+
+        val request = JsonArrayRequest(
+            Request.Method.GET, url + usuario.idUsuario, null,
+
+            Response.Listener<JSONArray> { response ->
+
+                val equipos = Gson().fromJson(response.toString(), Array<Equipo>::class.java)
+
+                Log.i("HomeActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("HomeActivity", response.toString())
+                callback(equipos.toMutableList())
+            },
+            Response.ErrorListener {
+                Log.i("HomeActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErrores)
+            })
+        request.retryPolicy = longPolicy
+
+        queue.add(request)
+    }
+
     fun lambdaManejoErrores(context: Context, statusCode: Int) {
         if (statusCode == 422) {
             Toast.makeText(context, "Ese mail ya pertenece a un usuario", Toast.LENGTH_SHORT).show()

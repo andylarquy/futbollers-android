@@ -26,6 +26,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_home)
         setupActivity()
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -88,8 +90,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun setupActivity() {
-        setContentView(R.layout.activity_home)
-
         setInitialFragment()
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
