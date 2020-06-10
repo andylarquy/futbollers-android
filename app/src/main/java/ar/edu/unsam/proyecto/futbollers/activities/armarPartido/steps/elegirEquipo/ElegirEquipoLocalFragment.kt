@@ -318,6 +318,9 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
         if(esValidoComoEquipoTemporal(equipoTemporal)) {
             equipoLocalSeleccionado = equipoTemporal
             Handler().postDelayed({ callback.goToNextStep() }, 1000L)
+        }else{
+            showStepperNavigation()
+            loading_spinner.visibility = INVISIBLE
         }
     }
 
