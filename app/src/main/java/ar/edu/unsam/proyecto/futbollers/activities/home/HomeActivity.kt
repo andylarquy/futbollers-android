@@ -5,6 +5,7 @@ package ar.edu.unsam.proyecto.futbollers.activities.home
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,11 +24,11 @@ import kotlinx.android.synthetic.main.activity_home.*
 class HomeActivity : AppCompatActivity() {
 
     var location: SimpleLocation? = null
+    val usuarioLogueado = UsuarioLogueado.usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_home)
         setupActivity()
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -49,9 +50,7 @@ class HomeActivity : AppCompatActivity() {
             SimpleLocation.openSettings(this)
         }
 
-
-
-        val data = Data.Builder().putLong("idUsuario", UsuarioLogueado.usuario.idUsuario!!).build()
+        val data = Data.Builder().putLong("idUsuario", usuarioLogueado.idUsuario!!).build()
 
         val gpsRequest = OneTimeWorkRequest.Builder(WorkerGPS::class.java)
             .setInputData(data)
@@ -64,6 +63,9 @@ class HomeActivity : AppCompatActivity() {
 
 
     override fun onRestart() {
+
+        Log.i("ArmarPartidoActivity", "ID USUARIO: "+usuarioLogueado.idUsuario)
+
         super.onRestart()
         setupActivity()
     }
@@ -90,6 +92,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun setupActivity() {
+
+        setContentView(R.layout.activity_home)
+
         setInitialFragment()
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->

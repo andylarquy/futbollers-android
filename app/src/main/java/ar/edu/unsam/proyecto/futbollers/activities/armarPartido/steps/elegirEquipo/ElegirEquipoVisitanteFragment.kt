@@ -1,24 +1,18 @@
 package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.PointerIcon.getSystemIcon
-import android.view.PointerIcon.load
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.app.ShareCompat.getCallingActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.*
-import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
@@ -36,13 +30,13 @@ import com.stepstone.stepper.VerificationError
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_elegir_equipo_gps.view.*
 import kotlinx.android.synthetic.main.dialog_elegir_jugador_gps.view.*
-import kotlinx.android.synthetic.main.fragment_elegir_equipo_local.*
+import kotlinx.android.synthetic.main.fragment_elegir_equipo.*
 
 
 class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_elegir_equipo_local, container, false)
+        return inflater.inflate(R.layout.fragment_elegir_equipo, container, false)
     }
 
     val partidoService = PartidoService
@@ -98,7 +92,6 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         }
 
         btn_agregar_equipo_desconocido.setOnClickListener() {
-            Log.i("ArmarPartidoActivity", rangoDeBusquedaEquipo.toString())
             dialogEquipoGPS!!.show()
         }
 
@@ -458,12 +451,14 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         partido.canchaReservada = canchaSeleccionada
         partido.fechaDeReserva = fechaSeleccionada
 
+        hideStepperNavigation()
+        loading_spinner.visibility = VISIBLE
         partidoService.postNuevoPartido(context!!, partido, ::callbackPostPartido)
-        Log.i("ArmarPartidoActivity", "SE ARMO UN PARTIDO VIEJA")
-
     }
 
+
     fun callbackPostPartido(){
+        loading_spinner.visibility = INVISIBLE
         Toasty.success(context!!, "¡El partido ha sido creado correctamente!", Toast.LENGTH_SHORT, true).show()
         activity!!.finish()
     }

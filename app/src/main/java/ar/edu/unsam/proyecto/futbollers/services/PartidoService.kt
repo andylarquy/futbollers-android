@@ -66,7 +66,7 @@ object PartidoService {
         val fechaParseada = Constants.simpleDateFormatter.format(partido.fechaDeReserva!!.time)
         partidoParseado?.put("fechaDeReserva", fechaParseada)
 
-        Log.i("ArmarPartidoAcitivty", partidoParseado.toString())
+        Log.i("ArmarPartidoActivity", "Partido parseado: "+partidoParseado)
 
         val queue = Volley.newRequestQueue(context)
 
@@ -78,12 +78,13 @@ object PartidoService {
             Request.Method.POST, url, partidoParseado,
 
             Response.Listener<JSONObject> { response ->
-                Log.i("ArmarPartidoActivity",response.toString())
+                Log.i("ArmarPartidoActivity","response: "+response.toString())
                 callback()
             },
             Response.ErrorListener {
-                Log.i("HomeActivity", "[DEBUG]:Communication with API Rest Failed")
-                handleError(context, it, ::lambdaManejoErrores)
+                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
+                Log.i("ArmarPartidoActivity",it.javaClass.name)
+                //handleError(context, it, ::lambdaManejoErrores)
             })
         request.retryPolicy = partidoPolicy
 

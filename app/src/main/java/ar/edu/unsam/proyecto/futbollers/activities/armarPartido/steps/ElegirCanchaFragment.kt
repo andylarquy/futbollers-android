@@ -228,7 +228,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
                 callback.goToNextStep()
             }
-        }, 1000L)
+        }, 2000L)
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {}

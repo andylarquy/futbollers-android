@@ -36,7 +36,7 @@ object Constants {
      val defaultPolicy = DefaultRetryPolicy(300, 3, 1F)
      val mediumPolicy = DefaultRetryPolicy(400, 3, 1F)
      val longPolicy = DefaultRetryPolicy(500, 3, 1F)
-     val partidoPolicy = DefaultRetryPolicy(1000, 1, 1F)
+     val partidoPolicy = DefaultRetryPolicy(8000, 0, 1F)
 
 
 }
