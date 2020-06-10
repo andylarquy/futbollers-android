@@ -224,7 +224,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
                         val nuevoIntegrante = Usuario()
                         nuevoIntegrante.idUsuario = -1
-                        nuevoIntegrante.sexo = sexoBusquedaEquipo
+                        nuevoIntegrante.sexo = sexoBusquedaJugador
                         nuevoIntegrante.foto = "https://i.imgur.com/c9zvT8Z.png"
                         nuevoIntegrante.posicion = posicionBusquedaJugador
                         nuevoIntegrante.email = rangoDeBusquedaJugador.toString()
@@ -460,7 +460,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
         hideStepperNavigation()
         loading_spinner.visibility = VISIBLE
-        partidoService.postNuevoPartido(context!!, partido, ::callbackPostPartido)
+        partidoService.postNuevoPartido(context!!, partido, ::callbackPostPartido, ::callbackPostPartidoError)
     }
 
 
@@ -468,6 +468,12 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         loading_spinner.visibility = INVISIBLE
         Toasty.success(context!!, "¡El partido ha sido creado correctamente!", Toast.LENGTH_SHORT, true).show()
         activity!!.finish()
+    }
+
+    fun callbackPostPartidoError(errorMessage: String){
+        loading_spinner.visibility = INVISIBLE
+        showStepperNavigation()
+        Toasty.error(context!!, errorMessage, Toast.LENGTH_SHORT, true).show()
     }
 
 

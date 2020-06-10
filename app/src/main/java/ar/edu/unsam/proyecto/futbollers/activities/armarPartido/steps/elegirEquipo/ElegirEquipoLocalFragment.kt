@@ -234,7 +234,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
                         val nuevoIntegrante = Usuario()
                         nuevoIntegrante.idUsuario = -1
-                        nuevoIntegrante.sexo = sexoBusquedaEquipo
+                        nuevoIntegrante.sexo = sexoBusquedaJugador
                         nuevoIntegrante.foto = "https://i.imgur.com/c9zvT8Z.png"
                         nuevoIntegrante.posicion = posicionBusquedaJugador
                         nuevoIntegrante.email = rangoDeBusquedaJugador.toString()

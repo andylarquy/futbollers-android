@@ -7,9 +7,7 @@ import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado.usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
-import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.longPolicy
-import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.mediumPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest

@@ -2,7 +2,6 @@ package ar.edu.unsam.proyecto.futbollers.services
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
@@ -12,7 +11,6 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONArray
-import org.json.JSONObject
 
 object EmpresaService {
 

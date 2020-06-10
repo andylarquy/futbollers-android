@@ -2,7 +2,6 @@ package ar.edu.unsam.proyecto.futbollers.services
 
 import android.content.Context
 import android.util.Log
-import ar.edu.unsam.proyecto.futbollers.domain.Empresa
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError

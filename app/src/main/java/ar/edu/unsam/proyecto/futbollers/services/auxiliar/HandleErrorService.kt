@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.*
+import kotlin.reflect.KFunction2
+import kotlin.reflect.KFunction3
 
-fun handleError(context: Context, error: VolleyError, lambdaManejoErrores: (Context, Int) -> Unit) {
+fun handleError(context: Context, error: VolleyError, lambdaManejoErrores: KFunction2<Context, Int, Unit>) {
 
     Log.i("HomeActivity", "[DEBUG]: API Rest Error: +" + error)
     if (error is AuthFailureError) {
@@ -19,3 +21,4 @@ fun handleError(context: Context, error: VolleyError, lambdaManejoErrores: (Cont
         }
     }
 }
+
