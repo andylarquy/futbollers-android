@@ -189,6 +189,8 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
                         equipoLocalSeleccionado = nuevoEquipo
 
+                        hideStepperNavigation()
+                        loading_spinner.visibility = VISIBLE
                         stepForward()
 
                     }else{
@@ -304,6 +306,9 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback) {
 
+        hideStepperNavigation()
+        loading_spinner.visibility = VISIBLE
+
         val equipoTemporal = Equipo()
         equipoTemporal.integrantes = integranteAdapter.items
         equipoTemporal.foto = "https://i.imgur.com/Tyf5hJn.png"
@@ -319,7 +324,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
 
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
-        Toast.makeText(this.context, "FIN!!", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback) {
@@ -379,6 +384,8 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
                 dialogEquipo.dismiss()
 
+                hideStepperNavigation()
+                loading_spinner.visibility = VISIBLE
                 stepForward()
             } else {
                 Toasty.error(

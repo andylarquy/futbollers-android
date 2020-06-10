@@ -24,7 +24,6 @@ import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout.*
 import com.stepstone.stepper.VerificationError
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.fragment_elegir_cancha.*
 import kotlinx.android.synthetic.main.fragment_elegir_empresa.*
 import kotlinx.android.synthetic.main.row_empresa.view.*
 

@@ -31,7 +31,9 @@ import com.stepstone.stepper.StepperLayout.*
 import com.stepstone.stepper.VerificationError
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_seleccionar_cancha.*
+import kotlinx.android.synthetic.main.dialog_seleccionar_cancha.loading_spinner
 import kotlinx.android.synthetic.main.fragment_elegir_cancha.*
+import kotlinx.android.synthetic.main.fragment_elegir_equipo.*
 import kotlinx.android.synthetic.main.row_cancha.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -185,7 +187,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
 
     fun callbackValidarReserva(canchaDisponible: Boolean) {
-        Log.d("ArmarPartidoActivity", "CALLBACK RESERVA: "+canchaDisponible)
+
         //!status significa que esa fecha esta ocupada
         fechaRepetida = !canchaDisponible
     }
@@ -199,6 +201,9 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
     }
 
     override fun onNextClicked(callback: OnNextClickedCallback) {
+
+        hideStepperNavigation()
+        loading_spinner.visibility = View.VISIBLE
 
         //Reseteo los flags cada vez que clickeas
         statusG = true
@@ -228,6 +233,11 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
                 callback.goToNextStep()
             }
+
+            //Desactivo la pantalla de carga
+            loading_spinner.visibility = View.INVISIBLE
+            showStepperNavigation()
+
         }, 2000L)
     }
 

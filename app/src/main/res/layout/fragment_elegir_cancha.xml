@@ -12,6 +12,13 @@
     android:layout_height="match_parent">
 
     <include
+        android:id="@+id/loading_spinner"
+        layout="@layout/activity_loading_screen"
+        android:translationZ="100dp"
+        tools:layout_editor_absoluteX="-61dp"
+        tools:layout_editor_absoluteY="-16dp" />
+
+    <include
         android:id="@+id/cancha_seleccionada"
         layout="@layout/row_cancha"
         android:layout_width="326dp"

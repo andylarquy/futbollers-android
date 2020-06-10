@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_partido.*
 import kotlinx.android.synthetic.main.row_fragment_partido.view.*
 
 
-class EquipoFragment: Fragment(), OnRecyclerItemClickListener {
+class PartidoFragment: Fragment(), OnRecyclerItemClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -128,7 +128,7 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
     }
 }
 
-class PartidoAdapter(context: Context, listener: EquipoFragment) : GenericRecyclerViewAdapter<Partido, OnRecyclerItemClickListener, PartidoViewHolder>(context, listener) {
+class PartidoAdapter(context: Context, listener: PartidoFragment) : GenericRecyclerViewAdapter<Partido, OnRecyclerItemClickListener, PartidoViewHolder>(context, listener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartidoViewHolder {
         return PartidoViewHolder(inflate(R.layout.row_fragment_partido, parent), listener)

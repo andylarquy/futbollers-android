@@ -364,35 +364,42 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
     override fun onError(error: VerificationError) {}
 
-
-    //TODO: Delegar en un "validarEquipoClick" feliz (con un flag status)
-    //TODO: Agregar tmb validacion de que usuarioLogueado es el owner
     override fun onElegirEquipoClick(position: Int) {
+
         val equipo = elegirEquipoAdapter.getItem(position)
 
-        if(ningunJugadorDelEquipoSeleccionadoEstaEnElLocal(equipo)){
+        if(equipoSeleccionadoEsValido(equipo)){
+            dialogEquipo?.dismiss()
+            equipoVisitanteSeleccionado = equipo
+            postPartido()
 
-            if (equipo.cantidadDeIntegrantes() == canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
-
-                if(equipoLocalSeleccionado!!.idEquipo != (-1).toLong() && equipoLocalSeleccionado!!.idEquipo != equipo!!.idEquipo!!.toLong()){
-                        dialogEquipo?.dismiss()
-                        equipoVisitanteSeleccionado = equipo
-
-                        postPartido()
-                    }else{
-                        Toasty.error(context!!, "Este equipo ya fue elegido como equipo local", Toast.LENGTH_SHORT, true).show()
-                    }
-            } else {
-                Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_SHORT, true).show()
-            }
-
-        }else{
-            Toasty.error(context!!, "El equipo seleccionado tiene integrantes que forman parte del equipo local", Toast.LENGTH_SHORT, true).show()
         }
 
     }
 
-    fun ningunJugadorDelEquipoSeleccionadoEstaEnElLocal(equipo: Equipo):Boolean{
+    fun equipoSeleccionadoEsValido(equipo: Equipo): Boolean{
+        var status = true
+
+        if(equipoLocalSeleccionado!!.idEquipo != (-1).toLong() && equipoLocalSeleccionado!!.idEquipo == equipo.idEquipo!!.toLong()){
+            status = false
+            Toasty.error(context!!, "Este equipo ya fue elegido como equipo local", Toast.LENGTH_SHORT, true).show()
+        }
+
+        if (equipo.cantidadDeIntegrantes() != canchaSeleccionada!!.cantidadJugadoresPorEquipo()) {
+            status = false
+            Toasty.error(context!!, "La cantidad de jugadores debe ser " + canchaSeleccionada!!.cantidadJugadoresPorEquipo(), Toast.LENGTH_SHORT, true).show()
+        }
+
+        //TODO: Dar vuelta esta logica
+        if(!ningunJugadorDelEquipoSeleccionadoEstaEnElLocal(equipo)){
+            status = false
+            Toasty.error(context!!, "El equipo seleccionado tiene integrantes que forman parte del equipo local", Toast.LENGTH_SHORT, true).show()
+        }
+
+        return status
+    }
+
+    fun ningunJugadorDelEquipoSeleccionadoEstaEnElLocal(equipo: Equipo): Boolean{
         return equipo.integrantes!!.all { integrante ->
             equipoLocalSeleccionado!!.integrantes!!.all{it.idUsuario != integrante.idUsuario}
             }
