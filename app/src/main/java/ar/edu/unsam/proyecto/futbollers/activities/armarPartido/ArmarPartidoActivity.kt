@@ -12,6 +12,7 @@ import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirEmpr
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanchaFragment
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo.ElegirEquipoLocalFragment
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo.ElegirEquipoVisitanteFragment
+import ar.edu.unsam.proyecto.futbollers.activities.drawer.ToolbarActivity
 import ar.edu.unsam.proyecto.futbollers.domain.*
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.StepperLayout
@@ -19,6 +20,7 @@ import com.stepstone.stepper.VerificationError
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 import kotlinx.android.synthetic.main.activity_armar_partido.*
+import kotlinx.android.synthetic.main.util_drawer.*
 import java.util.*
 
 var mStepperLayout: StepperLayout? = null
@@ -32,14 +34,15 @@ var equipoVisitanteSeleccionado: Equipo? = null
 var amigosPosibles: MutableList<Usuario>? = ArrayList()
 var equiposPosibles: MutableList<Equipo>? = ArrayList()
 
-class ArmarPartidoActivty : AppCompatActivity(), StepperLayout.StepperListener {
+class ArmarPartidoActivity : ToolbarActivity(), StepperLayout.StepperListener {
 
     private var mStepperAdapter: StepperAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_armar_partido)
+        //setContentView(R.layout.activity_armar_partido)
+        layoutInflater.inflate(R.layout.activity_armar_partido, base_drawer_layout, true)
 
         mStepperLayout = stepperLayout
 
@@ -72,7 +75,7 @@ const val CANTIDAD_DE_STEPS: Int = 4
 class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm,
     context
 ) {
-    private val CURRENT_STEP_POSITION_KEY = "asd"//messageResourceId
+    private val CURRENT_STEP_POSITION_KEY = "messageResourceId"//messageResourceId
 
 
     override fun createStep(position: Int): Step? {

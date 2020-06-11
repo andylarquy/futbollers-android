@@ -6,20 +6,19 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.drawer.ToolbarActivity
 import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.databinding.ActivityLoginBinding
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.LoginService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
-import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.util_toolbar.*
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : ToolbarActivity() {
     var usuarioLogueado:Usuario = UsuarioLogueado.usuario
     private var loginService: LoginService = LoginService
 
@@ -27,10 +26,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(activityLogin)
-        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this,
-            activityLogin
-        )
+        //setContentView(activityLogin)
+
+
+        //layoutInflater.inflate(R.layout.activity_login, content_frame_layout)
+        val binding: ActivityLoginBinding = DataBindingUtil.inflate(layoutInflater,R.layout.activity_login, toolbar_frame_layout, true)
+        //val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this,
+           // activityLogin
+        //)
         binding.setUsuarioLogueado(usuarioLogueado)
 
         text_signUp.setOnClickListener(){

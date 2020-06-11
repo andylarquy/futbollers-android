@@ -26,6 +26,7 @@ import com.stepstone.stepper.VerificationError
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_elegir_empresa.*
 import kotlinx.android.synthetic.main.row_empresa.view.*
+import kotlinx.android.synthetic.main.util_drawer.*
 
 
 class ElegirEmpresaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListener {

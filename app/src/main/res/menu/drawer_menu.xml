@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="MENU">
+
+        <menu>
+            <item
+                android:icon="@drawable/drawer_person_white"
+                android:title="Perfil" />
+            <item
+                android:icon="@drawable/drawer_friends_white"
+                android:title="Mis Amigos" />
+            <item
+                android:icon="@drawable/drawer_poll_white"
+                android:title="Mis Encuestas" />
+            <item
+                android:icon="@drawable/drawer_candidates_white"
+                android:title="Mis Candidatos" />
+
+            <item android:title="Configuracion" />
+        </menu>
+
+    </item>
+
+</menu>
+

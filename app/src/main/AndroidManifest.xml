@@ -45,9 +45,8 @@
 
         <activity android:name=".activities.home.HomeActivity" />
         <activity android:name=".activities.inicio.SignUpActivity" />
-        <activity android:name=".activities.armarPartido.ArmarPartidoActivty" />
-        <activity android:name=".activities.armarPartido.steps.ElegirCanchaFragment" />
-        <activity android:name=".activities.armarPartido.steps.ElegirEmpresaFragment" />
+        <activity android:name=".activities.armarPartido.ArmarPartidoActivity" />
+        <activity android:name=".activities.drawer.BaseActivity" />
 
 
 

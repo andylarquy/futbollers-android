@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.ArmarPartidoActivty
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.ArmarPartidoActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.services.PartidoService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
@@ -78,7 +78,7 @@ class PartidoFragment: Fragment(), OnRecyclerItemClickListener {
         })
 
         fab.setOnClickListener {
-            val intent = Intent(activity, ArmarPartidoActivty::class.java).putExtra("activity", activity!!::class.java.simpleName).apply{}
+            val intent = Intent(activity, ArmarPartidoActivity::class.java).putExtra("activity", activity!!::class.java.simpleName).apply{}
             startActivity(intent)
         }
 

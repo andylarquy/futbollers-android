@@ -15,6 +15,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.drawer.DrawerActivity
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.ChatFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment.EquipoFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.PartidoFragment.PartidoFragment
@@ -22,9 +23,10 @@ import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.WorkerGPS
 import im.delight.android.location.SimpleLocation
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.util_drawer.*
 
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : DrawerActivity() {
 
     var location: SimpleLocation? = null
     val usuarioLogueado = UsuarioLogueado.usuario
@@ -33,7 +35,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         /* ESTA COPIADO Y PEGADO EN OnRestart POR OBLIGACION */
-        setContentView(R.layout.activity_home)
+        layoutInflater.inflate(R.layout.activity_home, base_drawer_layout, true)
+        //setContentView(R.layout.activity_home)
 
         setInitialFragment()
 

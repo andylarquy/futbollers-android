@@ -7,4 +7,5 @@
     <color name="purpeInactive">#C099FF</color>
     <color name="loadingSpinner">#3E9EF0</color>
     <color name="loadingBackground">#272626</color>
+    <color name="activated_color">#E8E8E8</color>
 </resources>
