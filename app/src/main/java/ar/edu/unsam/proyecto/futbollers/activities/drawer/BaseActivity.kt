@@ -1,6 +1,7 @@
 package ar.edu.unsam.proyecto.futbollers.activities.drawer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -38,7 +39,8 @@ open class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
 
     val drawerLayout = base_drawer_layout
-    val drawer = nav_drawer
+    val drawer =  nav_drawer
+        drawer.setNavigationItemSelectedListener(this)
 
     val drawerToggle = ActionBarDrawerToggle(
         this,
@@ -49,16 +51,22 @@ open class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
-        drawer.setNavigationItemSelectedListener(this)
+
 
         nav_drawer.getHeaderView(0).username.text = usuarioLogueado.nombre
         Picasso.get().load(usuarioLogueado.foto).into(nav_drawer.getHeaderView(0).foto_perfil)
 
+        drawer.bringToFront()
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        Log.i("BaseActivity", "ASDHAKSLDJHAJKSd")
         //TODO: Atajar eventos
-        return false
+
+        return true
     }
 
+
 }
+

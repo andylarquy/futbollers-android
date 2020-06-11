@@ -8,43 +8,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-
-            <com.google.android.material.appbar.AppBarLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/base_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="@color/white"
+                app:subtitleTextColor="@color/white"/>
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/base_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:titleTextColor="@color/white"
-                    app:subtitleTextColor="@color/white"/>
+        </com.google.android.material.appbar.AppBarLayout>
 
-            </com.google.android.material.appbar.AppBarLayout>
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <com.google.android.material.navigation.NavigationView
-
-            android:id="@+id/nav_drawer"
-
-            android:layout_gravity="start"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-
-            app:menu="@menu/drawer_menu"
-            app:headerLayout="@layout/util_drawer_header"
-
-            app:itemTextColor="@color/textColor"
-            app:itemIconTint="@color/textColor"
-
-            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
+    <com.google.android.material.navigation.NavigationView
 
+        android:id="@+id/nav_drawer"
+
+        android:layout_gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/util_drawer_header"
+
+        app:itemTextColor="@color/textColor"
+        app:itemIconTint="@color/textColor"
+
+        />
 
     </androidx.drawerlayout.widget.DrawerLayout>

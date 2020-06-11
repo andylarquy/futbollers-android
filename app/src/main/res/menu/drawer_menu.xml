@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="MENU">
-
-        <menu>
             <item
                 android:icon="@drawable/drawer_person_white"
                 android:title="Perfil"
@@ -19,9 +16,6 @@
                 android:title="Mis Candidatos" />
 
             <item android:title="Configuracion" />
-        </menu>
-
-    </item>
 
 </menu>
 
