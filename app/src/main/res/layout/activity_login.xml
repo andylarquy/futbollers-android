@@ -7,13 +7,10 @@
         <variable name="usuarioLogueado" type="ar.edu.unsam.proyecto.futbollers.domain.Usuario" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.inicio.LoginActivity">
-
-
 
         <RelativeLayout
             android:id="@+id/loading_spinner"
@@ -33,74 +30,47 @@
             android:id="@+id/imageView"
             android:layout_width="209dp"
             android:layout_height="208dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginLeft="100dp"
             android:layout_marginBottom="34dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.081"
-            app:srcCompat="@drawable/soccer_ball" />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="235dp"
-            android:layout_height="55dp"
-            android:layout_marginTop="268dp"
-            android:hint="@string/input_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            >
-
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={usuarioLogueado.email}"
-                android:inputType="textEmailAddress"
-
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintVertical_bias="0.214"
+            app:srcCompat="@drawable/soccer_ball" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="235dp"
             android:layout_height="55dp"
-            android:layout_marginTop="335dp"
+            android:layout_marginTop="400dp"
             android:hint="@string/input_password"
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={usuarioLogueado.password}"
                 android:inputType="textPassword"
+                android:text="@={usuarioLogueado.password}"
 
                 />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
-            android:layout_marginLeft="160dp"
-            android:layout_marginTop="408dp"
-            android:background="@drawable/btn_primary_outline"
+            android:layout_marginTop="472dp"
 
             android:text="@string/submit_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -108,9 +78,7 @@
             android:id="@+id/text_signUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="84dp"
-            android:layout_marginLeft="84dp"
-            android:layout_marginTop="480dp"
+            android:layout_marginTop="544dp"
             android:autofillHints=""
             android:ems="10"
 
@@ -119,8 +87,31 @@
             android:textColor="#5ba2d9"
             android:textSize="20dp"
 
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="235dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="332dp"
+            android:hint="@string/input_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:text="@={usuarioLogueado.email}"
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

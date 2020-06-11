@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.util_drawer.*
 class HomeActivity : DrawerActivity() {
 
     var location: SimpleLocation? = null
-    val usuarioLogueado = UsuarioLogueado.usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

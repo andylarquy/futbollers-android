@@ -5,9 +5,12 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.domain.Usuario
+import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import com.google.android.material.navigation.NavigationView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.util_drawer.*
-
+import kotlinx.android.synthetic.main.util_drawer_header.view.*
 
 
 open class ToolbarActivity : AppCompatActivity(){
@@ -22,6 +25,8 @@ open class ToolbarActivity : AppCompatActivity(){
 }
 
 open class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    val usuarioLogueado: Usuario = UsuarioLogueado.usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +50,9 @@ open class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
         drawer.setNavigationItemSelectedListener(this)
+
+        nav_drawer.getHeaderView(0).username.text = usuarioLogueado.nombre
+        Picasso.get().load(usuarioLogueado.foto).into(nav_drawer.getHeaderView(0).foto_perfil)
 
     }
 

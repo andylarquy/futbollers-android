@@ -6,7 +6,8 @@
         <menu>
             <item
                 android:icon="@drawable/drawer_person_white"
-                android:title="Perfil" />
+                android:title="Perfil"
+                />
             <item
                 android:icon="@drawable/drawer_friends_white"
                 android:title="Mis Amigos" />

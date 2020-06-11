@@ -4,10 +4,9 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
     <!-- <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar"> -->
 
-        <item name="android:activatedBackgroundIndicator">@drawable/activatedbackground</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
-        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle</item>
-        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/activatedbackground</item>
 
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -21,6 +20,10 @@
 
     <style name="navTextInActive"  parent="Widget.Design.NavigationView">
         <item name="itemTextColor">@color/purpeInactive</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
     </style>
 
 

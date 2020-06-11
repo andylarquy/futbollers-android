@@ -194,7 +194,6 @@
             android:layout_marginStart="144dp"
             android:layout_marginLeft="144dp"
             android:layout_marginTop="484dp"
-            android:background="@drawable/btn_primary_outline"
             android:text="@string/submit_signUp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
