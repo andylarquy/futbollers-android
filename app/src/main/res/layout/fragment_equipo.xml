@@ -27,20 +27,4 @@
         tools:context="com.google.samples.apps.sunflower.GardenActivity"
         tools:listitem="@layout/row_fragment_equipo" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-
-        android:layout_marginEnd="52dp"
-        android:layout_marginRight="52dp"
-        android:layout_marginBottom="68dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add_black_24dp"
-        tools:ignore="VectorDrawableCompat"
-        />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

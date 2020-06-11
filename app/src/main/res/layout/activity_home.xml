@@ -34,6 +34,8 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
+
+
         <com.google.android.material.navigation.NavigationView
 
             android:id="@+id/nav_drawer"
@@ -71,5 +73,19 @@
         android:fitsSystemWindows="true"
         android:elevation="-5dp"
         android:translationZ="-5dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/action_button_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/floating_button"
+            android:id="@+id/floating_action_button"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

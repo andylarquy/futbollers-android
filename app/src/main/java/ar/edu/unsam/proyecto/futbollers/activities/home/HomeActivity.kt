@@ -19,12 +19,14 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.drawer.DrawerActivity
+import ar.edu.unsam.proyecto.futbollers.activities.drawer.SetupDrawer
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.ChatFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment.EquipoFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.PartidoFragment.PartidoFragment
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.WorkerGPS
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 import im.delight.android.location.SimpleLocation
@@ -32,10 +34,12 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.util_drawer_header.view.*
 
 
-class HomeActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : AppCompatActivity() {
 
     var location: SimpleLocation? = null
     val usuarioLogueado: Usuario = UsuarioLogueado.usuario
+    //Parche para atajar los eventos del boton en la activity
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +53,9 @@ class HomeActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelect
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             var fragment: Fragment? = null;
             if (item.itemId == R.id.action_partido) {
-                fragment = PartidoFragment()
+                fragment = PartidoFragment(floating_action_button.findViewById(R.id.floating_action_button))
             } else if (item.itemId == R.id.action_equipo) {
-                fragment = EquipoFragment()
+                fragment = EquipoFragment(floating_action_button.findViewById(R.id.floating_action_button))
             } else if (item.itemId == R.id.action_chat) {
                 fragment = ChatFragment()
             }
@@ -87,53 +91,25 @@ class HomeActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelect
             .setInputData(data)
             .build()
         WorkManager.getInstance().enqueueUniqueWork("GPS", ExistingWorkPolicy.REPLACE, gpsRequest)
-
         WorkManager.getInstance().cancelAllWorkByTag("GPS")
 
-
-        //DRAWER
+        val setupDrawer = SetupDrawer()
 
         val toolbar = base_toolbar
+        val drawerLayout = base_drawer_layout
 
         setSupportActionBar(toolbar)
-
-
-        val drawerLayout = base_drawer_layout
-        val drawer =  nav_drawer
-        drawer.setNavigationItemSelectedListener(this)
-
-        val drawerToggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.open_drawer,
-            R.string.close_drawer)
-
-        drawerLayout.addDrawerListener(drawerToggle)
-        drawerToggle.syncState()
-
-
-        nav_drawer.getHeaderView(0).username.text = usuarioLogueado.nombre
-        Picasso.get().load(usuarioLogueado.foto).into(nav_drawer.getHeaderView(0).foto_perfil)
-
-        drawer.bringToFront()
-
-        //DRAWER
+        setupDrawer.startSetup(this, toolbar, drawerLayout, nav_drawer)
 
     }
 
-override fun onNavigationItemSelected(item: MenuItem): Boolean {
-    Log.i("BaseActivity", "ASDHAKSLDJHAJKSd")
-    //TODO: Atajar eventos
 
-    return true
-}
 
     private fun setInitialFragment() {
         val fragmentTransaction: FragmentTransaction =
             supportFragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.drawer_fragment_container,
-            PartidoFragment()
+            PartidoFragment(floating_action_button.findViewById(R.id.floating_action_button))
         )
 
         //TODO: Revisar

@@ -1,6 +1,7 @@
 package ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.ArmarPartidoActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.services.EquipoService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leodroidcoder.genericadapter.BaseRecyclerListener
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
@@ -24,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_equipo.*
 import kotlinx.android.synthetic.main.row_fragment_equipo.view.*
 
 
-class EquipoFragment : Fragment(), OnRecyclerItemClickListener, EquipoMultipleClickListener {
+class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItemClickListener, EquipoMultipleClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,7 +61,6 @@ class EquipoFragment : Fragment(), OnRecyclerItemClickListener, EquipoMultipleCl
         loading_spinner?.visibility = View.VISIBLE
 
         //Burocracia para ocultar el float button (recomiendo ocultarlo)
-        val fab = floating_action_button
         rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -75,6 +77,11 @@ class EquipoFragment : Fragment(), OnRecyclerItemClickListener, EquipoMultipleCl
                 }
             }
         })
+
+        fab.setOnClickListener {
+            Toast.makeText(context,"TODO: Crear equipo",Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 

@@ -17,15 +17,17 @@ import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.ArmarPartidoActi
 import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.services.PartidoService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_partido.*
 import kotlinx.android.synthetic.main.row_fragment_partido.view.*
 
 
-class PartidoFragment: Fragment(), OnRecyclerItemClickListener {
+class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecyclerItemClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,25 +61,25 @@ class PartidoFragment: Fragment(), OnRecyclerItemClickListener {
         loading_spinner?.visibility = View.VISIBLE
 
         //Burocracia para ocultar el float button (recomiendo ocultarlo)
-        val fab = floating_action_button
+
         rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
                     // Scroll Down
-                    if (fab.isShown) {
-                        fab.hide()
+                    if (floatButton.isShown) {
+                        floatButton.hide()
                     }
                 } else if (dy < 0) {
                     // Scroll Up
-                    if (!fab.isShown) {
-                        fab.show()
+                    if (!floatButton.isShown) {
+                        floatButton.show()
                     }
                 }
             }
         })
 
-        fab.setOnClickListener {
+        floatButton.setOnClickListener {
             val intent = Intent(activity, ArmarPartidoActivity::class.java).putExtra("activity", activity!!::class.java.simpleName).apply{}
             startActivity(intent)
         }
