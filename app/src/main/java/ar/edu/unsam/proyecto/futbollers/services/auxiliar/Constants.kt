@@ -18,7 +18,10 @@ object Constants {
      //const val BASE_URL = "https://rest-api-futbollers-heroku.herokuapp.com"
 
      //DEBUG
-     const val BASE_URL = "http://192.168.0.28:9000"
+     //const val BASE_URL = "http://192.168.0.28:9000"
+
+     //DEBUG 2
+     const val BASE_URL = "http://192.168.0.63:9000"
 
      //IP PRODUCCION CASA
      //const val BASE_URL = "http://190.16.251.41:9000"
