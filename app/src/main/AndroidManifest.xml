@@ -46,7 +46,7 @@
         <activity android:name=".activities.home.HomeActivity" />
         <activity android:name=".activities.inicio.SignUpActivity" />
         <activity android:name=".activities.armarPartido.ArmarPartidoActivity" />
-        <activity android:name=".activities.drawer.BaseActivity" />
+        <activity android:name=".activities.drawer.DrawerActivity" />
 
 
 

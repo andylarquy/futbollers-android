@@ -5,6 +5,9 @@ package ar.edu.unsam.proyecto.futbollers.activities.home
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,23 +22,27 @@ import ar.edu.unsam.proyecto.futbollers.activities.drawer.DrawerActivity
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.ChatFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment.EquipoFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.PartidoFragment.PartidoFragment
+import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.WorkerGPS
+import com.google.android.material.navigation.NavigationView
+import com.squareup.picasso.Picasso
 import im.delight.android.location.SimpleLocation
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.util_drawer.*
+import kotlinx.android.synthetic.main.util_drawer_header.view.*
 
 
-class HomeActivity : DrawerActivity() {
+class HomeActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelectedListener {
 
     var location: SimpleLocation? = null
+    val usuarioLogueado: Usuario = UsuarioLogueado.usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         /* ESTA COPIADO Y PEGADO EN OnRestart POR OBLIGACION */
-        layoutInflater.inflate(R.layout.activity_home, base_drawer_layout, true)
-        //setContentView(R.layout.activity_home)
+        //layoutInflater.inflate(R.layout.activity_home, base_drawer_layout, true)
+        setContentView(R.layout.activity_home)
 
         setInitialFragment()
 
@@ -83,12 +90,49 @@ class HomeActivity : DrawerActivity() {
 
         WorkManager.getInstance().cancelAllWorkByTag("GPS")
 
+
+        //DRAWER
+
+        val toolbar = base_toolbar
+
+        setSupportActionBar(toolbar)
+
+
+        val drawerLayout = base_drawer_layout
+        val drawer =  nav_drawer
+        drawer.setNavigationItemSelectedListener(this)
+
+        val drawerToggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.open_drawer,
+            R.string.close_drawer)
+
+        drawerLayout.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+
+
+        nav_drawer.getHeaderView(0).username.text = usuarioLogueado.nombre
+        Picasso.get().load(usuarioLogueado.foto).into(nav_drawer.getHeaderView(0).foto_perfil)
+
+        drawer.bringToFront()
+
+        //DRAWER
+
     }
+
+override fun onNavigationItemSelected(item: MenuItem): Boolean {
+    Log.i("BaseActivity", "ASDHAKSLDJHAJKSd")
+    //TODO: Atajar eventos
+
+    return true
+}
 
     private fun setInitialFragment() {
         val fragmentTransaction: FragmentTransaction =
             supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.main_fragment_placeholder,
+        fragmentTransaction.add(R.id.drawer_fragment_container,
             PartidoFragment()
         )
 
@@ -100,7 +144,7 @@ class HomeActivity : DrawerActivity() {
     private fun replaceFragment(fragment: Fragment) {
         val fragmentTransaction: FragmentTransaction =
             supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.main_fragment_placeholder, fragment)
+        fragmentTransaction.replace(R.id.drawer_fragment_container, fragment)
         fragmentTransaction.commit()
     }
 
