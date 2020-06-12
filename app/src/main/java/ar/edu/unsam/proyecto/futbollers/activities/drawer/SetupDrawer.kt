@@ -15,6 +15,7 @@ import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.activities.inicio.SignUpActivity
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.AmigosActivity
+import ar.edu.unsam.proyecto.futbollers.activities.periferico.CandidatosActivity
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
@@ -82,7 +83,12 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
 
             "Encuestas" -> Log.i("BaseActivity", "TODO: Intent Mis Encuestas")
 
-            "Candidatos" -> Log.i("BaseActivity", "TODO: Intent Mis Candidatos")
+            "Candidatos" -> {
+                val intent = Intent(context, CandidatosActivity::class.java).apply{}
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+                activity.finish()
+            }
 
             "Invitaciones" -> Log.i("BaseActivity", "TODO: Intent Mis Invitaciones")
 

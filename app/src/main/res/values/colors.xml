@@ -9,4 +9,6 @@
     <color name="loadingBackground">#272626</color>
     <color name="activated_color">#E8E8E8</color>
     <color name="textColor">#7A7A7A</color>
+    <color name="success">#61A465</color>
+    <color name="failed">#9E1515</color>
 </resources>

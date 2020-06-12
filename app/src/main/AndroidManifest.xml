@@ -48,6 +48,7 @@
         <activity android:name=".activities.armarPartido.ArmarPartidoActivity" />
         <activity android:name=".activities.drawer.DrawerActivity" />
         <activity android:name=".activities.periferico.AmigosActivity" />
+        <activity android:name=".activities.periferico.CandidatosActivity" />
 
 
 

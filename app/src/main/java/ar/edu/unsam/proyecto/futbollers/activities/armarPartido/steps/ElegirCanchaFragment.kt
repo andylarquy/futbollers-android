@@ -19,6 +19,7 @@ import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.domain.Promocion
 import ar.edu.unsam.proyecto.futbollers.services.CanchaService
 import ar.edu.unsam.proyecto.futbollers.services.PromocionService
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.simpleDateFormatter
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.datetime.dateTimePicker
 import com.afollestad.materialdialogs.list.customListAdapter
@@ -85,9 +86,8 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
                 .dateTimePicker(minDateTime = minDate, show24HoursView = true) { _, dateTime ->
                     // Use dateTime (Calendar)
                     fechaSeleccionada = dateTime.time
-                    val dateFormat = SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault())
 
-                    texto_fecha.text = dateFormat.format(fechaSeleccionada!!)
+                    texto_fecha.text = simpleDateFormatter.format(fechaSeleccionada!!)
                     texto_fecha.visibility = View.VISIBLE
 
                 }
