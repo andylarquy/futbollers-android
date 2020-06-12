@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat.startActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.activities.inicio.SignUpActivity
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.AmigosActivity
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
@@ -25,21 +26,23 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
 
     val usuarioLogueado = UsuarioLogueado.usuario
     lateinit var context: Context
+    lateinit var activity: Activity
 
     fun startSetup(
         appContext: Context,
-        activity: Activity,
+        appActivity: Activity,
         toolbar: Toolbar,
         drawerLayout: DrawerLayout,
         nav_drawer: NavigationView
     ) {
 
         context = appContext
+        activity = appActivity
 
         nav_drawer.setNavigationItemSelectedListener(this)
 
         val drawerToggle = ActionBarDrawerToggle(
-            activity,
+            appActivity,
             drawerLayout,
             toolbar,
             R.string.open_drawer,
@@ -63,10 +66,18 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
         when (item.title) {
             "Perfil" -> Log.i("BaseActivity", "TODO: Intent Perfil")
 
+            "Home" -> {
+                val intent = Intent(context, HomeActivity::class.java).apply{}
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+                activity.finish()
+            }
+
             "Amigos" -> {
                 val intent = Intent(context, AmigosActivity::class.java).apply{}
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
+                activity.finish()
             }
 
             "Encuestas" -> Log.i("BaseActivity", "TODO: Intent Mis Encuestas")

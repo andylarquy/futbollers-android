@@ -5,6 +5,9 @@
         android:icon="@drawable/drawer_person_white"
         android:title="Perfil" />
     <item
+        android:icon="@drawable/ic_sports_soccer_24dp"
+        android:title="Home" />
+    <item
         android:icon="@drawable/drawer_friends_white"
         android:title="Amigos" />
     <item

@@ -8,9 +8,11 @@ import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONArray
+import org.json.JSONObject
 
 object UsuarioService {
 
@@ -65,6 +67,32 @@ object UsuarioService {
         request.retryPolicy = Constants.defaultPolicy
 
         queue.add(request)
+    }
+
+    fun postAmistad(context: Context, usuario: Usuario, callback: () -> Unit){
+
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/amigos"
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, Usuario().toJson(usuario),
+
+            Response.Listener<JSONObject> { response ->
+
+                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("ArmarPartidoActivity", response.toString())
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, UsuarioService::lambdaManejoErrores)
+            })
+        request.retryPolicy = Constants.defaultPolicy
+
+        queue.add(request)
+
     }
 
 
