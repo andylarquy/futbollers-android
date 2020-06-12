@@ -99,7 +99,7 @@ class HomeActivity : AppCompatActivity() {
         val drawerLayout = base_drawer_layout
 
         setSupportActionBar(toolbar)
-        setupDrawer.startSetup(this, toolbar, drawerLayout, nav_drawer)
+        setupDrawer.startSetup(applicationContext,this, toolbar, drawerLayout, nav_drawer)
 
     }
 

@@ -41,6 +41,34 @@ object UsuarioService {
 
     }
 
+    fun getCandidatosDelUsuario(context: Context, usuarioLogueado: Usuario, callback: (MutableList<Usuario>) -> Unit){
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/candidatos/${usuarioLogueado.idUsuario}"
+
+        val request = JsonArrayRequest(
+            Request.Method.GET, url, null,
+
+            Response.Listener<JSONArray> { response ->
+
+                val candidatos = Gson().fromJson(response.toString(), Array<Usuario>::class.java)
+
+                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("ArmarPartidoActivity", response.toString())
+                callback(candidatos.toMutableList())
+            },
+            Response.ErrorListener {
+                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, UsuarioService::lambdaManejoErrores)
+            })
+        request.retryPolicy = Constants.defaultPolicy
+
+        queue.add(request)
+    }
+
+
     fun lambdaManejoErrores(context: Context, statusCode: Int) {}
+
 
 }

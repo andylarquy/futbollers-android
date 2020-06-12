@@ -47,6 +47,7 @@
         <activity android:name=".activities.inicio.SignUpActivity" />
         <activity android:name=".activities.armarPartido.ArmarPartidoActivity" />
         <activity android:name=".activities.drawer.DrawerActivity" />
+        <activity android:name=".activities.periferico.AmigosActivity" />
 
 
 
