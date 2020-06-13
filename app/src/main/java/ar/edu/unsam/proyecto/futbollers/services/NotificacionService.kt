@@ -6,14 +6,17 @@ import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.domain.Notificacion
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.defaultPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.json.JSONArray
+import org.json.JSONObject
 
 object NotificacionService {
 
@@ -42,10 +45,40 @@ object NotificacionService {
                 Log.i("CandidatosActivity", "[DEBUG]:Communication with API Rest Failed")
                 handleError(context, it, ::lambdaManejoErrores)
             })
-        request.retryPolicy = Constants.defaultPolicy
+        request.retryPolicy = defaultPolicy
 
         queue.add(request)
 
+    }
+
+    fun getInvitacionesDelUsuario(context: Context, usuario: Usuario, callback: (MutableList<Notificacion>) -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/notificaciones-invitaciones/"
+
+        val request = JsonArrayRequest(
+            Request.Method.GET, url + UsuarioLogueado.usuario.idUsuario, null,
+
+            Response.Listener<JSONArray> { response ->
+
+                val gson = GsonBuilder()
+                    .setDateFormat(Constants.DATE_FORMAT)
+                    .create()
+
+                val notificaciones = gson.fromJson(response.toString(), Array<Notificacion>::class.java)
+
+                Log.i("InvitacionesActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("InvitacionesActivity","Invitaciones response: "+ response.toString())
+                callback(notificaciones.toMutableList())
+            },
+            Response.ErrorListener {
+                Log.i("InvitacionesActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErrores)
+            })
+        request.retryPolicy = defaultPolicy
+
+        queue.add(request)
     }
 
     fun lambdaManejoErrores(context: Context, statusCode: Int) {
@@ -54,6 +87,27 @@ object NotificacionService {
         } else {
             Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun aceptarInvitacion(context: Context, invitacion: Notificacion, callback: () -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/notificaciones-aceptar/"
+
+        val request = JsonObjectRequest(
+            Request.Method.PUT, url + invitacion.idNotificacion, null,
+
+            Response.Listener<JSONObject> { response ->
+                Log.i("InvitacionesActivity", "[DEBUG]:Communication with API Rest Suceeded")
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("InvitacionesActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErrores)
+            })
+        request.retryPolicy = defaultPolicy
+
+        queue.add(request)
     }
 
 }

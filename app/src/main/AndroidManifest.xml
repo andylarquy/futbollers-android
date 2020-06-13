@@ -43,16 +43,31 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.home.HomeActivity" />
-        <activity android:name=".activities.inicio.SignUpActivity" />
-        <activity android:name=".activities.armarPartido.ArmarPartidoActivity" />
-        <activity android:name=".activities.drawer.DrawerActivity" />
-        <activity android:name=".activities.periferico.AmigosActivity" />
-        <activity android:name=".activities.periferico.CandidatosActivity" />
+
+        <activity android:name=".activities.home.HomeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.inicio.SignUpActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.armarPartido.ArmarPartidoActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.drawer.DrawerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.periferico.AmigosActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.periferico.CandidatosActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.periferico.InvitacionesActivity"
+            android:screenOrientation="portrait"/>
 
 
-
-        <activity android:name=".activities.inicio.LoginActivity" >
+        <activity android:name=".activities.inicio.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
