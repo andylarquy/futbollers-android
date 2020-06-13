@@ -112,4 +112,27 @@ object NotificacionService {
         queue.add(request)
     }
 
+    fun aceptarCandidato(context: Context, invitacion: Notificacion, callback: () -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+
+        Log.i("CandidatosActivity",invitacion.idNotificacion.toString())
+
+        val url = "${Constants.BASE_URL}/candidato-aceptar/"
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url + invitacion.idNotificacion, null,
+
+            Response.Listener<JSONObject> { response ->
+                Log.i("CandidatosActivity", "[DEBUG]:Communication with API Rest Suceeded")
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("CandidatosActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErrores)
+            })
+        request.retryPolicy = defaultPolicy
+
+        queue.add(request)
+    }
+
 }

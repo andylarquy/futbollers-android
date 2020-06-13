@@ -1,6 +1,7 @@
 package ar.edu.unsam.proyecto.futbollers.activities.periferico
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.drawer.SetupDrawer
+import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Notificacion
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.NotificacionService
@@ -21,6 +23,7 @@ import com.leodroidcoder.genericadapter.BaseRecyclerListener
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.squareup.picasso.Picasso
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_candidatos.*
 import kotlinx.android.synthetic.main.row_candidato.view.*
 
@@ -55,8 +58,7 @@ class CandidatosActivity: AppCompatActivity(), AceptarCandidatoClickListener{
         //Render pantalla de carga
         //loading_spinner?.visibility = View.GONE
 
-        notificacionesService.getNotificacionesDeCandidatosDelUsuario(this, usuarioLogueado, ::callbackCandidatos)
-
+        refrescarCandidatos()
 
     }
 
@@ -69,14 +71,34 @@ class CandidatosActivity: AppCompatActivity(), AceptarCandidatoClickListener{
     }
 
     override fun onAceptarCandidatoClick(position: Int) {
-        val amigo = candidatoAdapter.getItem(position)
-        Toast.makeText(this, "TODO: Implementar POST agregar-amistad entre usuarioLogueado y id: "+amigo.usuario!!.idUsuario.toString(), Toast.LENGTH_SHORT).show()
+        val candidato = candidatoAdapter.getItem(position)
+        notificacionesService.aceptarCandidato(this, candidato, ::callbackAceptarCandidato)
 
     }
 
+    fun callbackAceptarCandidato(){
+        refrescarCandidatos()
+        if (noHayMasNotificaciones()) {
+            val intent = Intent(this, HomeActivity::class.java).apply {}
+            this.startActivity(intent)
+            this.finish()
+        }
+
+        Toasty.success(this, "¡Has aceptado al candidato correctamente!", Toast.LENGTH_SHORT).show()
+    }
+
+    fun noHayMasNotificaciones(): Boolean {
+        return candidatoAdapter.itemCount < 1
+    }
+
+    fun refrescarCandidatos(){
+        notificacionesService.getNotificacionesDeCandidatosDelUsuario(this, usuarioLogueado, ::callbackCandidatos)
+    }
+
+
     override fun onRechazarCandidatoClick(position: Int) {
-        val amigo = candidatoAdapter.getItem(position)
-        Toast.makeText(this, "TODO: Implementar POST rechazar-amistad (?? entre usuarioLogueado y id: "+amigo.usuario!!.idUsuario.toString(), Toast.LENGTH_SHORT).show()
+        val candidato = candidatoAdapter.getItem(position)
+        Toast.makeText(this, "TODO: Implementar POST rechazar-candidato (?? ", Toast.LENGTH_SHORT).show()
     }
 
 }
@@ -92,8 +114,8 @@ class CandidatoViewHolder(itemView: View, listener: AceptarCandidatoClickListene
 
     init {
         listener?.run {
-            itemView.setOnClickListener { onAceptarCandidatoClick(adapterPosition) }
-            itemView.setOnClickListener { onRechazarCandidatoClick(adapterPosition) }
+            itemView.btn_aceptar_candidato.setOnClickListener { onAceptarCandidatoClick(adapterPosition) }
+            itemView.btn_rechazar_candidato.setOnClickListener { onRechazarCandidatoClick(adapterPosition) }
         }
     }
 

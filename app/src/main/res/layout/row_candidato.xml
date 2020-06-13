@@ -95,7 +95,7 @@
         card_view:layout_constraintVertical_bias="0.657" />
 
     <Button
-        android:id="@+id/dialog_btn_aceptar_candidato"
+        android:id="@+id/btn_aceptar_candidato"
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:backgroundTint="@color/success"
@@ -109,7 +109,7 @@
         card_view:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/dialog_btn_rechazar_candidato"
+        android:id="@+id/btn_rechazar_candidato"
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:backgroundTint="@color/failed"

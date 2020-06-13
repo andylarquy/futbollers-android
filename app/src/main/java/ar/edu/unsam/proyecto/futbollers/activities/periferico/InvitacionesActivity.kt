@@ -1,10 +1,10 @@
 package ar.edu.unsam.proyecto.futbollers.activities.periferico
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.drawer.SetupDrawer
+import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Notificacion
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.NotificacionService
@@ -23,14 +24,13 @@ import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.squareup.picasso.Picasso
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.activity_candidatos.*
 import kotlinx.android.synthetic.main.activity_invitaciones.*
 import kotlinx.android.synthetic.main.activity_invitaciones.base_drawer_layout
 import kotlinx.android.synthetic.main.activity_invitaciones.base_toolbar
 import kotlinx.android.synthetic.main.activity_invitaciones.nav_drawer
 import kotlinx.android.synthetic.main.row_invitacion.view.*
 
-class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener{
+class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener {
 
     val notificacionesService: NotificacionService = NotificacionService
     val usuarioLogueado: Usuario = UsuarioLogueado.usuario
@@ -64,11 +64,15 @@ class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener{
 
     }
 
-    fun refrescarInvitaciones(){
-        notificacionesService.getInvitacionesDelUsuario(this, usuarioLogueado, ::callbackInvitaciones)
+    fun refrescarInvitaciones() {
+        notificacionesService.getInvitacionesDelUsuario(
+            this,
+            usuarioLogueado,
+            ::callbackInvitaciones
+        )
     }
 
-    fun callbackInvitaciones(invitaciones: MutableList<Notificacion>){
+    fun callbackInvitaciones(invitaciones: MutableList<Notificacion>) {
         invitacionesAdapter.clear()
         invitacionesAdapter.items = invitaciones
         invitacionesAdapter.notifyDataSetChanged()
@@ -77,11 +81,21 @@ class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener{
     override fun onAceptarInvitacionClick(position: Int) {
         val invitacion = invitacionesAdapter.getItem(position)
         notificacionesService.aceptarInvitacion(this, invitacion, ::callbackAceptarInvitacion)
+    }
+
+    fun callbackAceptarInvitacion() {
+        refrescarInvitaciones()
+        if (noHayMasNotificaciones()) {
+            val intent = Intent(this, HomeActivity::class.java).apply {}
+            this.startActivity(intent)
+            this.finish()
+        }
+
         Toasty.success(this, "¡Has aceptado la invitación correctamente!", Toast.LENGTH_SHORT).show()
     }
 
-    fun callbackAceptarInvitacion(){
-        refrescarInvitaciones()
+    fun noHayMasNotificaciones(): Boolean {
+        return invitacionesAdapter.itemCount < 1
     }
 
     override fun onRechazarInvitacionClick(position: Int) {
@@ -112,8 +126,16 @@ class InvitacionesViewHolder(itemView: View, listener: InvitacionesClickListener
 
     init {
         listener.run {
-            itemView.dialog_btn_aceptar_invitacion.setOnClickListener { onAceptarInvitacionClick(adapterPosition) }
-            itemView.dialog_btn_rechazar_invitacion.setOnClickListener { onRechazarInvitacionClick(adapterPosition) }
+            itemView.dialog_btn_aceptar_invitacion.setOnClickListener {
+                onAceptarInvitacionClick(
+                    adapterPosition
+                )
+            }
+            itemView.dialog_btn_rechazar_invitacion.setOnClickListener {
+                onRechazarInvitacionClick(
+                    adapterPosition
+                )
+            }
         }
     }
 
