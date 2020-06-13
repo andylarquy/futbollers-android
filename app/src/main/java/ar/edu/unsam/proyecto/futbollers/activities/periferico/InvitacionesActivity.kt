@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import com.leodroidcoder.genericadapter.BaseRecyclerListener
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.squareup.picasso.Picasso
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_candidatos.*
 import kotlinx.android.synthetic.main.activity_invitaciones.*
 import kotlinx.android.synthetic.main.activity_invitaciones.base_drawer_layout
@@ -57,8 +59,13 @@ class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener{
         invitacionesAdapter = InvitacionesAdapter(this, this)
         rv.adapter = invitacionesAdapter
 
-        notificacionesService.getInvitacionesDelUsuario(this, usuarioLogueado, ::callbackInvitaciones)
+        refrescarInvitaciones()
 
+
+    }
+
+    fun refrescarInvitaciones(){
+        notificacionesService.getInvitacionesDelUsuario(this, usuarioLogueado, ::callbackInvitaciones)
     }
 
     fun callbackInvitaciones(invitaciones: MutableList<Notificacion>){
@@ -70,10 +77,11 @@ class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener{
     override fun onAceptarInvitacionClick(position: Int) {
         val invitacion = invitacionesAdapter.getItem(position)
         notificacionesService.aceptarInvitacion(this, invitacion, ::callbackAceptarInvitacion)
+        Toasty.success(this, "¡Has aceptado la invitación correctamente!", Toast.LENGTH_SHORT).show()
     }
 
     fun callbackAceptarInvitacion(){
-        //TODO: Hacer o no algo
+        refrescarInvitaciones()
     }
 
     override fun onRechazarInvitacionClick(position: Int) {
@@ -82,12 +90,10 @@ class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener{
 
 }
 
-
 class InvitacionesAdapter(context: Context, listener: InvitacionesClickListener) :
     GenericRecyclerViewAdapter<Notificacion, InvitacionesClickListener, InvitacionesViewHolder>(
         context, listener
     ) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InvitacionesViewHolder {
         return InvitacionesViewHolder(

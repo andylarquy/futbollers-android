@@ -92,10 +92,12 @@ object NotificacionService {
     fun aceptarInvitacion(context: Context, invitacion: Notificacion, callback: () -> Unit) {
         val queue = Volley.newRequestQueue(context)
 
-        val url = "${Constants.BASE_URL}/notificaciones-aceptar/"
+        Log.i("InvitacionesActivity",invitacion.idNotificacion.toString())
+
+        val url = "${Constants.BASE_URL}/invitaciones-aceptar/"
 
         val request = JsonObjectRequest(
-            Request.Method.PUT, url + invitacion.idNotificacion, null,
+            Request.Method.POST, url + invitacion.idNotificacion, null,
 
             Response.Listener<JSONObject> { response ->
                 Log.i("InvitacionesActivity", "[DEBUG]:Communication with API Rest Suceeded")
