@@ -28,4 +28,9 @@ class Equipo {
         }
     }
 
+    fun esOwner(usuario: Usuario): Boolean {
+        return owner!!.idUsuario == usuario.idUsuario
+    }
+
+
 }

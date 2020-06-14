@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -17,6 +18,9 @@ import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.ArmarPartidoActi
 import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.services.PartidoService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.simpleDateFormatter
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.toCalendar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
@@ -25,6 +29,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_partido.*
 import kotlinx.android.synthetic.main.row_fragment_partido.view.*
+import java.util.*
 
 
 class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecyclerItemClickListener {
@@ -114,6 +119,9 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
     private val equipo1Nombre: TextView? = itemView.equipo1_nombre
     private val equipo2Nombre: TextView? = itemView.equipo2_nombre
     private val partidoFoto: ImageView? = itemView.partido_foto
+    private val fechaDeConfirmacion: TextView? = itemView.tiempo_para_confirmar
+    private val fieldFechaDeConfirmacion: TextView = itemView.field_tiempo_para_confirmar
+    private val botonConfirmarReserva: Button = itemView.btn_tiempo_para_confirmar
 
     init {
         listener?.run {
@@ -127,6 +135,19 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
         equipo1Nombre?.text = item.equipo1!!.nombre
         equipo2Nombre?.text = item.equipo2!!.nombre
         Picasso.get().load(item.empresa!!.foto).into(partidoFoto)
+
+
+        if(item.equipo1!!.owner?.idUsuario == UsuarioLogueado.usuario.idUsuario && !item.faltanJugadoresPorConfirmar()){
+            val fechaLimite = toCalendar(item.fechaDeCreacion!!)
+            fechaLimite.add(Calendar.DATE, 2)
+            fechaDeConfirmacion?.text = simpleDateFormatter.format(fechaLimite.time)
+        }else{
+            fieldFechaDeConfirmacion.text = "Faltan ${item.jugadoresRestantes()} jugadores para confirmar"
+            botonConfirmarReserva.visibility = View.GONE
+            fechaDeConfirmacion?.text = ""
+        }
+
+
     }
 }
 

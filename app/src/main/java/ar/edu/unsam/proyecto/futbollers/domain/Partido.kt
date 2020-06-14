@@ -17,11 +17,26 @@ class Partido {
     var empresa: Empresa? = null
     var canchaReservada: Cancha? = null
     var fechaDeReserva: Date? = null
+    val fechaDeCreacion: Date? = null
+    val cantidadDeConfirmaciones: Int? = null
 
     fun toJson(o: Partido?): JSONObject?{
         val jsonResult = JSONObject(Gson().toJson(o))
         Log.i("LoginActivity", "usuario parseado a Json: $jsonResult")
         return jsonResult
+    }
+
+    fun esOwner(usuario: Usuario): Boolean {
+        return equipo1!!.esOwner(usuario)
+    }
+
+    //TODO: Revisar el -1
+    fun jugadoresRestantes(): Int {
+        return canchaReservada!!.cantidadJugadores!! - cantidadDeConfirmaciones!! - 1
+    }
+
+    fun faltanJugadoresPorConfirmar(): Boolean {
+        return cantidadDeConfirmaciones!! < canchaReservada!!.cantidadJugadores!!
     }
 
 }

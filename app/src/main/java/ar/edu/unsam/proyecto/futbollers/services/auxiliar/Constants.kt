@@ -1,14 +1,7 @@
 package ar.edu.unsam.proyecto.futbollers.services.auxiliar
 
-import android.util.Log
 import com.android.volley.DefaultRetryPolicy
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import java.lang.reflect.Type
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 object Constants {
@@ -35,6 +28,11 @@ object Constants {
 
      val simpleDateFormatter =  SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
 
+     fun toCalendar(date: Date): Calendar {
+          val cal = Calendar.getInstance()
+          cal.time = date
+          return cal
+     }
 
      val defaultPolicy = DefaultRetryPolicy(300, 3, 1F)
      val mediumPolicy = DefaultRetryPolicy(400, 3, 1F)
