@@ -9,46 +9,57 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo.ElegirEquipoGenerico
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEquipo.ElegirEquipoMultipleClickListener
 import ar.edu.unsam.proyecto.futbollers.activities.drawer.SetupDrawer
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioService
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.list.customListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leodroidcoder.genericadapter.BaseRecyclerListener
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
-import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
 import com.squareup.picasso.Picasso
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_amigos.*
 import kotlinx.android.synthetic.main.activity_amigos.base_drawer_layout
 import kotlinx.android.synthetic.main.activity_amigos.base_toolbar
 import kotlinx.android.synthetic.main.activity_amigos.floating_action_button
 import kotlinx.android.synthetic.main.activity_amigos.nav_drawer
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.row_agregar_amigo.view.*
+import kotlinx.android.synthetic.main.row_amigo.view.*
 
 
 class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
 
     lateinit var dialogAgregarAmigo: MaterialDialog
+    lateinit var agregarAmigoAdapter: AgregarAmigoAdapter
+    lateinit var listaAmigosAdapter: ListaAmigosAdapter
     val usuarioLogueado: Usuario = UsuarioLogueado.usuario
     val usuarioService = UsuarioService
-    lateinit var agregarAmigoAdapter: AgregarAmigoAdapter
+    lateinit var rv: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_amigos)
 
+        rv = amigos_list
+        rv.setHasFixedSize(true)
+
+        val llm = LinearLayoutManager(this)
+        rv.layoutManager = llm
+
         agregarAmigoAdapter = AgregarAmigoAdapter(this, this)
+        listaAmigosAdapter = ListaAmigosAdapter(this, this)
+        rv.adapter = listaAmigosAdapter
         setupDialogAgregarAmigo()
 
-
-        usuarioService.getCandidatosDelUsuario(this, usuarioLogueado, ::modalCandidatosCallback)
+        refrescarListaAmigos()
+        refrescarListaCandidatos()
 
 
         val setupDrawer = SetupDrawer()
@@ -66,6 +77,23 @@ class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
             dialogAgregarAmigo.show()
         }
 
+        rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    // Scroll Down
+                    if (floatButton.isShown) {
+                        floatButton.hide()
+                    }
+                } else if (dy < 0) {
+                    // Scroll Up
+                    if (!floatButton.isShown) {
+                        floatButton.show()
+                    }
+                }
+            }
+        })
+
 
     }
 
@@ -75,6 +103,13 @@ class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
             .title(text = "Agrega un amigo")
             .customListAdapter(agregarAmigoAdapter)
             .noAutoDismiss()
+            .negativeButton(text = "Cerrar") {
+                it.dismiss()
+            }
+            .onDismiss{
+                refrescarListaAmigos()
+                refrescarListaCandidatos()
+            }
 
     }
 
@@ -86,23 +121,37 @@ class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
     }
 
 
-
-
-    override fun onAgregarAmigoClick(position: Int, button:Button, check: ImageView) {
+    override fun onAgregarAmigoClick(position: Int, button: Button, check: ImageView) {
         val amigo = agregarAmigoAdapter.getItem(position)
-        Toast.makeText(this, "TODO: Implementar POST notificacion-amistad a usuario con id: "+amigo.idUsuario.toString(), Toast.LENGTH_SHORT).show()
         button.isClickable = false
         button.visibility = View.GONE
+
+        usuarioService.postAmistad(this, amigo, ::callbackAgregarAmigo, check)
+    }
+
+    fun callbackAgregarAmigo(check: ImageView) {
         check.visibility = View.VISIBLE
-        //TODO: descomentar usuarioService.postAmistad(this, usuarioLogueado, callbackAgregarAmigo)
-        //TODO: Ver despues tmb la inyeccion de dependencias del check icon
+        Toasty.success(
+            this,
+            "¡Se ha agregado con éxito el usuario a tu lista de amigos!",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
-    fun callbackAgregarAmigo(){
-        Toast.makeText(this, "Se agrego un usuario a la lista de amigos", Toast.LENGTH_SHORT).show()
+    fun refrescarListaAmigos(){
+        usuarioService.getAmigosDelUsuario(this, usuarioLogueado, ::callbackAmigosDelUsuario)
     }
 
+    fun refrescarListaCandidatos(){
+        setupDialogAgregarAmigo()
+        usuarioService.getCandidatosDelUsuario(this, usuarioLogueado, ::modalCandidatosCallback)
+    }
 
+    fun callbackAmigosDelUsuario(amigos: MutableList<Usuario>){
+        listaAmigosAdapter.clear()
+        listaAmigosAdapter.items = amigos
+        listaAmigosAdapter.notifyDataSetChanged()
+    }
 
     class AgregarAmigoAdapter(context: Context, listener: AgregarAmigoClickListener) :
         GenericRecyclerViewAdapter<Usuario, AgregarAmigoClickListener, AgregarAmigoViewHolder>(
@@ -129,7 +178,8 @@ class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
         init {
             listener.run {
                 val btnAgregarAmigo = itemView.dialog_btn_agregar_amigo
-                btnAgregarAmigo.setOnClickListener { onAgregarAmigoClick(adapterPosition, btnAgregarAmigo, check) }
+                btnAgregarAmigo.setOnClickListener { onAgregarAmigoClick(adapterPosition, btnAgregarAmigo, check)
+                }
             }
         }
 
@@ -146,26 +196,41 @@ class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
 interface AgregarAmigoClickListener : BaseRecyclerListener {
     fun onAgregarAmigoClick(position: Int, button: Button, check: ImageView)
 }
-        /*
-    Si implementas recycler view ahi tenes la animacion del boton
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+class ListaAmigosAdapter(context: Context, listener: BaseRecyclerListener) :
+    GenericRecyclerViewAdapter<Usuario, BaseRecyclerListener, ListaAmigosViewHolder>(
+        context, listener
+    ) {
 
 
-            rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (dy > 0) {
-                        // Scroll Down
-                        if (floatButton.isShown) {
-                            floatButton.hide()
-                        }
-                    } else if (dy < 0) {
-                        // Scroll Up
-                        if (!floatButton.isShown) {
-                            floatButton.show()
-                        }
-                    }
-                }
-            })
-     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaAmigosViewHolder {
+        return ListaAmigosViewHolder(inflate(R.layout.row_amigo, parent), listener)
+    }
+}
+
+class ListaAmigosViewHolder(itemView: View, listener: BaseRecyclerListener) :
+    BaseViewHolder<Usuario, BaseRecyclerListener>(itemView, listener) {
+
+    private val amigoNombre: TextView = itemView.lista_nombre_amigo
+    private val posicionAmigo: TextView = itemView.lista_posicion_amigo
+    private val amigoFoto: ImageView = itemView.lista_amigo_foto
+
+    override fun onBind(item: Usuario) {
+        amigoNombre.text = item.nombre
+        posicionAmigo.text = item.posicion
+        Picasso.get().load(item.foto).into(amigoFoto)
+    }
+
+}
+
+
+
+
+
+
+
+
 
 

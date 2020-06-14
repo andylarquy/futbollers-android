@@ -2,6 +2,7 @@ package ar.edu.unsam.proyecto.futbollers.services
 
 import android.content.Context
 import android.util.Log
+import android.widget.ImageView
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
@@ -69,21 +70,21 @@ object UsuarioService {
         queue.add(request)
     }
 
-    fun postAmistad(context: Context, usuario: Usuario, callback: () -> Unit){
-
+    fun postAmistad(context: Context, amigo: Usuario, callback: (ImageView) -> Unit, check: ImageView){
+        val usuarioLogueado = UsuarioLogueado.usuario
         val queue = Volley.newRequestQueue(context)
 
-        val url = "${Constants.BASE_URL}/amigos"
+        val url = "${Constants.BASE_URL}/usuario/${usuarioLogueado.idUsuario}/amigo/${amigo.idUsuario}"
 
         val request = JsonObjectRequest(
-            Request.Method.POST, url, Usuario().toJson(usuario),
+            Request.Method.POST, url, null,
 
             Response.Listener<JSONObject> { response ->
 
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Suceeded")
 
                 Log.i("ArmarPartidoActivity", response.toString())
-                callback()
+                callback(check)
             },
             Response.ErrorListener {
                 Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")

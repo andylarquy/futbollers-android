@@ -29,6 +29,31 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/amigos_list"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:clipToPadding="false"
+                    android:paddingTop="?attr/actionBarSize"
+                    android:paddingBottom="56dp"
+                    android:scrollbars="vertical"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:context="com.google.samples.apps.sunflower.GardenActivity"
+                    tools:listitem="@layout/row_amigo" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -38,21 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <TextView
-                android:id="@+id/amigos_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TODO: Listado amigos"
-                android:textSize="25sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <include
                 android:id="@+id/floating_action_button"
-                layout="@layout/floating_button" />
+                layout="@layout/floating_button_amigo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
