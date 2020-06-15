@@ -122,6 +122,26 @@ object PartidoService {
 
     }
 
+    fun confirmarPartido(context: Context, partido: Partido, callback: () -> Unit) {
+       val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/confirmar-partido/${partido.idPartido}"
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, null,
+
+            Response.Listener<JSONObject> { response ->
+                Log.i("ArmarPartidoActivity","response: "+response.toString())
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("ArmarPartidoActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErroresGetPartido)
+            })
+        request.retryPolicy = partidoPolicy
+
+        queue.add(request)
+    }
 
 
 }

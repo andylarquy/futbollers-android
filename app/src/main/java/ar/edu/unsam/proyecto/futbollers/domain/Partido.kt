@@ -19,6 +19,7 @@ class Partido {
     var fechaDeReserva: Date? = null
     val fechaDeCreacion: Date? = null
     val cantidadDeConfirmaciones: Int? = null
+    val confirmado: Boolean? = null
 
     fun toJson(o: Partido?): JSONObject?{
         val jsonResult = JSONObject(Gson().toJson(o))
@@ -36,7 +37,7 @@ class Partido {
     }
 
     fun faltanJugadoresPorConfirmar(): Boolean {
-        return cantidadDeConfirmaciones!! < canchaReservada!!.cantidadJugadores!!
+        return cantidadDeConfirmaciones!! + 1 < canchaReservada!!.cantidadJugadores!!
     }
 
 }

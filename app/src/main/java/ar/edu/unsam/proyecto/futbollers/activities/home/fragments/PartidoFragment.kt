@@ -60,7 +60,7 @@ class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecy
         rv.adapter = partidoAdapter
 
 
-        partidoService.getPartidosDelUsuario(context!!, usuarioLogueado, ::callBackPartidos)
+        refrescarPartidos()
 
         //Render pantalla de carga
         loading_spinner?.visibility = View.VISIBLE
@@ -102,8 +102,16 @@ class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecy
     }
 
     override fun onItemClick(position: Int) {
-        Log.i("PartidoFragment", "TODO: Darle comportamiento al click (no va a ser tan facil)")
-        //Do Nothing yet - Espero q nunca haya que hacer algo aca jajajaja
+        val partido = partidoAdapter.getItem(position)
+        PartidoService.confirmarPartido(context!!, partido, ::callbackConfirmarPartido)
+    }
+
+    fun callbackConfirmarPartido(){
+        refrescarPartidos()
+    }
+
+    fun refrescarPartidos(){
+        PartidoService.getPartidosDelUsuario(context!!, UsuarioLogueado.usuario, ::callBackPartidos)
     }
 
 }
@@ -122,10 +130,11 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
     private val fechaDeConfirmacion: TextView? = itemView.tiempo_para_confirmar
     private val fieldFechaDeConfirmacion: TextView = itemView.field_tiempo_para_confirmar
     private val botonConfirmarReserva: Button = itemView.btn_tiempo_para_confirmar
+    private val check:ImageView = itemView.check
 
     init {
         listener?.run {
-            itemView.setOnClickListener { onItemClick(adapterPosition) }
+            itemView.btn_tiempo_para_confirmar.setOnClickListener { onItemClick(adapterPosition) }
         }
     }
 
@@ -137,12 +146,29 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
         Picasso.get().load(item.empresa!!.foto).into(partidoFoto)
 
 
-        if(item.equipo1!!.owner?.idUsuario == UsuarioLogueado.usuario.idUsuario && !item.faltanJugadoresPorConfirmar()){
-            val fechaLimite = toCalendar(item.fechaDeCreacion!!)
-            fechaLimite.add(Calendar.DATE, 2)
-            fechaDeConfirmacion?.text = simpleDateFormatter.format(fechaLimite.time)
-        }else{
+        if(item.faltanJugadoresPorConfirmar()){
             fieldFechaDeConfirmacion.text = "Faltan ${item.jugadoresRestantes()} jugadores para confirmar"
+            botonConfirmarReserva.visibility = View.GONE
+            fechaDeConfirmacion?.text = ""
+        }else if (item.equipo1!!.owner?.idUsuario == UsuarioLogueado.usuario.idUsuario){
+
+            if(item.confirmado!!){
+                botonConfirmarReserva.visibility = View.GONE
+                fechaDeConfirmacion?.text = ""
+                fieldFechaDeConfirmacion.text = ""
+                check.visibility = View.VISIBLE
+            }else{
+                val fechaLimite = toCalendar(item.fechaDeCreacion!!)
+                fechaLimite.add(Calendar.DATE, 2)
+                fechaDeConfirmacion?.text = simpleDateFormatter.format(fechaLimite.time)
+            }
+
+        }else if(item.confirmado!!){
+            fieldFechaDeConfirmacion.text = "Reserva confirmada!"
+            botonConfirmarReserva.visibility = View.GONE
+            fechaDeConfirmacion?.text = ""
+        }else{
+            fieldFechaDeConfirmacion.text = "Debes esperar a que el creador confirme la reserva"
             botonConfirmarReserva.visibility = View.GONE
             fechaDeConfirmacion?.text = ""
         }
