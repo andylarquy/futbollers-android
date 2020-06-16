@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.ArmarPartidoActivity
+import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
+import ar.edu.unsam.proyecto.futbollers.activities.nuevoEquipo.NuevoEquipoActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.services.EquipoService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
@@ -79,7 +81,10 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
         })
 
         fab.setOnClickListener {
-            Toast.makeText(context,"TODO: Crear equipo",Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(context, NuevoEquipoActivity::class.java).apply{}
+            context!!.startActivity(intent)
+            activity!!.finish()
         }
 
     }
