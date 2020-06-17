@@ -130,7 +130,7 @@ class EquipoViewHolder(itemView: View, listener: EquipoMultipleClickListener?) :
     private val equipoNombre: TextView? = itemView.equipo_nombre
     private val ownerIcon: ImageView? = itemView.owner_icon
     private val abandonIcon: ImageView? = itemView.abandon_icon
-    private val trashIcon: ImageView? = itemView.abandon_icon
+    private val trashIcon: ImageView? = itemView.trash_icon
     private val editIcon: ImageView? = itemView.edit_icon
     private val equipoFoto: ImageView? = itemView.equipo_foto
 
