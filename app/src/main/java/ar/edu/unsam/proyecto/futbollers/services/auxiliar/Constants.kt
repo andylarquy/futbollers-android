@@ -19,7 +19,7 @@ object Constants {
      //IP PRODUCCION CASA
      //const val BASE_URL = "http://190.16.251.41:9000"
 
-     val POSICIONES = arrayOf("Arquero","Defensor","Mediocampista","Delantero")
+     val POSICIONES = arrayOf("Arquero", "Defensor", "Mediocampista", "Delantero", "Cualquiera")
      val DISTANCIAS = arrayOf("3","5","10","20")
      val SEXO = arrayOf("Masculino", "Femenino", "Mixto")
      const val DATE_FORMAT = "yyyy-MM-dd'T'HH:mm"
