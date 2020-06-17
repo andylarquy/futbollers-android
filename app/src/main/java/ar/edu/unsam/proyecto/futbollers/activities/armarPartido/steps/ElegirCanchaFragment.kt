@@ -213,7 +213,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
 
         if (fechaSeleccionada !== null) {
 
-            context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time, ::callbackValidarReserva) }
+            context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time, canchaSeleccionada!!, ::callbackValidarReserva) }
             context?.let { promocionService.getPromocionByCodigo(it, codigoPromocionalSeleccionado, ::callbackCodigoPromocional) }
 
             goToNextStep(callback)
@@ -239,7 +239,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
             loading_spinner.visibility = View.INVISIBLE
             showStepperNavigation()
 
-        }, 2000L)
+        }, 2500L)
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {}

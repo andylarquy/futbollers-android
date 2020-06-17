@@ -78,12 +78,12 @@ object CanchaService {
     fun lambdaManejoErrores(context: Context, statusCode: Int) {}
 
 
-    fun validarFechaDeReserva(context: Context, fecha: Long, callback: (Boolean) -> Unit) {
+    fun validarFechaDeReserva(context: Context, fecha: Long, canchaSeleccionada: Cancha,callback: (Boolean) -> Unit) {
         val queue = Volley.newRequestQueue(context)
 
         val url = "${Constants.BASE_URL}/validar-fecha"
 
-        val fechaParseada = JSONObject("{\"fecha\":\"" + simpleDateFormatter.format(fecha) + "\"}")
+        val fechaParseada = JSONObject("{\"fecha\":\"" + simpleDateFormatter.format(fecha) + "\", " + "\"idCanchaReservada\":"+canchaSeleccionada.idCancha+"}")
 
         Log.i("ArmarPartidoActivity", fechaParseada.toString())
 
