@@ -119,6 +119,11 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
             status = false
         }
 
+        if (nombreSeleccionado.toLowerCase().contains("equipo temporal")) {
+            Toasty.error(this, "El nombre del equipo no puede contener \"Equipo Temporal \"", Toast.LENGTH_SHORT).show()
+            status = false
+        }
+
         if (imagenSeleccionada === null){
             Toasty.error(this, "Debe seleccionar una imagen", Toast.LENGTH_SHORT).show()
             status = false
