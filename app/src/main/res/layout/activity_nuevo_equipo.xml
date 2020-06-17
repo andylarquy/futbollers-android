@@ -17,72 +17,115 @@
         app:layout_constraintHorizontal_bias="0.857"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.128">
+        app:layout_constraintVertical_bias="0.050">
 
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_nombre_equipo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            />
+            android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/integrantes_title"
+
+    <ImageView
+        android:id="@+id/foto_equipo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Integrantes"
-        android:textSize="30sp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.314" />
+        app:layout_constraintVertical_bias="0.044"
+        app:srcCompat="@drawable/avatar" />
+
+
+    <ImageView
+        android:id="@+id/icono_foto_equipo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/foto_equipo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.185"
+        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteX="-35dp"
         tools:layout_editor_absoluteY="0dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/equipos_list"
-            android:layout_width="411dp"
-            android:layout_height="450dp"
+            android:id="@+id/integrantes_de_equipo_list"
+            android:layout_width="0dp"
+            android:layout_height="409dp"
             android:clipToPadding="false"
             android:paddingBottom="56dp"
             android:scrollbars="vertical"
 
-            tools:context="com.google.samples.apps.sunflower.GardenActivity"
-            tools:layout_editor_absoluteY="282dp"
-            tools:listitem="@layout/row_elegir_jugador_para_equipo" />
-
-        <ImageView
-            android:id="@+id/foto_equipo"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
+            app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.122"
-            app:srcCompat="@drawable/avatar" />
+            app:layout_constraintVertical_bias="0.776"
+            tools:context="com.google.samples.apps.sunflower.GardenActivity"
+            tools:listitem="@layout/row_elegir_jugador_para_equipo" />
 
-        <ImageView
-            android:id="@+id/icono_foto_equipo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <Button
+            android:id="@+id/btn_agregar_integrante"
+            android:layout_width="236dp"
+            android:layout_height="49dp"
+
+            android:text="Agregar integrante"
+            android:textSize="13sp"
+            app:icon="@drawable/ic_baseline_person_purple_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/foto_equipo"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.232"
-            app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+            app:layout_constraintVertical_bias="0.28"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="2dp" />
+
+        <Button
+            android:id="@+id/btn_confirmar"
+            android:layout_width="152dp"
+            android:layout_height="50dp"
+
+            android:text="Confirmar"
+            android:textSize="13sp"
+            app:icon="@drawable/ic_baseline_check_purple_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.938"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.991" />
+
+        <Button
+            android:id="@+id/btn_cancelar"
+            android:layout_width="152dp"
+            android:layout_height="50dp"
+
+            android:text="Cancelar"
+            android:textSize="13sp"
+            app:icon="@drawable/ic_baseline_clear_24"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.061"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.991"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="2dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
