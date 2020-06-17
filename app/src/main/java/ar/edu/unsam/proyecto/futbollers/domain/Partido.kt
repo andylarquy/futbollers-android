@@ -17,9 +17,11 @@ class Partido {
     var empresa: Empresa? = null
     var canchaReservada: Cancha? = null
     var fechaDeReserva: Date? = null
+    var promocion: Promocion? = null
     val fechaDeCreacion: Date? = null
     val cantidadDeConfirmaciones: Int? = null
     val confirmado: Boolean? = null
+
 
     fun toJson(o: Partido?): JSONObject?{
         val jsonResult = JSONObject(Gson().toJson(o))

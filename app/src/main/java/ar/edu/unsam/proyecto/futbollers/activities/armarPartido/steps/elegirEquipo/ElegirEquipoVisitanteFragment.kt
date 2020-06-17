@@ -457,6 +457,7 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         partido.empresa = empresaSeleccionada
         partido.canchaReservada = canchaSeleccionada
         partido.fechaDeReserva = fechaSeleccionada
+        partido.promocion = promocionSeleccionada
 
         hideStepperNavigation()
         loading_spinner.visibility = VISIBLE
