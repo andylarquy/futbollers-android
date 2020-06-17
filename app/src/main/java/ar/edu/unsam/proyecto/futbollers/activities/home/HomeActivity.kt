@@ -125,13 +125,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onRestart() {
+        var currentFragment: Fragment
 
-
-        val partidoFragment: PartidoFragment = supportFragmentManager.fragments[0] as PartidoFragment
-
+    try {
+        currentFragment = supportFragmentManager.fragments[0] as PartidoFragment
+    }catch(error: Throwable){
+        currentFragment = supportFragmentManager.fragments[0] as EquipoFragment
+    }
         supportFragmentManager.beginTransaction()
-            .detach(partidoFragment)
-            .attach(partidoFragment)
+            .detach(currentFragment)
+            .attach(currentFragment)
             .commitAllowingStateLoss()
             //TODO: Revisar
             //https://medium.com/@elye.project/handling-illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-d4ee8b630066

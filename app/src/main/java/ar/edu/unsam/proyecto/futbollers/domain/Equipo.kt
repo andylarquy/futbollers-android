@@ -1,5 +1,8 @@
 package ar.edu.unsam.proyecto.futbollers.domain
 
+import com.google.gson.Gson
+import org.json.JSONObject
+
 class Equipo {
     var idEquipo: Long? = null
     var nombre: String? = null
@@ -30,6 +33,10 @@ class Equipo {
 
     fun esOwner(usuario: Usuario): Boolean {
         return owner!!.idUsuario == usuario.idUsuario
+    }
+
+    fun toJson(o: Equipo): JSONObject{
+        return JSONObject(Gson().toJson(o))
     }
 
 

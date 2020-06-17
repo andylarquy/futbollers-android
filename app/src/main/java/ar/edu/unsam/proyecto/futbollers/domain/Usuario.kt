@@ -55,5 +55,8 @@ class Usuario: BaseObservable() {
         lon = usuario.lon
     }
 
+    fun tieneId(idBuscado: Long): Boolean{
+        return idUsuario == idBuscado
+    }
 
 }

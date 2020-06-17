@@ -39,5 +39,8 @@ object Constants {
      val longPolicy = DefaultRetryPolicy(500, 3, 1F)
      val partidoPolicy = DefaultRetryPolicy(8000, 0, 1F)
 
+     const val IMAGE_SERVER_KEY = "73f024c274f96f1e4c2ea701650fa1d4"
+     const val IMAGE_SERVER_BASE_URL = "https://api.imgbb.com/1/upload?key="
+
 
 }

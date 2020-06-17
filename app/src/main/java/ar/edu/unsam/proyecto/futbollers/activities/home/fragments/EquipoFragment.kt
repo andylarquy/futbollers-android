@@ -84,7 +84,6 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
 
             val intent = Intent(context, NuevoEquipoActivity::class.java).apply{}
             context!!.startActivity(intent)
-            activity!!.finish()
         }
 
     }

@@ -37,6 +37,9 @@ android {
 
 dependencies {
 
+    //Multiplart / form-data library for Volley
+    implementation 'com.github.hardillb:MultiPartVolley:0.0.3'
+
     //<IMAGE PICKER>
     implementation 'com.github.esafirm.android-image-picker:imagepicker:2.3.1'
     implementation 'com.github.esafirm.android-image-picker:rximagepicker:2.3.1'

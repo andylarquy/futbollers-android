@@ -11,9 +11,11 @@ import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.longPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
 import com.android.volley.*
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONArray
+import org.json.JSONObject
 
 object EquipoService {
     fun getEquiposDelUsuario(context: Context, usuarioLogueado: Usuario, callback: (MutableList<Equipo>) -> Unit) {
@@ -70,6 +72,35 @@ object EquipoService {
 
         queue.add(request)
     }
+
+    fun postEquipo(context: Context, equipo: Equipo, callback: () -> Unit){
+        val queue = Volley.newRequestQueue(context)
+
+        Log.i("NuevoEquipoActivity", Equipo().toJson(equipo).toString())
+        Log.i("NuevoEquipoActivity", Gson().toJson(equipo).toString())
+
+        val url = "${Constants.BASE_URL}/equipos"
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, Equipo().toJson(equipo),
+
+            Response.Listener<JSONObject> { response ->
+
+                Log.i("NuevoEquipoActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("NuevoEquipoActivity", response.toString())
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("NuevoEquipoActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErrores)
+            })
+        request.retryPolicy = longPolicy
+
+        queue.add(request)
+    }
+    
+
 
     fun lambdaManejoErrores(context: Context, statusCode: Int) {
         if (statusCode == 422) {
