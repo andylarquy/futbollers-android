@@ -132,7 +132,7 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         if(status){
             agregarUsuarioLogueadoAIntegrantesIfNotExists()
 
-            upladoImageToServer(imagenSeleccionada!!)
+            uploadImageToServer(imagenSeleccionada!!)
         }
 
     }
@@ -155,7 +155,7 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
             .start()
     }
 
-    fun upladoImageToServer(imagen: Bitmap){
+    fun uploadImageToServer(imagen: Bitmap){
         auxiliarService.uploadImage(this, imagen, ::callbackUploadImage)
     }
 
