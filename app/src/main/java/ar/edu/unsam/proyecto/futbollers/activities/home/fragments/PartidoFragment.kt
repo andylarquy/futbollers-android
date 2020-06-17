@@ -19,6 +19,7 @@ import ar.edu.unsam.proyecto.futbollers.domain.Partido
 import ar.edu.unsam.proyecto.futbollers.services.PartidoService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.dateTransformer
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.simpleDateFormatter
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.toCalendar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -160,7 +161,7 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
             }else{
                 val fechaLimite = toCalendar(item.fechaDeCreacion!!)
                 fechaLimite.add(Calendar.DATE, 2)
-                fechaDeConfirmacion?.text = simpleDateFormatter.format(fechaLimite.time)
+                fechaDeConfirmacion?.text = dateTransformer(simpleDateFormatter.format(fechaLimite.time))
             }
 
         }else if(item.confirmado!!){

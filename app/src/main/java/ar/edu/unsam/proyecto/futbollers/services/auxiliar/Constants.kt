@@ -23,10 +23,12 @@ object Constants {
      val DISTANCIAS = arrayOf("3","5","10","20")
      val SEXO = arrayOf("Masculino", "Femenino", "Mixto")
      const val DATE_FORMAT = "yyyy-MM-dd'T'HH:mm"
+     const val OUTPUT_DATE_FORMAT = "dd/MM/yyyy - HH:mm"
 
      const val INTERVALO_GPS: Long = 5000
 
      val simpleDateFormatter =  SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+     val outputDateFormatter = SimpleDateFormat(OUTPUT_DATE_FORMAT, Locale.getDefault())
 
      fun toCalendar(date: Date): Calendar {
           val cal = Calendar.getInstance()
@@ -42,5 +44,9 @@ object Constants {
      const val IMAGE_SERVER_KEY = "73f024c274f96f1e4c2ea701650fa1d4"
      const val IMAGE_SERVER_BASE_URL = "https://api.imgbb.com/1/upload?key="
 
+     fun dateTransformer(fecha: String): String{
+          val fechaAsDate: Date = simpleDateFormatter.parse(fecha)!!
+          return outputDateFormatter.format(fechaAsDate)
+     }
 
 }
