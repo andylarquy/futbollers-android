@@ -6,19 +6,17 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.Navigation.findNavController
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.activities.drawer.DrawerActivity
 import ar.edu.unsam.proyecto.futbollers.activities.drawer.SetupDrawer
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.ChatFragment
 import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.EquipoFragment.EquipoFragment
@@ -26,12 +24,8 @@ import ar.edu.unsam.proyecto.futbollers.activities.home.fragments.PartidoFragmen
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.WorkerGPS
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import com.squareup.picasso.Picasso
 import im.delight.android.location.SimpleLocation
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.util_drawer_header.view.*
 
 
 class HomeActivity : AppCompatActivity() {
@@ -51,27 +45,33 @@ class HomeActivity : AppCompatActivity() {
         setInitialFragment()
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
-            var fragment: Fragment? = null;
+            var fragment: Fragment? = null
             if (item.itemId == R.id.action_partido) {
-                fragment = PartidoFragment(floating_action_button.findViewById(R.id.floating_action_button))
+                fragment =
+                    PartidoFragment(floating_action_button.findViewById(R.id.floating_action_button))
             } else if (item.itemId == R.id.action_equipo) {
-                fragment = EquipoFragment(floating_action_button.findViewById(R.id.floating_action_button))
+                fragment =
+                    EquipoFragment(floating_action_button.findViewById(R.id.floating_action_button))
             } else if (item.itemId == R.id.action_chat) {
                 fragment = ChatFragment()
             }
 
-            replaceFragment(fragment!!);
+            replaceFragment(fragment!!)
 
             true
         }
         /* ESTA COPIADO Y PEGADO EN OnRestart POR OBLIGACION */
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
+            != PackageManager.PERMISSION_GRANTED
+        ) {
 
 
-            ActivityCompat.requestPermissions(this, arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION ), 1)
+            ActivityCompat.requestPermissions(
+                this, arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ), 1
+            )
 
             // Permission is not granted
         }
@@ -99,16 +99,16 @@ class HomeActivity : AppCompatActivity() {
         val drawerLayout = base_drawer_layout
 
         setSupportActionBar(toolbar)
-        setupDrawer.startSetup(applicationContext,this, toolbar, drawerLayout, nav_drawer)
+        setupDrawer.startSetup(applicationContext, this, toolbar, drawerLayout, nav_drawer)
 
     }
 
 
-
-    private fun setInitialFragment() {
+    fun setInitialFragment() {
         val fragmentTransaction: FragmentTransaction =
             supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.drawer_fragment_container,
+        fragmentTransaction.add(
+            R.id.drawer_fragment_container,
             PartidoFragment(floating_action_button.findViewById(R.id.floating_action_button))
         )
 
@@ -124,22 +124,47 @@ class HomeActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
+    override fun onBackPressed() {
+
+        Log.i("HomeActivity", supportFragmentManager.fragments[0].javaClass.simpleName)
+        val fragment =
+            PartidoFragment(floating_action_button.findViewById(R.id.floating_action_button))
+
+        when (supportFragmentManager.fragments[0].javaClass.simpleName) {
+            "EquipoFragment" -> {
+                bottom_navigation.selectedItemId = R.id.action_partido
+                onRestart()
+            }
+
+            "ChatFragment" -> {
+                bottom_navigation.selectedItemId = R.id.action_partido
+                onRestart()
+            }
+
+            else -> finish()
+        }
+    }
+
     override fun onRestart() {
         var currentFragment: Fragment
+        try {
+            currentFragment = supportFragmentManager.fragments[0] as PartidoFragment
+        } catch (error: Throwable) {
+            try {
+                currentFragment = supportFragmentManager.fragments[0] as EquipoFragment
+            } catch (error: Throwable) {
+                currentFragment = supportFragmentManager.fragments[0] as ChatFragment
+                supportFragmentManager.beginTransaction()
+                    .detach(currentFragment)
+                    .attach(currentFragment)
+                    .commitAllowingStateLoss()
+                //TODO: Revisar
+                //https://medium.com/@elye.project/handling-illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-d4ee8b630066
 
-    try {
-        currentFragment = supportFragmentManager.fragments[0] as PartidoFragment
-    }catch(error: Throwable){
-        currentFragment = supportFragmentManager.fragments[0] as EquipoFragment
-    }
-        supportFragmentManager.beginTransaction()
-            .detach(currentFragment)
-            .attach(currentFragment)
-            .commitAllowingStateLoss()
-            //TODO: Revisar
-            //https://medium.com/@elye.project/handling-illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-d4ee8b630066
+                super.onRestart()
+            }
+        }
 
-        super.onRestart()
 
     }
 

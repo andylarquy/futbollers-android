@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -66,7 +67,7 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
 
         //TODO: No redigir al usuario si hace click en la pantalla en la q esta
         when (item.title) {
-            "Perfil" -> Log.i("BaseActivity", "TODO: Intent Perfil")
+            "Perfil" -> Toast.makeText(activity, "TODO: Intent Perfil", Toast.LENGTH_SHORT).show()
 
             "Home" -> {
                 val intent = Intent(context, HomeActivity::class.java).apply{}
@@ -82,14 +83,9 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
                 activity.finish()
             }
 
-            "Encuestas" -> Log.i("BaseActivity", "TODO: Intent Mis Encuestas")
+            "Encuestas" -> Toast.makeText(activity, "TODO: Intent Mis Encuestas", Toast.LENGTH_SHORT).show()
 
-            "Candidatos" -> {
-                val intent = Intent(context, CandidatosActivity::class.java).apply{}
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                context.startActivity(intent)
-                activity.finish()
-            }
+            "Candidatos" -> Toast.makeText(activity, "TODO: Intent Mis Candidatos", Toast.LENGTH_SHORT).show()
 
             "Invitaciones" -> {
                 val intent = Intent(context, InvitacionesActivity::class.java).apply{}
@@ -98,7 +94,7 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
                 activity.finish()
             }
 
-            "Configuracion" -> Log.i("BaseActivity", "TODO: Intent Configuracion")
+            "Configuracion" -> Toast.makeText(activity, "TODO: Intent Configuracion", Toast.LENGTH_SHORT).show()
         }
 
         return true

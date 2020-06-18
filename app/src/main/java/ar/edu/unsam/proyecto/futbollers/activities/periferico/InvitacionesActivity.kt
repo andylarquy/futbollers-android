@@ -103,6 +103,13 @@ class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener {
         //TODO: Rechazar invitacion
     }
 
+    override fun onBackPressed() {
+        val intent = Intent(this, HomeActivity::class.java).apply{}
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        this.startActivity(intent)
+        this.finish()
+    }
+
 }
 
 class InvitacionesAdapter(context: Context, listener: InvitacionesClickListener) :

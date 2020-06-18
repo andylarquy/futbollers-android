@@ -159,6 +159,9 @@ class EquipoViewHolder(itemView: View, listener: EquipoMultipleClickListener?) :
         equipoNombre?.text = item.nombre
         Picasso.get().load(item.foto).into(equipoFoto)
     }
+
+
+
 }
 
 class EquipoAdapter(context: Context, listener: EquipoFragment) : GenericRecyclerViewAdapter<Equipo, EquipoMultipleClickListener, EquipoViewHolder>(context, listener) {

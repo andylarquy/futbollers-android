@@ -1,6 +1,7 @@
 package ar.edu.unsam.proyecto.futbollers.activities.periferico
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.drawer.SetupDrawer
+import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioService
@@ -26,10 +28,6 @@ import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.squareup.picasso.Picasso
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_amigos.*
-import kotlinx.android.synthetic.main.activity_amigos.base_drawer_layout
-import kotlinx.android.synthetic.main.activity_amigos.base_toolbar
-import kotlinx.android.synthetic.main.activity_amigos.floating_action_button
-import kotlinx.android.synthetic.main.activity_amigos.nav_drawer
 import kotlinx.android.synthetic.main.row_agregar_amigo.view.*
 import kotlinx.android.synthetic.main.row_amigo.view.*
 
@@ -95,6 +93,13 @@ class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
         })
 
 
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, HomeActivity::class.java).apply{}
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        this.startActivity(intent)
+        this.finish()
     }
 
     fun setupDialogAgregarAmigo() {
