@@ -61,7 +61,6 @@ open class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.i("BaseActivity", "ASDHAKSLDJHAJKSd")
         //TODO: Atajar eventos
 
         return true

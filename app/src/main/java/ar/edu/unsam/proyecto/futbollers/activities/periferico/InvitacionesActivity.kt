@@ -3,6 +3,7 @@ package ar.edu.unsam.proyecto.futbollers.activities.periferico
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -89,14 +90,14 @@ class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener {
         if (noHayMasNotificaciones()) {
             val intent = Intent(this, HomeActivity::class.java).apply {}
             this.startActivity(intent)
-            this.finish()
+            finish()
         }
 
         Toasty.success(this, "¡Has aceptado la invitación correctamente!", Toast.LENGTH_SHORT).show()
     }
 
     fun noHayMasNotificaciones(): Boolean {
-        return invitacionesAdapter.itemCount < 1
+        return invitacionesAdapter.items.size - 1 < 1
     }
 
     override fun onRechazarInvitacionClick(position: Int) {

@@ -2,6 +2,7 @@ package ar.edu.unsam.proyecto.futbollers.activities.home.fragments.PartidoFragme
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,7 +34,8 @@ import kotlinx.android.synthetic.main.row_fragment_partido.view.*
 import java.util.*
 
 
-class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecyclerItemClickListener {
+class PartidoFragment(val floatButton: FloatingActionButton) : Fragment(),
+    OnRecyclerItemClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,12 +45,12 @@ class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecy
         return inflater.inflate(R.layout.fragment_partido, container, false)
     }
 
-    lateinit var partidoAdapter:PartidoAdapter
+    lateinit var partidoAdapter: PartidoAdapter
     var rv = partidos_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val partidoService= PartidoService
+        val partidoService = PartidoService
         val usuarioLogueado = UsuarioLogueado.usuario
 
         rv = partidos_list
@@ -86,13 +88,16 @@ class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecy
         })
 
         floatButton.setOnClickListener {
-            val intent = Intent(activity, ArmarPartidoActivity::class.java).putExtra("activity", activity!!::class.java.simpleName).apply{}
+            val intent = Intent(activity, ArmarPartidoActivity::class.java).putExtra(
+                "activity",
+                activity!!::class.java.simpleName
+            ).apply {}
             startActivity(intent)
         }
 
     }
 
-    fun callBackPartidos(partidos: MutableList<Partido>){
+    fun callBackPartidos(partidos: MutableList<Partido>) {
         partidoAdapter.items?.clear()
         partidoAdapter.items = partidos
         partidoAdapter.notifyDataSetChanged()
@@ -107,11 +112,11 @@ class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecy
         PartidoService.confirmarPartido(context!!, partido, ::callbackConfirmarPartido)
     }
 
-    fun callbackConfirmarPartido(){
+    fun callbackConfirmarPartido() {
         refrescarPartidos()
     }
 
-    fun refrescarPartidos(){
+    fun refrescarPartidos() {
         PartidoService.getPartidosDelUsuario(context!!, UsuarioLogueado.usuario, ::callBackPartidos)
     }
 
@@ -121,7 +126,8 @@ class PartidoFragment(val floatButton: FloatingActionButton): Fragment(), OnRecy
 //RECOMIENDO CERRAR ESTOS ARCHIVOS, SON AUXILIARES
 // (CORTESIA DE com.leodroidcoder:generic-adapter:1.0.1
 
-class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) : BaseViewHolder<Partido, OnRecyclerItemClickListener>(itemView, listener) {
+class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) :
+    BaseViewHolder<Partido, OnRecyclerItemClickListener>(itemView, listener) {
 
     private val empresaNombre: TextView? = itemView.empresa_nombre
     private val empresaDireccion: TextView? = itemView.empresa_direccion
@@ -130,8 +136,10 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
     private val partidoFoto: ImageView? = itemView.partido_foto
     private val fechaDeConfirmacion: TextView? = itemView.tiempo_para_confirmar
     private val fieldFechaDeConfirmacion: TextView = itemView.field_tiempo_para_confirmar
+    private val jugadores_para_confirmar: TextView = itemView.jugadores_para_confirmar
     private val botonConfirmarReserva: Button = itemView.btn_tiempo_para_confirmar
-    private val check:ImageView = itemView.check
+    private val check: ImageView = itemView.check
+    private val fechaPartido: TextView = itemView.partido_fecha_jugar
 
     init {
         listener?.run {
@@ -144,41 +152,61 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
         empresaNombre?.text = item.empresa!!.nombre
         equipo1Nombre?.text = item.equipo1!!.nombre
         equipo2Nombre?.text = item.equipo2!!.nombre
+        fechaPartido.text = dateTransformer(simpleDateFormatter.format(item.fechaDeReserva!!.time))
         Picasso.get().load(item.empresa!!.foto).into(partidoFoto)
 
+        val fechaLimite = toCalendar(item.fechaDeCreacion!!)
+        fechaLimite.add(Calendar.DATE, 2)
 
-        if(item.faltanJugadoresPorConfirmar()){
-            fieldFechaDeConfirmacion.text = "Faltan ${item.jugadoresRestantes()} jugadores para confirmar"
-            botonConfirmarReserva.visibility = View.GONE
-            fechaDeConfirmacion?.text = ""
-        }else if (item.equipo1!!.owner?.idUsuario == UsuarioLogueado.usuario.idUsuario){
 
-            if(item.confirmado!!){
+        //TODO: Pensar
+        if (item.equipo1!!.owner?.idUsuario == UsuarioLogueado.usuario.idUsuario) {
+
+            if (item.confirmado!!) {
                 botonConfirmarReserva.visibility = View.GONE
                 fechaDeConfirmacion?.text = ""
                 fieldFechaDeConfirmacion.text = ""
+                jugadores_para_confirmar.text = ""
                 check.visibility = View.VISIBLE
-            }else{
-                val fechaLimite = toCalendar(item.fechaDeCreacion!!)
-                fechaLimite.add(Calendar.DATE, 2)
-                fechaDeConfirmacion?.text = dateTransformer(simpleDateFormatter.format(fechaLimite.time))
+            } else if (item.faltanJugadoresPorConfirmar()) {
+                jugadores_para_confirmar.text = "${item.jugadoresRestantes()} jugadores para confirmar"
+                fieldFechaDeConfirmacion.text = "Fecha limite de reserva:"
+                botonConfirmarReserva.isEnabled = false
+                fechaDeConfirmacion?.text =
+                    dateTransformer(simpleDateFormatter.format(fechaLimite.time))
+            } else {
+                jugadores_para_confirmar.text = ""
+                fieldFechaDeConfirmacion.text = "Fecha limite de reserva:"
+                botonConfirmarReserva.isEnabled = true
+                fechaDeConfirmacion?.text =
+                    dateTransformer(simpleDateFormatter.format(fechaLimite.time))
             }
 
-        }else if(item.confirmado!!){
+        } else if (item.confirmado!!) {
             fieldFechaDeConfirmacion.text = "Reserva confirmada!"
             botonConfirmarReserva.visibility = View.GONE
             fechaDeConfirmacion?.text = ""
-        }else{
-            fieldFechaDeConfirmacion.text = "Debes esperar a que el creador confirme la reserva"
+        } else if (item.faltanJugadoresPorConfirmar()) {
+            jugadores_para_confirmar.text = "${item.jugadoresRestantes()} jugadores para confirmar"
+            fieldFechaDeConfirmacion.text = "Fecha limite de reserva:"
+            botonConfirmarReserva.visibility = View.GONE
+            fechaDeConfirmacion?.text =
+                dateTransformer(simpleDateFormatter.format(fechaLimite.time))
+        } else {
+            jugadores_para_confirmar.text = ""
+            fieldFechaDeConfirmacion.text = "\n\n\n\n\n\n\n\n\n\nDebes esperar a que el creador confirme la reserva"
             botonConfirmarReserva.visibility = View.GONE
             fechaDeConfirmacion?.text = ""
         }
 
-
     }
 }
 
-class PartidoAdapter(context: Context, listener: PartidoFragment) : GenericRecyclerViewAdapter<Partido, OnRecyclerItemClickListener, PartidoViewHolder>(context, listener) {
+class PartidoAdapter(context: Context, listener: PartidoFragment) :
+    GenericRecyclerViewAdapter<Partido, OnRecyclerItemClickListener, PartidoViewHolder>(
+        context,
+        listener
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartidoViewHolder {
         return PartidoViewHolder(inflate(R.layout.row_fragment_partido, parent), listener)
