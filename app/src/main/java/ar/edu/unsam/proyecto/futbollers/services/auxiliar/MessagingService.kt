@@ -57,7 +57,24 @@ class MessagingService : FirebaseMessagingService() {
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
-            sendNotification(it.title!!, it.body!!)
+            //Es dificil de leer, pero lo que hace es un safe null operator de el titulo y el body
+
+            lateinit var titulo: String
+            lateinit var cuerpo: String
+
+            if(it.title === null){
+                titulo = ""
+            }else{
+                titulo = it.title!!
+            }
+
+            if(it.body === null){
+                cuerpo = ""
+            }else{
+                cuerpo = it.body!!
+            }
+
+            sendNotification(titulo, cuerpo)
         }
 
 
