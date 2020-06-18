@@ -149,9 +149,11 @@ class HomeActivity : AppCompatActivity() {
         var currentFragment: Fragment
         try {
             currentFragment = supportFragmentManager.fragments[0] as PartidoFragment
+            super.onRestart()
         } catch (error: Throwable) {
             try {
                 currentFragment = supportFragmentManager.fragments[0] as EquipoFragment
+                super.onRestart()
             } catch (error: Throwable) {
                 currentFragment = supportFragmentManager.fragments[0] as ChatFragment
                 supportFragmentManager.beginTransaction()
