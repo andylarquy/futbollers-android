@@ -18,6 +18,7 @@ import ar.edu.unsam.proyecto.futbollers.domain.Notificacion
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.NotificacionService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
+import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.dateTransformer
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.simpleDateFormatter
 import com.leodroidcoder.genericadapter.BaseRecyclerListener
 import com.leodroidcoder.genericadapter.BaseViewHolder
@@ -141,7 +142,7 @@ class InvitacionesViewHolder(itemView: View, listener: InvitacionesClickListener
 
     override fun onBind(item: Notificacion) {
         direccionPartido.text = item.partido!!.empresa!!.direccion
-        fechaPartido.text = simpleDateFormatter.format(item.partido.fechaDeReserva!!.time)
+        fechaPartido.text = dateTransformer(simpleDateFormatter.format(item.partido.fechaDeReserva!!.time))
         Picasso.get().load(item.partido.empresa!!.foto).into(partidoFoto)
     }
 
