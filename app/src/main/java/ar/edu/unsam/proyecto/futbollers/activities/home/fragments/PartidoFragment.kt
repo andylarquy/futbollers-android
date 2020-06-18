@@ -158,6 +158,7 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
         val fechaLimite = toCalendar(item.fechaDeCreacion!!)
         fechaLimite.add(Calendar.DATE, 2)
 
+        Log.i("PartidoFragment", "asd:"+item.confirmado!!)
 
         //TODO: Pensar
         if (item.equipo1!!.owner?.idUsuario == UsuarioLogueado.usuario.idUsuario) {
@@ -186,18 +187,21 @@ class PartidoViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) 
             fieldFechaDeConfirmacion.text = "Reserva confirmada!"
             botonConfirmarReserva.visibility = View.GONE
             fechaDeConfirmacion?.text = ""
+            jugadores_para_confirmar.text = ""
+            check.visibility = View.VISIBLE
+
         } else if (item.faltanJugadoresPorConfirmar()) {
             jugadores_para_confirmar.text = "${item.jugadoresRestantes()} jugadores para confirmar"
             fieldFechaDeConfirmacion.text = "Fecha limite de reserva:"
             botonConfirmarReserva.visibility = View.GONE
-            fechaDeConfirmacion?.text =
-                dateTransformer(simpleDateFormatter.format(fechaLimite.time))
+            fechaDeConfirmacion?.text = dateTransformer(simpleDateFormatter.format(fechaLimite.time))
         } else {
             jugadores_para_confirmar.text = ""
             fieldFechaDeConfirmacion.text = "\n\n\n\n\n\n\n\n\n\nDebes esperar a que el creador confirme la reserva"
             botonConfirmarReserva.visibility = View.GONE
             fechaDeConfirmacion?.text = ""
         }
+
 
     }
 }
