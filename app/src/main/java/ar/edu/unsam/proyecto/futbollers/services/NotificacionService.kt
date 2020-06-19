@@ -3,6 +3,7 @@ package ar.edu.unsam.proyecto.futbollers.services
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import ar.edu.unsam.proyecto.futbollers.activities.periferico.InvitacionesActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Notificacion
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
@@ -112,6 +113,30 @@ object NotificacionService {
         queue.add(request)
     }
 
+    fun rechazarInvitacion(context: Context, invitacion: Notificacion, callback: () -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+
+        Log.i("InvitacionesActivity",invitacion.idNotificacion.toString())
+
+        val url = "${Constants.BASE_URL}/invitaciones-rechazar/"
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url + invitacion.idNotificacion, null,
+
+            Response.Listener<JSONObject> { response ->
+                Log.i("InvitacionesActivity", "[DEBUG]:Communication with API Rest Suceeded")
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("InvitacionesActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErrores)
+            })
+        request.retryPolicy = defaultPolicy
+
+        queue.add(request)
+    }
+
+    /*
     fun aceptarCandidato(context: Context, invitacion: Notificacion, callback: () -> Unit) {
         val queue = Volley.newRequestQueue(context)
 
@@ -134,5 +159,9 @@ object NotificacionService {
 
         queue.add(request)
     }
+
+     */
+
+
 
 }

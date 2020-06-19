@@ -5,6 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/loading_spinner"
+        layout="@layout/activity_loading_screen"
+        android:visibility="invisible"
+        android:translationZ="100dp"
+        tools:layout_editor_absoluteX="-61dp"
+        tools:layout_editor_absoluteY="-16dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/parent_input_nombre_equipo"

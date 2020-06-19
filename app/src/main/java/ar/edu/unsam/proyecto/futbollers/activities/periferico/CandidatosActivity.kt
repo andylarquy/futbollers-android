@@ -72,7 +72,7 @@ class CandidatosActivity: AppCompatActivity(), AceptarCandidatoClickListener{
 
     override fun onAceptarCandidatoClick(position: Int) {
         val candidato = candidatoAdapter.getItem(position)
-        notificacionesService.aceptarCandidato(this, candidato, ::callbackAceptarCandidato)
+        //notificacionesService.aceptarCandidato(this, candidato, ::callbackAceptarCandidato)
 
     }
 

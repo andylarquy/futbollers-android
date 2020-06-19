@@ -75,6 +75,8 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         amigosAdapter = AmigosAdapter(this, this)
 
         rv.adapter = integrantesAdapter
+        integrantesAdapter.add(usuarioLogueado)
+        integrantesAdapter.notifyDataSetChanged()
 
         //Descomentar dspues
         usuarioService.getAmigosDelUsuario(this, usuarioLogueado, ::callbackAmigosDelUsuario)
@@ -105,7 +107,12 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         }
 
         btn_confirmar.setOnClickListener {
+            loading_spinner.visibility = View.VISIBLE
             confirmarEquipo()
+        }
+
+        btn_cancelar.setOnClickListener{
+            finish()
         }
 
     }
@@ -133,6 +140,8 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
             agregarUsuarioLogueadoAIntegrantesIfNotExists()
 
             uploadImageToServer(imagenSeleccionada!!)
+        }else{
+            loading_spinner.visibility = View.INVISIBLE
         }
 
     }
@@ -168,14 +177,20 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         nuevoEquipo.nombre = nombreSeleccionado
         nuevoEquipo.foto = urlImagenSeleccionada
         nuevoEquipo.owner = usuarioLogueado
-        equipoService.postEquipo(this, nuevoEquipo, ::callbackPostEquipo)
+        equipoService.postEquipo(this, nuevoEquipo, ::callbackPostEquipo, ::callbackErrorPostEquipo)
 
 
     }
 
     fun callbackPostEquipo(){
         Toasty.success(this, "¡El equipo ha sido creado correctamente!",Toast.LENGTH_SHORT).show()
+        loading_spinner.visibility = View.INVISIBLE
         finish()
+    }
+
+    fun callbackErrorPostEquipo(errorMessage: String){
+        Toasty.error(this, errorMessage,Toast.LENGTH_SHORT).show()
+        loading_spinner.visibility = View.INVISIBLE
     }
 
     fun callbackAmigosDelUsuario(amigos: MutableList<Usuario>) {
@@ -267,6 +282,7 @@ class IntegrantesDeEquipoViewHolder(itemView: View, listener: IntegranteListener
     private val amigoFoto: ImageView = itemView.amigo_foto
     private val amigoNombre: TextView = itemView.amigo_nombre
     private val posicionAmigo: TextView = itemView.posicion_amigo
+    private val tachitoIcon: ImageView = itemView.trash_icon
 
     init {
         listener?.run {
@@ -275,6 +291,12 @@ class IntegrantesDeEquipoViewHolder(itemView: View, listener: IntegranteListener
     }
 
     override fun onBind(item: Usuario) {
+        if(item.idUsuario == usuarioLogueado.idUsuario){
+            tachitoIcon.visibility = View.GONE
+        }else{
+            tachitoIcon.visibility = View.VISIBLE
+        }
+
         amigoNombre.text = item.nombre
         posicionAmigo.text = item.posicion
         Picasso.get().load(item.foto).into(amigoFoto)
@@ -315,6 +337,7 @@ class AmigosAdapter(context: Context, listener: NuevoEquipoActivity) :
 
         override fun onBind(item: Usuario) {
             amigoNombre.text = item.nombre
+
             posicionAmigo.text = item.posicion
             Picasso.get().load(item.foto).into(amigoFoto)
         }

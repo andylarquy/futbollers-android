@@ -101,7 +101,15 @@ class InvitacionesActivity : AppCompatActivity(), InvitacionesClickListener {
     }
 
     override fun onRechazarInvitacionClick(position: Int) {
-        //TODO: Rechazar invitacion
+        val invitacion = invitacionesAdapter.getItem(position)
+        notificacionesService.rechazarInvitacion(this, invitacion, ::callbackRechazarInvitacion)
+    }
+
+    fun callbackRechazarInvitacion(){
+        val intent = Intent(this, HomeActivity::class.java).apply{}
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        this.startActivity(intent)
+        this.finish()
     }
 
     override fun onBackPressed() {

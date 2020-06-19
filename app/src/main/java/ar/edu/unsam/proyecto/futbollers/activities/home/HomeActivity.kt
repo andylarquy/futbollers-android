@@ -149,20 +149,27 @@ class HomeActivity : AppCompatActivity() {
         var currentFragment: Fragment
         try {
             currentFragment = supportFragmentManager.fragments[0] as PartidoFragment
+
+            supportFragmentManager.beginTransaction()
+                .detach(currentFragment)
+                .attach(currentFragment)
+                .commitAllowingStateLoss()
+            //TODO: Revisar
+            //https://medium.com/@elye.project/handling-illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-d4ee8b630066
             super.onRestart()
         } catch (error: Throwable) {
             try {
                 currentFragment = supportFragmentManager.fragments[0] as EquipoFragment
-                super.onRestart()
-            } catch (error: Throwable) {
-                currentFragment = supportFragmentManager.fragments[0] as ChatFragment
+
                 supportFragmentManager.beginTransaction()
                     .detach(currentFragment)
                     .attach(currentFragment)
                     .commitAllowingStateLoss()
                 //TODO: Revisar
                 //https://medium.com/@elye.project/handling-illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-d4ee8b630066
-
+                super.onRestart()
+            } catch (error: Throwable) {
+                currentFragment = supportFragmentManager.fragments[0] as ChatFragment
                 super.onRestart()
             }
         }

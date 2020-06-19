@@ -9,7 +9,9 @@ import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado.usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.longPolicy
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
-import com.android.volley.*
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -73,7 +75,7 @@ object EquipoService {
         queue.add(request)
     }
 
-    fun postEquipo(context: Context, equipo: Equipo, callback: () -> Unit){
+    fun postEquipo(context: Context, equipo: Equipo, callback: () -> Unit, callbackError: (String) -> Unit){
         val queue = Volley.newRequestQueue(context)
 
         Log.i("NuevoEquipoActivity", Equipo().toJson(equipo).toString())
@@ -93,14 +95,23 @@ object EquipoService {
             },
             Response.ErrorListener {
                 Log.i("NuevoEquipoActivity", "[DEBUG]:Communication with API Rest Failed")
-                handleError(context, it, ::lambdaManejoErrores)
+                handleErrorPostEquipo(context, it, callbackError)
             })
         request.retryPolicy = longPolicy
 
         queue.add(request)
     }
     
+    fun handleErrorPostEquipo(context: Context, error: VolleyError,callbackError: (String) -> Unit){
 
+        error.networkResponse.data
+
+        val responseBody = String(error.networkResponse.data,  Charsets.UTF_8)
+        val data = JSONObject(responseBody)
+        val errorMessage = data.optString("message")
+        callbackError(errorMessage)
+
+    }
 
     fun lambdaManejoErrores(context: Context, statusCode: Int) {
         if (statusCode == 422) {
