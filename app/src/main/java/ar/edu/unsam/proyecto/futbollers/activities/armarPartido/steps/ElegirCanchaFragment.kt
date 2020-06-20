@@ -35,7 +35,7 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_seleccionar_cancha.*
 import kotlinx.android.synthetic.main.dialog_seleccionar_cancha.loading_spinner
 import kotlinx.android.synthetic.main.fragment_elegir_cancha.*
-import kotlinx.android.synthetic.main.fragment_elegir_equipo.*
+import kotlinx.android.synthetic.main.fragment_elegir_equipo_local.*
 import kotlinx.android.synthetic.main.row_cancha.view.*
 import java.text.SimpleDateFormat
 import java.util.*

@@ -3,7 +3,11 @@ package ar.edu.unsam.proyecto.futbollers.activities.nuevoEquipo
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -19,8 +23,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
-import ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.ElegirCanchaFragment
-import ar.edu.unsam.proyecto.futbollers.domain.Cancha
 import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.AuxiliarService
@@ -28,9 +30,7 @@ import ar.edu.unsam.proyecto.futbollers.services.EquipoService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioService
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.list.customListAdapter
-import com.bumptech.glide.Glide
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.features.ReturnMode
 import com.esafirm.imagepicker.model.Image
@@ -121,6 +121,10 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
 
         var status = true
 
+        if(integrantesAdapter.items.size < 1){
+            Toasty.warning(this, "Advertencia: Has creado un equipo sin integrantes", Toast.LENGTH_SHORT).show();
+        }
+
         if (nombreSeleccionado == "") {
             Toasty.error(this, "El nombre del equipo no puede estar vacío", Toast.LENGTH_SHORT).show()
             status = false
@@ -137,19 +141,11 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         }
 
         if(status){
-            agregarUsuarioLogueadoAIntegrantesIfNotExists()
-
             uploadImageToServer(imagenSeleccionada!!)
         }else{
             loading_spinner.visibility = View.INVISIBLE
         }
 
-    }
-
-    fun agregarUsuarioLogueadoAIntegrantesIfNotExists(){
-        if(!integrantesAdapter.items.any{it.tieneId(usuarioLogueado.idUsuario!!)}){
-            integrantesAdapter.add(usuarioLogueado)
-        }
     }
 
     fun uploadImage() {
@@ -219,14 +215,21 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
                 Toasty.error(this, "Mira, no se que hiciste, pero no me vas a hackear. La imagen no puede ser null.", Toast.LENGTH_SHORT).show()
             } else {
 
-                Glide.with(this)
-                    .load(image.path)
-                    .override(200, 200)
-                    .into(foto_equipo)
+                val bmImg: Bitmap = BitmapFactory.decodeFile(Uri.parse(image.path).toString())
+
+                val drawableImage: Drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bmImg, 200, 200, true))
+
+                foto_equipo.setImageDrawable(drawableImage)
+                imagenSeleccionada = bmImg
 
                 //Glide es async, asi que lo banco un toque
                 Handler().postDelayed({
-                    imagenSeleccionada = foto_equipo.drawable.toBitmap()
+                    Log.i("NuevoEquipoActivity",foto_equipo.toString())
+                    if(foto_equipo.drawable === null){
+                        Toasty.error(this,"Ha habido un error al procesar la imagen, mira el path: "+image.path, Toast.LENGTH_SHORT).show()
+                    }else{
+                        imagenSeleccionada = foto_equipo.drawable.toBitmap()
+                    }
                 }, 200)
 
             }
@@ -268,11 +271,7 @@ class IntegrantesDeEquipoAdapter(context: Context, listener: NuevoEquipoActivity
         viewType: Int
     ): IntegrantesDeEquipoViewHolder {
         return IntegrantesDeEquipoViewHolder(
-            inflate(
-                R.layout.row_elegir_jugador_para_equipo,
-                parent
-            ), listener
-        )
+            inflate(R.layout.row_elegir_jugador_para_equipo, parent), listener)
     }
 }
 
@@ -282,7 +281,6 @@ class IntegrantesDeEquipoViewHolder(itemView: View, listener: IntegranteListener
     private val amigoFoto: ImageView = itemView.amigo_foto
     private val amigoNombre: TextView = itemView.amigo_nombre
     private val posicionAmigo: TextView = itemView.posicion_amigo
-    private val tachitoIcon: ImageView = itemView.trash_icon
 
     init {
         listener?.run {
@@ -291,12 +289,6 @@ class IntegrantesDeEquipoViewHolder(itemView: View, listener: IntegranteListener
     }
 
     override fun onBind(item: Usuario) {
-        if(item.idUsuario == usuarioLogueado.idUsuario){
-            tachitoIcon.visibility = View.GONE
-        }else{
-            tachitoIcon.visibility = View.VISIBLE
-        }
-
         amigoNombre.text = item.nombre
         posicionAmigo.text = item.posicion
         Picasso.get().load(item.foto).into(amigoFoto)

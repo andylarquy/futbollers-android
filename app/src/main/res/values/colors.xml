@@ -11,4 +11,6 @@
     <color name="textColor">#7A7A7A</color>
     <color name="success">#61A465</color>
     <color name="failed">#9E1515</color>
+    <color name="elegir_equipo_background1">#f5f7fa</color>
+    <color name="elegir_equipo_background2">#f3edf7</color>
 </resources>

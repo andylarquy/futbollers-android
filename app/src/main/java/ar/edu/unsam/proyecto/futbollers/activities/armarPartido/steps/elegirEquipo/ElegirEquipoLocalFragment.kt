@@ -28,13 +28,13 @@ import com.stepstone.stepper.VerificationError
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_elegir_equipo_gps.view.*
 import kotlinx.android.synthetic.main.dialog_elegir_jugador_gps.view.*
-import kotlinx.android.synthetic.main.fragment_elegir_equipo.*
+import kotlinx.android.synthetic.main.fragment_elegir_equipo_local.*
 
 
 class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_elegir_equipo, container, false)
+        return inflater.inflate(R.layout.fragment_elegir_equipo_local, container, false)
     }
 
     lateinit var elegirEquipoAdapter: ElegirEquipoAdapter
@@ -83,12 +83,7 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
         val llm = LinearLayoutManager(context)
         rv.layoutManager = llm
 
-        integranteAdapter = context?.let {
-            IntegranteAdapter(
-                it,
-                this
-            )
-        }!!
+        integranteAdapter = context?.let { IntegranteAdapter(it, this) }!!
         rv.adapter = integranteAdapter
 
         btn_agregar_equipo.setOnClickListener() {

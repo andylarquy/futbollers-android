@@ -2,7 +2,6 @@ package ar.edu.unsam.proyecto.futbollers.activities.armarPartido.steps.elegirEqu
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -30,13 +29,13 @@ import com.stepstone.stepper.VerificationError
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.dialog_elegir_equipo_gps.view.*
 import kotlinx.android.synthetic.main.dialog_elegir_jugador_gps.view.*
-import kotlinx.android.synthetic.main.fragment_elegir_equipo.*
+import kotlinx.android.synthetic.main.fragment_elegir_equipo_local.*
 
 
 class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_elegir_equipo, container, false)
+        return inflater.inflate(R.layout.fragment_elegir_equipo_visitante, container, false)
     }
 
     val partidoService = PartidoService
@@ -348,12 +347,6 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
         cantidadJugadores.text = integranteAdapter.items.size.toString()
 
         elegir_equipo_titulo.text = "Elegir Equipo Visitante"
-
-        //Cambios esteticos para diferenciarlos
-        btn_agregar_equipo.setTextColor(Color.parseColor("#03DAC5"))
-        btn_agregar_amigo.setTextColor(Color.parseColor("#03DAC5"))
-        btn_agregar_equipo_desconocido.setTextColor(Color.parseColor("#03DAC5"))
-        btn_agregar_jugador_desconocido.setTextColor(Color.parseColor("#03DAC5"))
 
         //Reset parametros generales
         integranteAdapter.items.clear()
