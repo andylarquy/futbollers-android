@@ -211,7 +211,7 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
         fechaRepetida = false
         codigoPromocionalInvalido = false
 
-        if (fechaSeleccionada !== null) {
+        if (fechaSeleccionada !== null && canchaSeleccionada !== null) {
 
             context?.let { canchaService.validarFechaDeReserva(it, fechaSeleccionada!!.time, canchaSeleccionada!!, ::callbackValidarReserva) }
             context?.let { promocionService.getPromocionByCodigo(it, codigoPromocionalSeleccionado, ::callbackCodigoPromocional) }
