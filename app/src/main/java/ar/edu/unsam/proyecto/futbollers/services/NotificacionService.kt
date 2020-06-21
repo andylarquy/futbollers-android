@@ -84,8 +84,6 @@ object NotificacionService {
 
     fun lambdaManejoErrores(context: Context, statusCode: Int) {
         if (statusCode == 400) {
-            Toast.makeText(context, "Server Response: Bad Request (TODO: mensaje mas bonito)", Toast.LENGTH_SHORT).show()
-        } else {
             Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
         }
     }

@@ -85,8 +85,6 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
 
             "Encuestas" -> Toast.makeText(activity, "TODO: Intent Mis Encuestas", Toast.LENGTH_SHORT).show()
 
-            "Candidatos" -> Toast.makeText(activity, "TODO: Intent Mis Candidatos", Toast.LENGTH_SHORT).show()
-
             "Invitaciones" -> {
                 val intent = Intent(context, InvitacionesActivity::class.java).apply{}
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

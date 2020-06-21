@@ -14,10 +14,6 @@
         android:icon="@drawable/drawer_poll_white"
         android:title="Encuestas" />
     <item
-        android:icon="@drawable/drawer_candidates_white"
-        android:title="Candidatos" />
-
-    <item
         android:icon="@drawable/drawer_notifications_white"
         android:title="Invitaciones" />
 
