@@ -25,6 +25,7 @@ import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
 import com.squareup.picasso.Picasso
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_equipo.*
 import kotlinx.android.synthetic.main.row_fragment_equipo.view.*
 
@@ -97,6 +98,10 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
         loading_spinner?.visibility = View.INVISIBLE
     }
 
+    fun callbackEliminarEquipo(){
+        Toasty.success(context!!, "Se ha eliminado el equipo correctamente!", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onItemClick(position: Int) {
 
         //Al eliminar, editar etc
@@ -114,7 +119,11 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
 
     override fun onDeleteClick(position: Int) {
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
-        Toast.makeText(context, "TODO: Eliminar equipo (con id: "+equipoSeleccionado.idEquipo+")", Toast.LENGTH_SHORT).show()
+        EquipoService.eliminarEquipo(context!!, equipoSeleccionado, ::callbackEliminarEquipo)
+
+        // Refrescar lista de equipos
+        EquipoService.getEquiposDelUsuario(context!!, UsuarioLogueado.usuario, ::callBackEquipos)
+
     }
 
     override fun onAbandonClick(position: Int) {

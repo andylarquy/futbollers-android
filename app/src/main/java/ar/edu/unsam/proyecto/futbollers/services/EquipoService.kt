@@ -174,4 +174,32 @@ object EquipoService {
         queue.add(request)
     }
 
+    fun eliminarEquipo(context: Context, equipo: Equipo, callback: () -> Unit){
+        val queue = Volley.newRequestQueue(context)
+
+        Log.i("EquipoFragment", Equipo().toJson(equipo).toString())
+        Log.i("EquipoFragment", Gson().toJson(equipo).toString())
+
+        val url = "${Constants.BASE_URL}/equipos/"
+
+        val request = JsonObjectRequest(
+            Request.Method.DELETE, url + equipo.idEquipo, Equipo().toJson(equipo),
+
+            Response.Listener<JSONObject> { response ->
+
+                Log.i("EquipoFragment", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("EquipoFragment", response.toString())
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("EquipoFragment", "[DEBUG]:Communication with API Rest Failed")
+                //handleErrorPostEquipo(context, it, callbackError)
+            })
+        request.retryPolicy = longPolicy
+
+        queue.add(request)
+    }
+
+
 }
