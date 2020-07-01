@@ -57,6 +57,8 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
 
     var imagenSeleccionada: Bitmap? = null
     var urlImagenSeleccionada: String? = null
+    var idEquipoAEditar: Long? = null
+    var equipoAEditar: Equipo? = null
 
     val equipoService = EquipoService
     val auxiliarService = AuxiliarService
@@ -82,6 +84,17 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         usuarioService.getAmigosDelUsuario(this, usuarioLogueado, ::callbackAmigosDelUsuario)
 
         setupDialogAgregarAmigo()
+
+        val b = intent.extras
+
+        Log.i("HomeActivity", "asdasd")
+
+        if(b != null) {
+            idEquipoAEditar = b.getLong("idEquipo")
+            Log.i("HomeActivity", "DALE")
+            Log.i("HomeActivity", idEquipoAEditar.toString())
+            equipoService.getEquipoById(this, idEquipoAEditar!!, ::callbackGetEquipoAEditar)
+        }
 
         input_nombre_equipo.addTextChangedListener(object : TextWatcher {
             //Estos metodos tienen que estar implementados, burocracia
@@ -173,13 +186,47 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         nuevoEquipo.nombre = nombreSeleccionado
         nuevoEquipo.foto = urlImagenSeleccionada
         nuevoEquipo.owner = usuarioLogueado
-        equipoService.postEquipo(this, nuevoEquipo, ::callbackPostEquipo, ::callbackErrorPostEquipo)
 
-
+        if(esUnaEdicion()){
+            nuevoEquipo.idEquipo = idEquipoAEditar
+            equipoService.updateEquipo(this, nuevoEquipo, ::callbackUpdateEquipo, ::callbackErrorUpdateEquipo)
+        }else{
+            equipoService.postEquipo(this, nuevoEquipo, ::callbackPostEquipo, ::callbackErrorPostEquipo)
+        }
     }
 
+    fun callbackGetEquipoAEditar(equipo: Equipo){
+
+        equipoAEditar = equipo
+
+        urlImagenSeleccionada = equipo.foto
+        nombreSeleccionado = equipo.nombre!!
+
+        //Bindeo contra la interfaz
+        input_nombre_equipo.setText(nombreSeleccionado)
+        Picasso.get().load(urlImagenSeleccionada).fit().centerInside().into(foto_equipo)
+
+        Handler().postDelayed({
+            imagenSeleccionada = foto_equipo.drawable.toBitmap()
+        },400)
+
+
+        integrantesAdapter.items = equipo.integrantes
+        integrantesAdapter.notifyDataSetChanged()
+
+        usuarioService.getAmigosDelUsuario(this, usuarioLogueado, ::callbackAmigosDelUsuario)
+    }
+
+
+    //NO HAY REPETICION DE CODIGO EN BA SING SE
     fun callbackPostEquipo(){
         Toasty.success(this, "¡El equipo ha sido creado correctamente!",Toast.LENGTH_SHORT).show()
+        loading_spinner.visibility = View.INVISIBLE
+        finish()
+    }
+
+    fun callbackUpdateEquipo(){
+        Toasty.success(this, "¡El equipo ha sido editado correctamente!",Toast.LENGTH_SHORT).show()
         loading_spinner.visibility = View.INVISIBLE
         finish()
     }
@@ -189,23 +236,39 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         loading_spinner.visibility = View.INVISIBLE
     }
 
+    fun callbackErrorUpdateEquipo(errorMessage: String){
+        Toasty.error(this, errorMessage,Toast.LENGTH_SHORT).show()
+        loading_spinner.visibility = View.INVISIBLE
+    }
+
     fun callbackAmigosDelUsuario(amigos: MutableList<Usuario>) {
         amigosAdapter.clear()
         amigosAdapter.addAll(amigos)
         amigosAdapter.notifyDataSetChanged()
+
+        if(esUnaEdicion()){
+            //Remueve de amigosAdapter los integrantes que coincidan ID con equipoAEditar
+            amigosAdapter.items.removeAll{ integrante ->
+                equipoAEditar!!.integrantes!!.any{it.tieneId(integrante.idUsuario!!)}
+            }
+            amigosAdapter.notifyDataSetChanged()
+        }
+
+    }
+
+    fun esUnaEdicion(): Boolean{
+        return idEquipoAEditar !== null && equipoAEditar !== null
     }
 
     fun setupDialogAgregarAmigo() {
         //Preparo el dialog de amigos
         dialogAgregarAmigo = MaterialDialog(this)
             .title(text = "Agrega un integrante")
-            //TODO: Implementar adapter de integrantes
             .customListAdapter(amigosAdapter)
             .noAutoDismiss()
             .negativeButton(text = "Cerrar") {
                 it.dismiss()
             }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -226,7 +289,7 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
                 Handler().postDelayed({
                     Log.i("NuevoEquipoActivity",foto_equipo.toString())
                     if(foto_equipo.drawable === null){
-                        Toasty.error(this,"Ha habido un error al procesar la imagen, mira el path: "+image.path, Toast.LENGTH_SHORT).show()
+                        Toasty.error(this,"Ha habido un error al procesar la imagen [DEBUG] Path: "+image.path+"]", Toast.LENGTH_SHORT).show()
                     }else{
                         imagenSeleccionada = foto_equipo.drawable.toBitmap()
                     }

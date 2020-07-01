@@ -121,4 +121,57 @@ object EquipoService {
         }
     }
 
+    fun getEquipoById(context: Context, idEquipoAEditar: Long, callback: (Equipo) -> Unit){
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/equipo/"
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, url + idEquipoAEditar, null,
+
+            Response.Listener<JSONObject> { response ->
+
+                val equipo = Gson().fromJson(response.toString(), Equipo::class.java)
+
+                Log.i("NuevoEquipoActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("NuevoEquipoActivity", response.toString())
+                callback(equipo)
+            },
+            Response.ErrorListener {
+                Log.i("NuevoEquipoActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, ::lambdaManejoErrores)
+            })
+        request.retryPolicy = longPolicy
+
+        queue.add(request)
+    }
+
+    fun updateEquipo(context: Context, equipo: Equipo, callback: () -> Unit, callbackError: (String) -> Unit){
+        val queue = Volley.newRequestQueue(context)
+
+        Log.i("NuevoEquipoActivity", Equipo().toJson(equipo).toString())
+        Log.i("NuevoEquipoActivity", Gson().toJson(equipo).toString())
+
+        val url = "${Constants.BASE_URL}/equipos"
+
+        val request = JsonObjectRequest(
+            Request.Method.PUT, url, Equipo().toJson(equipo),
+
+            Response.Listener<JSONObject> { response ->
+
+                Log.i("NuevoEquipoActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("NuevoEquipoActivity", response.toString())
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("NuevoEquipoActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleErrorPostEquipo(context, it, callbackError)
+            })
+        request.retryPolicy = longPolicy
+
+        queue.add(request)
+    }
+
 }

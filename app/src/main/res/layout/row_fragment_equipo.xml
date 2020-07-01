@@ -45,9 +45,9 @@
         <TextView
             android:id="@+id/equipo_nombre"
             android:layout_width="150dp"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
 
-            android:ellipsize="end"
+
             android:textSize="18sp"
 
             card_view:layout_constraintBottom_toBottomOf="parent"

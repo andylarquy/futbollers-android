@@ -98,14 +98,18 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
     }
 
     override fun onItemClick(position: Int) {
-        //TODO: Creo que aca es donde se le da comportamiento SI PAPA ES ACA!!
+
         //Al eliminar, editar etc
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
     }
 
     override fun onEditClick(position: Int) {
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
-        Toast.makeText(context, "TODO: Editar equipo (con id: "+equipoSeleccionado.idEquipo+")", Toast.LENGTH_SHORT).show()
+        val intent = Intent(context, NuevoEquipoActivity::class.java).apply{}
+        val bundle = Bundle()
+        bundle.putLong("idEquipo", equipoSeleccionado.idEquipo!!)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     override fun onDeleteClick(position: Int) {
