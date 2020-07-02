@@ -37,6 +37,9 @@ android {
 
 dependencies {
 
+    //Expandable Card
+    implementation 'com.alespero:expandable-cardview:0.8'
+
     //Multiplart / form-data library for Volley
     implementation 'com.github.hardillb:MultiPartVolley:0.0.3'
 
