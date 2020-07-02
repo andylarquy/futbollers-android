@@ -17,6 +17,7 @@ import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.activities.inicio.SignUpActivity
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.AmigosActivity
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.CandidatosActivity
+import ar.edu.unsam.proyecto.futbollers.activities.periferico.EncuestasActivity
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.InvitacionesActivity
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import com.google.android.material.navigation.NavigationView
@@ -83,7 +84,12 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
                 activity.finish()
             }
 
-            "Encuestas" -> Toast.makeText(activity, "TODO: Intent Mis Encuestas", Toast.LENGTH_SHORT).show()
+            "Encuestas" -> {
+                val intent = Intent(context, EncuestasActivity::class.java).apply{}
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+                activity.finish()
+            }
 
             "Invitaciones" -> {
                 val intent = Intent(context, InvitacionesActivity::class.java).apply{}
