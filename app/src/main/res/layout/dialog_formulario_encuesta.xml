@@ -25,10 +25,10 @@
             app:layout_constraintVertical_bias="0.077" />
 
         <RadioGroup
-            android:id="@+id/first"
+            android:id="@+id/pregunta1RadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkedButton="@+id/first"
+            android:checkedButton="@+id/pregunta1RadioGroup"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,9 +67,10 @@
             app:layout_constraintVertical_bias="0.263" />
 
         <RadioGroup
+            android:id="@+id/pregunta2RadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkedButton="@+id/second"
+            android:checkedButton="@+id/pregunta2RadioGroup"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -108,9 +109,10 @@
             app:layout_constraintVertical_bias="0.45" />
 
         <RadioGroup
+            android:id="@+id/pregunta3RadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkedButton="@+id/third"
+            android:checkedButton="@+id/pregunta3RadioGroup"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

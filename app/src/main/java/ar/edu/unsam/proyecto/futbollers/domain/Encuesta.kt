@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 class Encuesta {
 
-    val idEncuesta: Long? = null
+    var idEncuesta: Long? = null
     val usuarioEncuestado: Usuario? = null
     val usuarioReferenciado: Usuario? = null
     val partido: Partido? = null
