@@ -25,6 +25,7 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_encuesta.*
 import kotlinx.android.synthetic.main.dialog_formulario_encuesta.view.*
 import kotlinx.android.synthetic.main.row_encuesta.view.*
+import kotlin.properties.Delegates
 
 
 class EncuestasActivity : AppCompatActivity(), ContestarEncuestaClickListener {
@@ -35,11 +36,12 @@ class EncuestasActivity : AppCompatActivity(), ContestarEncuestaClickListener {
 
     val encuestaService = EncuestaService
     val usuarioLogueado = UsuarioLogueado.usuario
-    val encuestaSeleccionada: Encuesta? = EncuestasContext.encuestaSeleccionada
+    val encuestaSeleccionada: Encuesta = EncuestasContext.encuestaSeleccionada
+    var idEncuestaSeleccionada: Long? = null
 
-    var respuesta1: Boolean = false
-    var respuesta2: Boolean = false
-    var respuesta3: Boolean = true
+    var respuesta1: Boolean? = null
+    var respuesta2: Boolean? = null
+    var respuesta3: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +68,22 @@ class EncuestasActivity : AppCompatActivity(), ContestarEncuestaClickListener {
     }
 
     fun callbackUpdateEncuesta(){
-        Toasty.success(this, "Estoy impactada!!",Toast.LENGTH_SHORT).show()
+        //Update de la lista de encuestas
+        encuestaService.getEncuestasDelUsuario(this, usuarioLogueado, ::callbackEncuesta)
+        Toasty.success(this, "Gracias! contestaste la encuesta satisfactoriamente!",Toast.LENGTH_SHORT).show()
     }
 
-    override fun onContestarEncuestaClick(position: Int) {
+    override fun onContestarEncuestaClick(position: Int, idEncuesta: Long) {
+        idEncuestaSeleccionada = idEncuesta
         dialogContestarEncuesta.show()
+    }
+
+    //TODO: El nombre es feo, resetea los campos del viewModel
+    fun resetearEncuesta(){
+        idEncuestaSeleccionada = null
+        respuesta1 = null
+        respuesta2 = null
+        respuesta3 = null
     }
 
     fun setupDialogContestarEncuesta() {
@@ -80,50 +93,90 @@ class EncuestasActivity : AppCompatActivity(), ContestarEncuestaClickListener {
             .customView(R.layout.dialog_formulario_encuesta)
             .noAutoDismiss()
             .positiveButton(text = "Aceptar") {
+                if(respuestasSonValidas()) {
+                    encuestaSeleccionada.idEncuesta = idEncuestaSeleccionada
+                    encuestaSeleccionada.respuesta1 = respuesta1!!
+                    encuestaSeleccionada.respuesta2 = respuesta2!!
+                    encuestaSeleccionada.respuesta3 = respuesta3!!
 
-                encuestaSeleccionada?.respuesta1 = respuesta1
-                encuestaSeleccionada?.respuesta2 = respuesta2
-                encuestaSeleccionada?.respuesta3 = respuesta3
+                    Log.i("EncuestasActivity", "Se va a mandar la encuesta")
+                    encuestaService.updateEncuesta(this, encuestaSeleccionada, ::callbackUpdateEncuesta)
+                    Log.i("EncuestasActivity", "Mira, la encuesta en teoria se mando a updatear, fijate q onda")
 
-                encuestaService.updateEncuesta(this, encuestaSeleccionada!!, ::callbackUpdateEncuesta)
-                //TODO: Toast de que todo piola
+                    resetearEncuesta()
 
-                it.dismiss()
+                    it.dismiss()
+                }else{
+                    Toasty.error(this, "Papi, completa la encuesta, para eso me haces levantar?", Toast.LENGTH_SHORT).show()
+
+                }
             }
             .negativeButton(text = "Cancelar") {
-                respuesta1 = false
-                respuesta2 = false
-                respuesta3 = true
 
-                Toasty.error(this, "You only had to follow the damn train", Toast.LENGTH_SHORT).show()
+                resetearEncuesta()
+                Toasty.error(this, "Hay que mostrar un error o algo?", Toast.LENGTH_SHORT).show()
 
                 it.dismiss()
             }
             .onDismiss{
-                //TODO: Algo?
+                val customView = dialogContestarEncuesta.getCustomView()
+                customView.pregunta1RadioGroup.clearCheck()
+                customView.pregunta2RadioGroup.clearCheck()
+                customView.pregunta3RadioGroup.clearCheck()
             }
 
         val customView = dialogContestarEncuesta.getCustomView()
 
-
-        val radioGroup = customView.first
-        radioGroup.setOnCheckedChangeListener { _, checkedId ->
-
+        //NO HAY REPETICION DE CODIGO EN BA SING SE
+        customView.pregunta1RadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-
-                2131231233 -> {
+                R.id.radio_btn_si_1 -> {
                     respuesta1 = true
                 }
 
-                2131231230 -> {
+                R.id.radio_btn_no_1 -> {
                     respuesta1 = false
                 }
             }
 
-            Log.i("EncuestasActivity", respuesta1.toString())
+            Log.i("EncuestasActivity", "Respuesta 1: $respuesta1")
         }
 
+        customView.pregunta2RadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radio_btn_si_2 -> {
+                    respuesta2 = true
+                }
 
+                R.id.radio_btn_no_2 -> {
+                    respuesta2 = false
+                }
+            }
+
+            Log.i("EncuestasActivity", "Respuesta 2: $respuesta2")
+        }
+
+        customView.pregunta3RadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radio_btn_si_3 -> {
+                    respuesta3 = true
+                }
+
+                R.id.radio_btn_no_3 -> {
+                    respuesta3 = false
+                }
+            }
+
+            Log.i("EncuestasActivity", "Respuesta 3: $respuesta3")
+        }
+
+    }
+
+
+    fun respuestasSonValidas(): Boolean{
+        return respuesta1 !== null &&
+               respuesta2 !== null &&
+               respuesta3 !== null
     }
 
 }
@@ -148,10 +201,11 @@ class EncuestaViewHolder(itemView: View, listener: ContestarEncuestaClickListene
     private val jugadoNombre: TextView = itemView.jugador_nombre
     private val jugadorFoto: ImageView = itemView.jugador_foto
     private val contestarEncuestaButton: Button = itemView.btn_contestar_encuesta
+    var idEncuesta by Delegates.notNull<Long>() //kotlin wtf
 
     init {
         listener.run {
-            contestarEncuestaButton.setOnClickListener { onContestarEncuestaClick(adapterPosition)
+            contestarEncuestaButton.setOnClickListener { onContestarEncuestaClick(adapterPosition, idEncuesta)
             }
         }
     }
@@ -160,15 +214,16 @@ class EncuestaViewHolder(itemView: View, listener: ContestarEncuestaClickListene
         jugadoNombre.text = item.usuarioReferenciado!!.nombre
         Picasso.get().load(item.usuarioReferenciado.foto).into(jugadorFoto)
         EncuestasContext.encuestaSeleccionada = item
+        idEncuesta = item.idEncuesta!!
     }
 
 }
 
 interface ContestarEncuestaClickListener : BaseRecyclerListener {
-    fun onContestarEncuestaClick(position: Int)
+    fun onContestarEncuestaClick(position: Int, idEncuesta: Long)
 }
 
 object EncuestasContext{
-    var encuestaSeleccionada: Encuesta? = null
+    var encuestaSeleccionada: Encuesta = Encuesta()
 }
 
