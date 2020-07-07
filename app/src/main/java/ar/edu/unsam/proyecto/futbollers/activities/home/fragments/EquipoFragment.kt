@@ -103,8 +103,6 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
     }
 
     override fun onItemClick(position: Int) {
-
-        //Al eliminar, editar etc
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
     }
 

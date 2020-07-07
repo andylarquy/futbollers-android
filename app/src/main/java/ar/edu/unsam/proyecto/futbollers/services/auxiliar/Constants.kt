@@ -49,4 +49,12 @@ object Constants {
           return outputDateFormatter.format(fechaAsDate)
      }
 
+     fun chatIdBuilder(idUno: Long, idDos: Long): String{
+          if(idUno < idDos){
+               return "$idUno-$idDos"
+          }else{
+               return "$idDos-$idUno"
+          }
+     }
+
 }
