@@ -6,55 +6,56 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_height="wrap_content"
-    cardview:cardCornerRadius="12sp"
-    >
-    <ImageView
-            android:id="@+id/jugador_foto_perfil"
+    cardview:cardCornerRadius="10sp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <ImageView
+            android:id="@+id/foto_perfil"
             android:layout_width="70dp"
             android:layout_height="70dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
 
-                 />
+            >
 
-    <!-- No reutilizamos ni los comentarios -->
-            <!-- TODO: Circular Image  LA CONCHA DE TU MADRE ANDORID
-            Y LA FOTOD E MIERDA QUE NO ANDA-->
+            <!-- No reutilizamos ni los comentarios -->
+            <!-- TODO: Circular Image NO ANDA UN JORACA LAS IMAGENES  -->
 
             <!-- /TODO: Circular Image -->
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        </ImageView>
 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingVertical="16dp">
-
-        <TextView
-            android:id="@+id/nombreMensaje"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            card_view:ignore="MissingConstraints" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/horaMensaje"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            card_view:layout_editor_absoluteX="376dp"
-            card_view:layout_editor_absoluteY="-3dp"
-            card_view:ignore="MissingConstraints" />
+                <TextView
+                    android:id="@+id/nombreMensaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
-        <TextView
-            android:id="@+id/mensajeMensaje"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:ignore="MissingConstraints"
-            card_view:layout_editor_absoluteY="16dp"
-            cardview:layout_constraintEnd_toEndOf="parent"
-            cardview:layout_constraintStart_toEndOf="parent" />
+                <TextView
+                    android:id="@+id/horaMensaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00" />
+            </LinearLayout>
 
+            <TextView
+                android:id="@+id/mensajeMensaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

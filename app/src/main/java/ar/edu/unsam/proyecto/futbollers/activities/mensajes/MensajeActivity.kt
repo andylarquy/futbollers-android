@@ -115,8 +115,8 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
     BaseViewHolder<Mensaje, OnRecyclerItemClickListener>(itemView, listener) {
     private val horaMensaje: TextView? = itemView.horaMensaje
     private val mensaje: TextView? = itemView.mensajeMensaje
-    private val jugadorFoto : ImageView = itemView.jugador_foto_perfil
-    private val fotoUsuario : ImageView = itemView.jugador_foto_perfil
+    private val jugadorFoto : ImageView? = itemView.foto_perfil
+    private val fotoUsuario : ImageView? = itemView.foto_perfil
 
 
     init {
@@ -132,8 +132,14 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
         mensaje?.text = item.mensaje
 
        //TODO: Bindear foto de perfil NO ANDA UN JORACA ESTO LRPM!
-        Picasso.get().load(item.foto).into(jugadorFoto)
-        Picasso.get().load(item.foto).into(fotoUsuario)
+        usuarioLogueado.foto = item.foto
+       Picasso.get().load(item.foto).into(jugadorFoto)
+
+      //  jugadoNombre.text = item.usuarioReferenciado!!.nombre
+     //   Picasso.get().load(item.usuarioReferenciado.foto).into(jugadorFoto)
+      //  Picasso.get().load(item.foto).into(fotoUsuario)
+       // Picasso.get().load("https://imgur.com/DFcX6vX").into(jugadorFoto);
+
     }
 
 }
