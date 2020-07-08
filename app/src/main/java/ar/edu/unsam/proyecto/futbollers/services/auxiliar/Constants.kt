@@ -14,10 +14,10 @@ object Constants {
      //const val BASE_URL = "http://192.168.0.28:9000"
 
      //DEBUG 2
-     //const val BASE_URL = "http://192.168.0.63:9000"
+     const val BASE_URL = "http://192.168.100.5:9000"
 
      //IP PRODUCCION CASA
-     const val BASE_URL = "http://190.16.251.41:9000"
+    // const val BASE_URL = "http://190.16.251.41:9000"
 
      val POSICIONES = arrayOf("Arquero", "Defensor", "Mediocampista", "Delantero", "Cualquiera")
      val DISTANCIAS = arrayOf("3","5","10","20")

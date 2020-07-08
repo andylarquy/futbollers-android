@@ -2,27 +2,33 @@ package ar.edu.unsam.proyecto.futbollers.activities.mensajes
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.nuevoEquipo.usuarioLogueado
-import ar.edu.unsam.proyecto.futbollers.domain.Mensaje
-import ar.edu.unsam.proyecto.futbollers.domain.MensajeEnviar
-import ar.edu.unsam.proyecto.futbollers.domain.MensajeRecibir
+import ar.edu.unsam.proyecto.futbollers.activities.periferico.EncuestasContext
+import ar.edu.unsam.proyecto.futbollers.domain.*
 import com.google.firebase.database.*
+import com.leodroidcoder.genericadapter.BaseRecyclerListener
 import com.leodroidcoder.genericadapter.BaseViewHolder
 import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.RequestCreator
 import kotlinx.android.synthetic.main.activity_mensaje.*
+import kotlinx.android.synthetic.main.row_agregar_amigo.view.*
+import kotlinx.android.synthetic.main.row_encuesta.view.*
 import kotlinx.android.synthetic.main.row_mensaje.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-
+import kotlin.properties.Delegates
 
 class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
@@ -65,10 +71,10 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
             databaseReference!!.push().setValue(
                 MensajeEnviar(
                     txtMensaje.text.toString(),
-                    usuarioLogueado.nombre,
-                    "",
-                    "1",
-                    ServerValue.TIMESTAMP
+                   "1",
+                    ServerValue.TIMESTAMP,
+                    usuarioLogueado.idUsuario
+
                 )
             )
             txtMensaje.setText("")
@@ -108,8 +114,10 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) :
     BaseViewHolder<Mensaje, OnRecyclerItemClickListener>(itemView, listener) {
     private val horaMensaje: TextView? = itemView.horaMensaje
-    private val nombreMensaje: TextView? = itemView.nombreMensaje
     private val mensaje: TextView? = itemView.mensajeMensaje
+    private val jugadorFoto : ImageView = itemView.jugador_foto_perfil
+    private val fotoUsuario : ImageView = itemView.jugador_foto_perfil
+
 
     init {
         listener?.run {
@@ -121,12 +129,11 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
 
         val horaAsDate = Date(item.hora as Long)
         horaMensaje?.text = SimpleDateFormat("HH:mm ", Locale.getDefault()).format(horaAsDate)
-        nombreMensaje?.text = item.nombre
         mensaje?.text = item.mensaje
 
-
-        //TODO: Bindear foto de perfil
-        //Picasso.get().load(item.foto).into(contactoFoto)
+       //TODO: Bindear foto de perfil NO ANDA UN JORACA ESTO LRPM!
+        Picasso.get().load(item.foto).into(jugadorFoto)
+        Picasso.get().load(item.foto).into(fotoUsuario)
     }
 
 }
@@ -140,5 +147,12 @@ class MensajesAdapter(context: Context, listener: MensajeActivity) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MensajesViewHolder {
         return MensajesViewHolder(inflate(R.layout.row_mensaje, parent), listener)
     }
+
+
+
 }
+
+
+
+
 

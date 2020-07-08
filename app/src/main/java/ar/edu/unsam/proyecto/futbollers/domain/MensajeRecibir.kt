@@ -10,11 +10,10 @@ class MensajeRecibir : Mensaje {
 
     constructor(
         mensaje: String?,
-        nombre: String?,
-        fotoPerfil: String?,
         type_mensaje: String?,
-        hora: Long?
-    ) : super(mensaje, nombre, fotoPerfil, type_mensaje) {
+        hora: Long?,
+        idUsuario: Int?
+    ) : super(mensaje, type_mensaje,idUsuario) {
         this.hora = hora
     }
 
