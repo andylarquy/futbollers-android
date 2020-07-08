@@ -73,6 +73,7 @@ class ChatFragment : Fragment(), OnRecyclerItemClickListener {
 
         val intent = Intent(context, MensajeActivity::class.java).apply{}
         intent.putExtra("nombreContacto", contactoSeleccionado.nombre)
+        intent.putExtra("fotoContacto", contactoSeleccionado.foto)
         intent.putExtra("idContacto", contactoSeleccionado.idUsuario!!)
         intent.putExtra("idChat", idChat)
         startActivity(intent)

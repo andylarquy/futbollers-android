@@ -3,6 +3,7 @@ package ar.edu.unsam.proyecto.futbollers.services
 import android.content.Context
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.handleError
@@ -14,6 +15,9 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
+import org.w3c.dom.Text
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 object UsuarioService {
 
@@ -94,6 +98,34 @@ object UsuarioService {
 
         queue.add(request)
 
+    }
+
+    fun getUsuarioContactoById(context: Context, idUsuario: Long, nombreMensaje:TextView?, contactoFoto:ImageView?, callback: (Usuario, TextView?, ImageView?) -> Unit){
+
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/usuario/"+idUsuario
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+
+            Response.Listener<JSONObject> { response ->
+
+                Log.i("MensajeActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("MensajeActivity", response.toString())
+
+                val usuarioBuscado = Gson().fromJson(response.toString(), Usuario::class.java)
+
+                callback(usuarioBuscado, nombreMensaje, contactoFoto)
+            },
+            Response.ErrorListener {
+                Log.i("MensajeActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, UsuarioService::lambdaManejoErrores)
+            })
+        request.retryPolicy = Constants.defaultPolicy
+
+        queue.add(request)
     }
 
 

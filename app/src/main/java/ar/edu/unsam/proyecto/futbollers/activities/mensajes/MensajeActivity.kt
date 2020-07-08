@@ -2,6 +2,7 @@ package ar.edu.unsam.proyecto.futbollers.activities.mensajes
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -15,6 +16,7 @@ import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.nuevoEquipo.usuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.EncuestasContext
 import ar.edu.unsam.proyecto.futbollers.domain.*
+import ar.edu.unsam.proyecto.futbollers.services.UsuarioService
 import com.google.firebase.database.*
 import com.leodroidcoder.genericadapter.BaseRecyclerListener
 import com.leodroidcoder.genericadapter.BaseViewHolder
@@ -23,12 +25,12 @@ import com.leodroidcoder.genericadapter.OnRecyclerItemClickListener
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
 import kotlinx.android.synthetic.main.activity_mensaje.*
-import kotlinx.android.synthetic.main.row_agregar_amigo.view.*
-import kotlinx.android.synthetic.main.row_encuesta.view.*
 import kotlinx.android.synthetic.main.row_mensaje.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
+
+lateinit var globalContext: Context
 
 class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
@@ -39,6 +41,8 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
     var idContacto: Long? = null
     var idChat: String? = null
+
+    lateinit var fotoContacto: String
     lateinit var nombreContacto: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +56,14 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
                 idContacto = extras.getLong("idContacto")
                 nombreContacto = extras.getString("nombreContacto")!!
                 idChat = extras.getString("idChat")!!
+                fotoContacto = extras.getString("fotoContacto")!!
                 databaseReference = database.getReference(idChat!!)
             }
         }
+
+        globalContext = this
+
+        Picasso.get().load(fotoContacto).into(foto_contacto)
 
         var rv = mensajes_list
         rv.setHasFixedSize(true)
@@ -71,7 +80,7 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
             databaseReference!!.push().setValue(
                 MensajeEnviar(
                     txtMensaje.text.toString(),
-                   "1",
+                    "1",
                     ServerValue.TIMESTAMP,
                     usuarioLogueado.idUsuario
 
@@ -96,14 +105,14 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
                 }
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot,s: String?) {}
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {}
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-            override fun onChildMoved(dataSnapshot: DataSnapshot,s: String?) {}
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
             override fun onCancelled(databaseError: DatabaseError) {}
 
         })
 
-}
+    }
 
     override fun onItemClick(position: Int) {}
 }
@@ -113,10 +122,13 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
 class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?) :
     BaseViewHolder<Mensaje, OnRecyclerItemClickListener>(itemView, listener) {
+
+    val usuarioService = UsuarioService
+
     private val horaMensaje: TextView? = itemView.horaMensaje
     private val mensaje: TextView? = itemView.mensajeMensaje
-    private val jugadorFoto : ImageView? = itemView.foto_perfil
-    private val fotoUsuario : ImageView? = itemView.foto_perfil
+    private val nombreMensaje: TextView? = itemView.nombreMensaje
+    private val contactoFoto: ImageView? = itemView.fotoMensaje
 
 
     init {
@@ -131,18 +143,37 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
         horaMensaje?.text = SimpleDateFormat("HH:mm ", Locale.getDefault()).format(horaAsDate)
         mensaje?.text = item.mensaje
 
-       //TODO: Bindear foto de perfil NO ANDA UN JORACA ESTO LRPM!
-        usuarioLogueado.foto = item.foto
-       Picasso.get().load(item.foto).into(jugadorFoto)
+        //Burocracia para hacer Async Await
+        //TODO: Bindear foto de perfil
+        Log.i("MensajeActivity", item.idUsuario!!)
+        val idContacto = item.idUsuario!!.toLong()
+        Log.i("MensajeActivity", idContacto.toString())
 
-      //  jugadoNombre.text = item.usuarioReferenciado!!.nombre
-     //   Picasso.get().load(item.usuarioReferenciado.foto).into(jugadorFoto)
-      //  Picasso.get().load(item.foto).into(fotoUsuario)
-       // Picasso.get().load("https://imgur.com/DFcX6vX").into(jugadorFoto);
+        usuarioService.getUsuarioContactoById(
+            globalContext,
+            idContacto,
+            nombreMensaje,
+            contactoFoto,
+            ::callbackPerfilUsuario
+        )
+
+
+        //  jugadoNombre.text = item.usuarioReferenciado!!.nombre
+        //   Picasso.get().load(item.usuarioReferenciado.foto).into(jugadorFoto)
+        //  Picasso.get().load(item.foto).into(fotoUsuario)
+        // Picasso.get().load("https://imgur.com/DFcX6vX").into(jugadorFoto);
+
 
     }
 
 }
+
+fun callbackPerfilUsuario(contacto: Usuario, nombreMensaje: TextView?, contactoFoto: ImageView?) {
+    Log.i("MensajeActivity", contacto.foto)
+    nombreMensaje?.text = contacto.nombre
+    Picasso.get().load(contacto.foto).into(contactoFoto)
+}
+
 
 class MensajesAdapter(context: Context, listener: MensajeActivity) :
     GenericRecyclerViewAdapter<Mensaje, OnRecyclerItemClickListener, MensajesViewHolder>(
@@ -153,7 +184,6 @@ class MensajesAdapter(context: Context, listener: MensajeActivity) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MensajesViewHolder {
         return MensajesViewHolder(inflate(R.layout.row_mensaje, parent), listener)
     }
-
 
 
 }
