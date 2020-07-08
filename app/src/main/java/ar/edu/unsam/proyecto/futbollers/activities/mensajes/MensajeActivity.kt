@@ -1,6 +1,7 @@
 package ar.edu.unsam.proyecto.futbollers.activities.mensajes
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import ar.edu.unsam.proyecto.futbollers.R
@@ -63,6 +66,8 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
         globalContext = this
 
+        btnEnviar.setTextColor(Color.WHITE)
+
         Picasso.get().load(fotoContacto).into(foto_contacto)
 
         var rv = mensajes_list
@@ -77,16 +82,18 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
         nombre.setText(nombreContacto)
 
         btnEnviar.setOnClickListener {
-            databaseReference!!.push().setValue(
-                MensajeEnviar(
-                    txtMensaje.text.toString(),
-                    "1",
-                    ServerValue.TIMESTAMP,
-                    usuarioLogueado.idUsuario
+            if(txtMensaje.text.toString().isNotBlank()) {
+                databaseReference!!.push().setValue(
+                    MensajeEnviar(
+                        txtMensaje.text.toString(),
+                        "1",
+                        ServerValue.TIMESTAMP,
+                        usuarioLogueado.idUsuario
 
+                    )
                 )
-            )
-            txtMensaje.setText("")
+                txtMensaje.setText("")
+            }
         }
 
         mensajesAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
@@ -126,9 +133,11 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
     val usuarioService = UsuarioService
 
     private val horaMensaje: TextView? = itemView.horaMensaje
-    private val mensaje: TextView? = itemView.mensajeMensaje
+    private val mensaje: TextView? = itemView.mensaje
     private val nombreMensaje: TextView? = itemView.nombreMensaje
     private val contactoFoto: ImageView? = itemView.fotoMensaje
+    private val constraintLayout  = itemView.constrain_layout
+
 
 
     init {
@@ -143,11 +152,39 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
         horaMensaje?.text = SimpleDateFormat("HH:mm ", Locale.getDefault()).format(horaAsDate)
         mensaje?.text = item.mensaje
 
-        //Burocracia para hacer Async Await
-        //TODO: Bindear foto de perfil
-        Log.i("MensajeActivity", item.idUsuario!!)
         val idContacto = item.idUsuario!!.toLong()
-        Log.i("MensajeActivity", idContacto.toString())
+
+        if(usuarioLogueado.tieneId(idContacto)){
+            mensaje?.setBackgroundResource(R.drawable.outcoming_bubble)
+            mensaje?.setPadding(20,20,60, 15)
+            mensaje?.setTextColor(Color.WHITE)
+            //SEt azul cardBackground #6363bf
+
+            //Margins bubble
+            var layoutParams = (mensaje?.layoutParams as? ViewGroup.MarginLayoutParams)
+            layoutParams?.setMargins(100, 0, 0, 0)
+            mensaje?.layoutParams = layoutParams
+
+            //Margins nombre
+            layoutParams = (nombreMensaje?.layoutParams as? ViewGroup.MarginLayoutParams)
+            layoutParams?.setMargins(320, 0, 0, 0)
+
+        }else{
+            //Set cardBackground blanco #FFFFFF
+            mensaje?.setBackgroundResource(R.drawable.incoming_bubble)
+            mensaje?.setPadding(60,20,20, 15)
+
+            val textSize = mensaje?.text?.length
+
+            var layoutParams = (mensaje?.layoutParams as? ViewGroup.MarginLayoutParams)
+            layoutParams?.setMargins(0, 0, 600 - textSize!! * 13 , 0)
+            mensaje?.layoutParams = layoutParams
+
+            //Margins nombre
+            layoutParams = (nombreMensaje?.layoutParams as? ViewGroup.MarginLayoutParams)
+            layoutParams?.setMargins(0, 0, 550, 0)
+        }
+
 
         usuarioService.getUsuarioContactoById(
             globalContext,

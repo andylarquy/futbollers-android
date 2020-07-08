@@ -13,4 +13,5 @@
     <color name="failed">#9E1515</color>
     <color name="elegir_equipo_background1">#f5f7fa</color>
     <color name="elegir_equipo_background2">#f3edf7</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>
