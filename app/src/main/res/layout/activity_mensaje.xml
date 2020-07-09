@@ -9,7 +9,7 @@
 
     android:orientation="vertical"
 
-    android:background="#fafafa"
+    android:background="#ebebeb"
     >
 
     <LinearLayout
@@ -62,7 +62,9 @@
             android:id="@+id/txtMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Escribe un mensaje"
+
+            android:inputType="textCapSentences"
+            android:hint="Escribe un mensaje..."
             android:layout_weight="1"/>
 
         <Button

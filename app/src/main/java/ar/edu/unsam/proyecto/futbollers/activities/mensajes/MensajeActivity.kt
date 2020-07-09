@@ -132,9 +132,12 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
 
     val usuarioService = UsuarioService
 
-    private val horaMensaje: TextView? = itemView.horaMensaje
-    private val mensaje: TextView? = itemView.mensaje
-    private val nombreMensaje: TextView? = itemView.nombreMensaje
+    private val horaMensajeEmisor: TextView? = itemView.horaMensajeEmisor
+    private val mensajeEmisor: TextView? = itemView.mensajeEmisor
+    private val nombreMensajeEmisor: TextView? = itemView.nombreMensajeEmisor
+    private val horaMensajeReceptor: TextView? = itemView.horaMensajeReceptor
+    private val mensajeReceptor: TextView? = itemView.mensajeReceptor
+    private val nombreMensajeReceptor: TextView? = itemView.nombreMensajeReceptor
     private val contactoFoto: ImageView? = itemView.fotoMensaje
     private val constraintLayout  = itemView.constrain_layout
 
@@ -148,51 +151,57 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
 
     override fun onBind(item: Mensaje) {
 
-        val horaAsDate = Date(item.hora as Long)
-        horaMensaje?.text = SimpleDateFormat("HH:mm ", Locale.getDefault()).format(horaAsDate)
-        mensaje?.text = item.mensaje
+
 
         val idContacto = item.idUsuario!!.toLong()
 
         if(usuarioLogueado.tieneId(idContacto)){
-            mensaje?.setBackgroundResource(R.drawable.outcoming_bubble)
-            mensaje?.setPadding(20,20,60, 15)
-            mensaje?.setTextColor(Color.WHITE)
-            //SEt azul cardBackground #6363bf
+            //Mensaje de salida (TODO: Delega ese if en una funcion papi, no se entiende nada)
 
-            //Margins bubble
-            var layoutParams = (mensaje?.layoutParams as? ViewGroup.MarginLayoutParams)
-            layoutParams?.setMargins(100, 0, 0, 0)
-            mensaje?.layoutParams = layoutParams
+            horaMensajeEmisor?.visibility = View.VISIBLE
+            mensajeEmisor?.visibility = View.VISIBLE
+            nombreMensajeEmisor?.visibility = View.VISIBLE
 
-            //Margins nombre
-            layoutParams = (nombreMensaje?.layoutParams as? ViewGroup.MarginLayoutParams)
-            layoutParams?.setMargins(320, 0, 0, 0)
+            val horaAsDate = Date(item.hora as Long)
+            horaMensajeEmisor?.text = SimpleDateFormat("HH:mm ", Locale.getDefault()).format(horaAsDate)
+            mensajeEmisor?.text = item.mensaje
+
+            mensajeEmisor?.setBackgroundResource(R.drawable.outcoming_bubble)
+
+            usuarioService.getUsuarioContactoById(
+                globalContext,
+                idContacto,
+                nombreMensajeEmisor,
+                contactoFoto,
+                ::callbackPerfilUsuario
+            )
 
         }else{
-            //Set cardBackground blanco #FFFFFF
-            mensaje?.setBackgroundResource(R.drawable.incoming_bubble)
-            mensaje?.setPadding(60,20,20, 15)
+            //Mensaje de entrada
 
-            val textSize = mensaje?.text?.length
+            horaMensajeReceptor?.visibility = View.VISIBLE
+            mensajeReceptor?.visibility = View.VISIBLE
+            nombreMensajeReceptor?.visibility = View.VISIBLE
 
-            var layoutParams = (mensaje?.layoutParams as? ViewGroup.MarginLayoutParams)
-            layoutParams?.setMargins(0, 0, 600 - textSize!! * 13 , 0)
-            mensaje?.layoutParams = layoutParams
+            val horaAsDate = Date(item.hora as Long)
+            horaMensajeReceptor?.text = SimpleDateFormat("HH:mm ", Locale.getDefault()).format(horaAsDate)
+            mensajeReceptor?.text = item.mensaje
 
-            //Margins nombre
-            layoutParams = (nombreMensaje?.layoutParams as? ViewGroup.MarginLayoutParams)
-            layoutParams?.setMargins(0, 0, 550, 0)
+            mensajeReceptor?.setBackgroundResource(R.drawable.incoming_bubble)
+
+            usuarioService.getUsuarioContactoById(
+                globalContext,
+                idContacto,
+                nombreMensajeReceptor,
+                contactoFoto,
+                ::callbackPerfilUsuario
+            )
+
+
         }
 
 
-        usuarioService.getUsuarioContactoById(
-            globalContext,
-            idContacto,
-            nombreMensaje,
-            contactoFoto,
-            ::callbackPerfilUsuario
-        )
+
 
 
         //  jugadoNombre.text = item.usuarioReferenciado!!.nombre

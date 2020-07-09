@@ -14,7 +14,7 @@
 
     android:layout_marginBottom="20dp"
 
-    android:background="#fafafa">
+    android:background="#ebebeb">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/fotoMensaje"
@@ -35,52 +35,117 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <!-- EMISOR -->
 
     <TextView
-        android:id="@+id/nombreMensaje"
+        android:id="@+id/nombreMensajeEmisor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+
+        android:visibility="gone"
         android:text="Nombre"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.352"
+
+        app:layout_constraintBottom_toTopOf="@+id/mensajeEmisor"
+        app:layout_constraintEnd_toStartOf="@+id/horaMensajeEmisor"
+        app:layout_constraintHorizontal_bias="0.973"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.838" />
 
     <TextView
-        android:id="@+id/horaMensaje"
+        android:id="@+id/horaMensajeEmisor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:visibility="gone"
         android:text="00:00"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.019"
-        app:layout_constraintStart_toEndOf="@+id/nombreMensaje"
+        app:layout_constraintBottom_toTopOf="@+id/mensajeEmisor"
+        app:layout_constraintEnd_toEndOf="@+id/mensajeEmisor"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintVertical_bias="0.838" />
+
 
     <TextView
-        android:id="@+id/mensaje"
+        android:id="@+id/mensajeEmisor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-
+        android:textColor="@color/white"
         android:padding="10dp"
-        android:paddingStart="25dp"
         android:paddingEnd="25dp"
+        android:paddingStart="15dp"
+
+        android:visibility="gone"
+        android:background="@drawable/outcoming_bubble"
 
         android:text="Contenido del mensaje..."
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.907"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.886" />
+        app:layout_constraintVertical_bias="0.967" />
+
+    <!-- RECEPTOR -->
+
+    <TextView
+        android:id="@+id/nombreMensajeReceptor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+
+        android:visibility="gone"
+        android:text="Nombre"
+
+        app:layout_constraintBottom_toTopOf="@+id/mensajeReceptor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/mensajeReceptor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.866" />
+
+    <TextView
+        android:id="@+id/horaMensajeReceptor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:visibility="gone"
+        android:text="00:00"
+
+        app:layout_constraintBottom_toTopOf="@+id/mensajeReceptor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.021"
+        app:layout_constraintStart_toEndOf="@+id/nombreMensajeReceptor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <TextView
+        android:id="@+id/mensajeReceptor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/incoming_bubble"
+
+        android:padding="10dp"
+        android:paddingEnd="15dp"
+        android:paddingStart="25dp"
+
+        android:visibility="gone"
+        android:text="Contenido del mensaje..."
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.019"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
