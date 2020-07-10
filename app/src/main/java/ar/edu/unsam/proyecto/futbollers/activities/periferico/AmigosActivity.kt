@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.row_agregar_amigo.view.*
 import kotlinx.android.synthetic.main.row_amigo.view.*
 
 
-class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
+class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener, ListaAmigosListener {
 
     lateinit var dialogAgregarAmigo: MaterialDialog
     lateinit var agregarAmigoAdapter: AgregarAmigoAdapter
@@ -134,6 +134,19 @@ class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener {
         usuarioService.postAmistad(this, amigo, ::callbackAgregarAmigo, check)
     }
 
+    override fun onEliminarAmigoClick(position: Int) {
+        val amigoSeleccionado = listaAmigosAdapter.getItem(position)
+        usuarioService.deleteAmistad(this, amigoSeleccionado, usuarioLogueado, ::callbackEliminarAmigo)
+    }
+
+    fun callbackEliminarAmigo(){
+        //Refrescar lista de amigos
+        refrescarListaAmigos()
+        refrescarListaCandidatos()
+
+        Toasty.success(this , "Has eliminado la amistad correctamente!", Toast.LENGTH_SHORT).show()
+    }
+
     fun callbackAgregarAmigo(check: ImageView) {
         check.visibility = View.VISIBLE
         Toasty.success(
@@ -204,8 +217,8 @@ interface AgregarAmigoClickListener : BaseRecyclerListener {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-class ListaAmigosAdapter(context: Context, listener: BaseRecyclerListener) :
-    GenericRecyclerViewAdapter<Usuario, BaseRecyclerListener, ListaAmigosViewHolder>(
+class ListaAmigosAdapter(context: Context, listener: ListaAmigosListener) :
+    GenericRecyclerViewAdapter<Usuario, ListaAmigosListener, ListaAmigosViewHolder>(
         context, listener
     ) {
 
@@ -215,8 +228,8 @@ class ListaAmigosAdapter(context: Context, listener: BaseRecyclerListener) :
     }
 }
 
-class ListaAmigosViewHolder(itemView: View, listener: BaseRecyclerListener) :
-    BaseViewHolder<Usuario, BaseRecyclerListener>(itemView, listener) {
+class ListaAmigosViewHolder(itemView: View, listener: ListaAmigosListener) :
+    BaseViewHolder<Usuario, ListaAmigosListener>(itemView, listener) {
 
     private val amigoNombre: TextView = itemView.lista_nombre_amigo
     private val posicionAmigo: TextView = itemView.lista_posicion_amigo
@@ -228,9 +241,22 @@ class ListaAmigosViewHolder(itemView: View, listener: BaseRecyclerListener) :
         Picasso.get().load(item.foto).into(amigoFoto)
     }
 
+    init {
+        listener.run {
+            val trashIcon = itemView.trash_icon
+            trashIcon.setOnClickListener { onEliminarAmigoClick(adapterPosition)
+            }
+        }
+    }
+
+
 }
 
+interface ListaAmigosListener : BaseRecyclerListener {
 
+    fun onEliminarAmigoClick(position: Int)
+
+}
 
 
 

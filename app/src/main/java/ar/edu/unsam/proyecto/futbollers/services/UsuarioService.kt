@@ -128,6 +128,31 @@ object UsuarioService {
         queue.add(request)
     }
 
+    fun deleteAmistad(context: Context, amigo: Usuario, usuario: Usuario, callback: () -> Unit){
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/usuario/${usuario.idUsuario}/amigo/${amigo.idUsuario}"
+
+        val request = JsonObjectRequest(
+            Request.Method.DELETE, url, null,
+
+            Response.Listener<JSONObject> { response ->
+
+                Log.i("MensajeActivity", "[DEBUG]:Communication with API Rest Suceeded")
+
+                Log.i("MensajeActivity", response.toString())
+
+                callback()
+            },
+            Response.ErrorListener {
+                Log.i("MensajeActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, UsuarioService::lambdaManejoErrores)
+            })
+        request.retryPolicy = Constants.defaultPolicy
+
+        queue.add(request)
+    }
+
 
     fun lambdaManejoErrores(context: Context, statusCode: Int) {}
 
