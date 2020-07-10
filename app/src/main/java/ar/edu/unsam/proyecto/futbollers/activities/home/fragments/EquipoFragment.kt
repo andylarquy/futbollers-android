@@ -32,6 +32,9 @@ import kotlinx.android.synthetic.main.row_fragment_equipo.view.*
 
 class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItemClickListener, EquipoMultipleClickListener {
 
+    val equipoService = EquipoService
+    val usuarioLogueado = UsuarioLogueado.usuario
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,8 +48,6 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val equipoService = EquipoService
-        val usuarioLogueado = UsuarioLogueado.usuario
 
         rv = equipos_list
         rv.setHasFixedSize(true)
@@ -99,6 +100,8 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
     }
 
     fun callbackEliminarEquipo(){
+        // Refrescar lista de equipos
+        EquipoService.getEquiposDelUsuario(context!!, UsuarioLogueado.usuario, ::callBackEquipos)
         Toasty.success(context!!, "Se ha eliminado el equipo correctamente!", Toast.LENGTH_SHORT).show()
     }
 
@@ -118,15 +121,18 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
     override fun onDeleteClick(position: Int) {
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
         EquipoService.eliminarEquipo(context!!, equipoSeleccionado, ::callbackEliminarEquipo)
-
-        // Refrescar lista de equipos
-        EquipoService.getEquiposDelUsuario(context!!, UsuarioLogueado.usuario, ::callBackEquipos)
-
     }
 
     override fun onAbandonClick(position: Int) {
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
-        Toast.makeText(context, "TODO: Abandonar equipo (con id: "+equipoSeleccionado.idEquipo+")", Toast.LENGTH_SHORT).show()
+        EquipoService.abandonarEquipo(context!!, equipoSeleccionado, usuarioLogueado, ::callbackAbandonarEquipo)
+    }
+
+    fun callbackAbandonarEquipo(){
+        Toasty.success(context!!, "Has abandonado el equipo correctamente!!", Toast.LENGTH_SHORT).show()
+
+        // Refrescar lista de equipos
+        EquipoService.getEquiposDelUsuario(context!!, UsuarioLogueado.usuario, ::callBackEquipos)
     }
 
 }
@@ -156,17 +162,21 @@ class EquipoViewHolder(itemView: View, listener: EquipoMultipleClickListener?) :
     override fun onBind(item: Equipo) {
 
         if(item.esOwnerById(usuarioLogueado)){
+            //Es Owner
             ownerIcon?.setImageResource(R.drawable.ic_portrait_black_24dp)
 
-            //TODO: Darle comportamiento a los botones
             trashIcon?.setImageResource(R.drawable.ic_delete_black_24dp)
             editIcon?.setImageResource(R.drawable.ic_create_black_24dp)
+            abandonIcon?.visibility = View.GONE
         }else{
-            ownerIcon?.setImageResource(0)
-            trashIcon?.setImageResource(0)
-            editIcon?.setImageResource(0)
+            //No es owner
+            abandonIcon?.setImageResource(R.drawable.ic_exit_to_app_black_24dp)
+
+            ownerIcon?.visibility = View.GONE
+            trashIcon?.visibility = View.GONE
+            editIcon?.visibility = View.GONE
         }
-        abandonIcon?.setImageResource(R.drawable.ic_exit_to_app_black_24dp)
+
         equipoNombre?.text = item.nombre
         Picasso.get().load(item.foto).into(equipoFoto)
     }
