@@ -67,7 +67,6 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
         globalContext = this
 
         btnEnviar.setTextColor(Color.WHITE)
-
         Picasso.get().load(fotoContacto).into(foto_contacto)
 
         var rv = mensajes_list
@@ -80,6 +79,10 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
         rv.adapter = mensajesAdapter
 
         nombre.setText(nombreContacto)
+
+        arrow_back.setOnClickListener{
+            this.finish()
+        }
 
         btnEnviar.setOnClickListener {
             if(txtMensaje.text.toString().isNotBlank()) {
