@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
 import androidx.databinding.library.baseAdapters.BR
+import java.lang.Exception
 
 class Usuario: BaseObservable() {
     var idUsuario: Long? = null
@@ -57,6 +58,39 @@ class Usuario: BaseObservable() {
 
     fun tieneId(idBuscado: Long): Boolean{
         return idUsuario == idBuscado
+    }
+
+    fun validarSignUp(){
+
+        if (nombre.isNullOrBlank()){
+            throw Error("Debe ingresar un nombre")
+        }
+
+        if (email.isNullOrBlank()){
+            throw Error("Debe ingresar un email")
+        }
+
+        //TODO: Con regex esto te queda espectacular
+        if (!email!!.contains("@") || !email!!.contains(".") ){
+            throw Error("Ingrese un email valido")
+        }
+
+        if (password.isNullOrBlank()){
+            throw Error("Debe ingresar una contraseña")
+        }
+
+        if (password!!.length < 8){
+            throw Error("La contraseña debe tener un minimo de 8 caracteres")
+        }
+
+        if (sexo.isNullOrBlank()){
+            throw Error("Debe indicar su sexo")
+        }
+
+        if (posicion.isNullOrBlank()){
+            throw Error("Debe ingresar una posicion deseada")
+        }
+
     }
 
 }

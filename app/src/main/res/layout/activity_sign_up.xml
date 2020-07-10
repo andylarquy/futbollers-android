@@ -16,31 +16,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <TextView
             android:id="@+id/text_titulo_signUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
-            android:layout_marginEnd="148dp"
-            android:layout_marginRight="148dp"
             android:text="@string/text_titulo_signUp"
-            android:textColor="#57ab55"
-            android:textSize="25sp"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toTopOf="@+id/input_nombre"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <RelativeLayout
-            android:id="@+id/layout_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:background="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.486"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.034" />
 
         <include
             android:id="@+id/input_nombre"
@@ -73,23 +62,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.313" />
-
-        <RelativeLayout
-            android:id="@+id/layout_info2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:background="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toBottomOf="@+id/input_nombre"
+            app:layout_constraintVertical_bias="0.03" />
 
 
         <!-- TODO: Revisar xq los layout tienen q superponerse para que se vea bien -->
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@id/input_password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -97,13 +75,12 @@
             android:layout_height="55dp"
 
 
-            android:layout_marginTop="224dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="28dp"
-            android:layout_marginRight="30dp"
             android:hint="@string/input_password"
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/input_email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -117,13 +94,15 @@
             android:id="@+id/label_sexo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginLeft="36dp"
-            android:layout_marginTop="304dp"
+            android:layout_marginTop="36dp"
             android:text="@string/text_sexo"
             android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.071"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/input_email"
+            app:layout_constraintVertical_bias="0.637" />
 
         <RadioGroup
 
@@ -141,39 +120,45 @@
             android:id="@+id/radio_btn_m"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginLeft="76dp"
-            android:layout_marginTop="292dp"
+            android:layout_marginTop="24dp"
             android:checked='@{usuarioNuevo.sexo.equals("M")}'
             android:onClick='@{() -> usuarioNuevo.setSexo("M")}'
             android:text="M"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.162"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/input_email"
+            app:layout_constraintVertical_bias="0.713" />
 
         <RadioButton
             android:id="@+id/radio_btn_f"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="124dp"
-            android:layout_marginLeft="124dp"
-            android:layout_marginTop="292dp"
+            android:layout_marginTop="24dp"
             android:checked='@{usuarioNuevo.sexo.equals("F")}'
             android:onClick='@{() -> usuarioNuevo.setSexo("F")}'
             android:text="F"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.294"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/input_email"
+            app:layout_constraintVertical_bias="0.713" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="292dp"
             android:layout_height="55dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="350dp"
+            android:layout_marginTop="436dp"
             android:hint="@string/input_posicion"
+            app:layout_constraintBottom_toTopOf="@+id/btn_signUp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.226"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.508">
 
             <AutoCompleteTextView
                 android:id="@+id/combo_posiciones"
@@ -191,12 +176,12 @@
             android:id="@+id/btn_signUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="144dp"
-            android:layout_marginLeft="144dp"
-            android:layout_marginTop="484dp"
             android:text="@string/submit_signUp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.901" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,13 +11,14 @@ import ar.edu.unsam.proyecto.futbollers.databinding.ActivitySignUpBinding
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.POSICIONES
 import ar.edu.unsam.proyecto.futbollers.services.SignUpService
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 
 class SignUpActivity : AppCompatActivity() {
 
     val usuarioNuevo: Usuario = Usuario()
-    val signUpService: SignUpService = SignUpService
+    val signUpService = SignUpService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +31,15 @@ class SignUpActivity : AppCompatActivity() {
 
 
         btn_signUp.setOnClickListener() {
-            signUpService.postUsuarioNuevo(
-                this@SignUpActivity,
-                usuarioNuevo,
-                ::callbackSignUpUsuario
-            )
+
+            try {
+                usuarioNuevo.validarSignUp()
+                signUpService.postUsuarioNuevo(this, usuarioNuevo, ::callbackSignUpUsuario)
+            }catch(e: Error){
+                Toasty.error(this, e.message!!, Toast.LENGTH_SHORT).show()
+            }
+
+
 
         }
 
@@ -47,12 +52,8 @@ class SignUpActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java).apply{}
             startActivity(intent)
 
-            //TODO: VALIDAR CAMPOS
-            Toast.makeText(
-                this@SignUpActivity,
-                "Bienvenido " + usuarioNuevo.nombre,
-                Toast.LENGTH_LONG
-            ).show()
+
+            Toasty.success(this, "Se ha registrado su usuario correctamente", Toast.LENGTH_LONG).show()
         }
 
 }

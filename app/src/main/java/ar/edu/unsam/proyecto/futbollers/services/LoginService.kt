@@ -51,9 +51,7 @@ object LoginService {
 
  fun handleError(context: Context, error: VolleyError, callbackError: (Exception) -> Unit) {
     Log.i("LoginActivity", "[DEBUG]: API Rest Error: +" + error.toString())
-    if (error is AuthFailureError) {
-       Toast.makeText(context, "Las credenciales son invalidas", Toast.LENGTH_SHORT).show()
-    } else if (error is ClientError) {
+    if (error is ClientError) {
        Toast.makeText(context, "El dispositivo no se pudo conectar con el servidor, vuelva a intentar mas tarde", Toast.LENGTH_SHORT).show()
     } else if(error is NoConnectionError){
        Toast.makeText(context, "Revise su conexion a internet", Toast.LENGTH_SHORT).show()

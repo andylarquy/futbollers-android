@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.drawer.ToolbarActivity
@@ -74,7 +75,7 @@ class LoginActivity : ToolbarActivity() {
         val password = sharedPref.getString("password", null)
         usuarioLogueado.email = email
         usuarioLogueado.password = password
-        loginService.getUsuarioLogueado(this@LoginActivity, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueado)
+        loginService.getUsuarioLogueado(this, usuarioLogueado, ::callbackUsuarioLogueado, ::callbackErrorUsuarioLogueadoAutomatico)
     }
 
     fun guardarCredenciales(email: String?, password: String?, idUsuario: String?){
@@ -99,6 +100,12 @@ class LoginActivity : ToolbarActivity() {
     }
 
     fun callbackErrorUsuarioLogueado(error: Exception){
+        // DESACTIVA RENDER PANTALLA DE CARGA
+        loading_spinner.visibility = View.INVISIBLE
+        Toast.makeText(this, "Las credenciales son invalidas", Toast.LENGTH_SHORT).show()
+    }
+
+    fun callbackErrorUsuarioLogueadoAutomatico(error: Exception){
         // DESACTIVA RENDER PANTALLA DE CARGA
         loading_spinner.visibility = View.INVISIBLE
     }
