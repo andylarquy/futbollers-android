@@ -1,5 +1,6 @@
 package ar.edu.unsam.proyecto.futbollers.activities.periferico
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,11 +12,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.drawer.SetupDrawer
 import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.AuxiliarService
@@ -47,6 +51,15 @@ class PerfilActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
 
+        val setupDrawer = SetupDrawer()
+
+        val toolbar = base_toolbar
+        val drawerLayout = base_drawer_layout
+
+        setSupportActionBar(toolbar)
+        setupDrawer.startSetup(this, this, toolbar, drawerLayout, nav_drawer)
+
+
         input_nombre.setText(usuarioLogueado.nombre)
         output_email.text = usuarioLogueado.email
         Picasso.get().load(usuarioLogueado.foto).into(foto_usuario)
@@ -72,7 +85,10 @@ class PerfilActivity : AppCompatActivity() {
             }else{
                 callbackUploadImage(null)
             }
+        }
 
+        btn_cancelar_perfil.setOnClickListener{
+            goToHome()
         }
 
     }
@@ -175,6 +191,7 @@ class PerfilActivity : AppCompatActivity() {
             .negativeButton(text = "Cancelar") {
                 nuevaContrasenia = null
                 repetirContrasenia = null
+
                 it.dismiss()
             }
 

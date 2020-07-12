@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unsam.proyecto.futbollers.R
+import ar.edu.unsam.proyecto.futbollers.activities.drawer.SetupDrawer
 import ar.edu.unsam.proyecto.futbollers.domain.Encuesta
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.EncuestaService
@@ -23,6 +24,10 @@ import com.leodroidcoder.genericadapter.GenericRecyclerViewAdapter
 import com.squareup.picasso.Picasso
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_encuesta.*
+import kotlinx.android.synthetic.main.activity_encuesta.base_drawer_layout
+import kotlinx.android.synthetic.main.activity_encuesta.base_toolbar
+import kotlinx.android.synthetic.main.activity_encuesta.nav_drawer
+import kotlinx.android.synthetic.main.activity_invitaciones.*
 import kotlinx.android.synthetic.main.dialog_formulario_encuesta.view.*
 import kotlinx.android.synthetic.main.row_encuesta.view.*
 import kotlin.properties.Delegates
@@ -48,6 +53,14 @@ class EncuestasActivity : AppCompatActivity(), ContestarEncuestaClickListener {
         setContentView(R.layout.activity_encuesta)
 
         setupDialogContestarEncuesta()
+
+        val setupDrawer = SetupDrawer()
+
+        val toolbar = base_toolbar
+        val drawerLayout = base_drawer_layout
+
+        setSupportActionBar(toolbar)
+        setupDrawer.startSetup(this, this, toolbar, drawerLayout, nav_drawer)
 
         rv = encuestas_list
         rv.setHasFixedSize(true)
