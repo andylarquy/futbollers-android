@@ -90,7 +90,6 @@ class Usuario: BaseObservable() {
         if (posicion.isNullOrBlank()){
             throw Error("Debe ingresar una posicion deseada")
         }
-
     }
 
 }

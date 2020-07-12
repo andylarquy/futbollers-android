@@ -15,10 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
 import ar.edu.unsam.proyecto.futbollers.activities.inicio.SignUpActivity
-import ar.edu.unsam.proyecto.futbollers.activities.periferico.AmigosActivity
-import ar.edu.unsam.proyecto.futbollers.activities.periferico.CandidatosActivity
-import ar.edu.unsam.proyecto.futbollers.activities.periferico.EncuestasActivity
-import ar.edu.unsam.proyecto.futbollers.activities.periferico.InvitacionesActivity
+import ar.edu.unsam.proyecto.futbollers.activities.periferico.*
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
@@ -68,7 +65,12 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
 
         //TODO: No redigir al usuario si hace click en la pantalla en la q esta
         when (item.title) {
-            "Perfil" -> Toast.makeText(activity, "TODO: Intent Perfil", Toast.LENGTH_SHORT).show()
+            "Perfil" -> {
+                val intent = Intent(context, PerfilActivity::class.java).apply{}
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+                activity.finish()
+            }
 
             "Home" -> {
                 val intent = Intent(context, HomeActivity::class.java).apply{}

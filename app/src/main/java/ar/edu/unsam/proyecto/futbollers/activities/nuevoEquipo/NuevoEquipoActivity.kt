@@ -269,6 +269,7 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
             .negativeButton(text = "Cerrar") {
                 it.dismiss()
             }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

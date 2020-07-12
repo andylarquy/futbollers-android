@@ -153,6 +153,31 @@ object UsuarioService {
         queue.add(request)
     }
 
+    fun updatePerfil(context: Context, usuario: Usuario, callback: (Usuario) -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/usuario"
+
+        Log.i("PerfilActivity", url)
+        Log.i("PerfilActivity", Usuario().toJson(usuario).toString())
+
+        val request = JsonObjectRequest(
+            Request.Method.PUT, url, Usuario().toJson(usuario),
+
+            Response.Listener<JSONObject> { response ->
+                Log.i("PerfilActivity", "[DEBUG]:Communication with API Rest Suceeded")
+                Log.i("PerfilActivity", response.toString())
+
+                callback(usuario)
+            },
+            Response.ErrorListener {
+                Log.i("PerfilActivity", "[DEBUG]:Communication with API Rest Failed")
+                handleError(context, it, UsuarioService::lambdaManejoErrores)
+            })
+        request.retryPolicy = Constants.longPolicy
+
+        queue.add(request)
+    }
 
     fun lambdaManejoErrores(context: Context, statusCode: Int) {}
 

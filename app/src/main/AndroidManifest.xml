@@ -73,6 +73,10 @@
         <activity android:name=".activities.periferico.EncuestasActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activities.periferico.PerfilActivity"
+            android:screenOrientation="portrait"/>
+
+
         <activity android:name=".activities.mensajes.MensajeActivity"
             android:screenOrientation="portrait"/>
 
