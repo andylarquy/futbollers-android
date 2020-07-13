@@ -19,6 +19,7 @@ import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.nuevoEquipo.usuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.EncuestasContext
 import ar.edu.unsam.proyecto.futbollers.domain.*
+import ar.edu.unsam.proyecto.futbollers.services.NotificacionService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioService
 import com.google.firebase.database.*
 import com.leodroidcoder.genericadapter.BaseRecyclerListener
@@ -41,6 +42,8 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var databaseReference: DatabaseReference? = null
+
+    var notificacionService = NotificacionService
 
     var idContacto: Long? = null
     var idChat: String? = null
@@ -95,6 +98,7 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
                     )
                 )
+                enviarNotificacionDeMensaje(txtMensaje.text.toString())
                 txtMensaje.setText("")
             }
         }
@@ -122,6 +126,18 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
         })
 
+    }
+
+    fun enviarNotificacionDeMensaje(mensaje: String){
+        val notificacion = Notificacion()
+        notificacion.titulo = usuarioLogueado.nombre+" te ha enviado un mensaje!"
+        notificacion.descripcion = mensaje
+
+        val receptor = Usuario()
+        receptor.idUsuario = idContacto
+
+        notificacion.usuarioReceptor = receptor
+        notificacionService.enviarNotificacionMensaje(this, notificacion)
     }
 
     override fun onItemClick(position: Int) {}

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.InvitacionesActivity
+import ar.edu.unsam.proyecto.futbollers.domain.Equipo
 import ar.edu.unsam.proyecto.futbollers.domain.Notificacion
 import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants
@@ -134,6 +135,27 @@ object NotificacionService {
         queue.add(request)
     }
 
+    //No tiene callback xq si hubo un error al mandar una notificacion no se mostrara error
+    fun enviarNotificacionMensaje(context: Context, notificacion: Notificacion){
+        val queue = Volley.newRequestQueue(context)
+
+        val url = "${Constants.BASE_URL}/enviar-notificacion"
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, Notificacion().toJson(notificacion),
+
+            Response.Listener<JSONObject> { response ->
+                Log.i("MensajesActivity", "[DEBUG]:Communication with API Rest Suceeded")
+            },
+            Response.ErrorListener {
+                Log.i("MensajesActivity", "[DEBUG]:Communication with API Rest Failed")
+            })
+        request.retryPolicy = defaultPolicy
+
+        queue.add(request)
+
+    }
+
     /*
     fun aceptarCandidato(context: Context, invitacion: Notificacion, callback: () -> Unit) {
         val queue = Volley.newRequestQueue(context)
@@ -158,7 +180,7 @@ object NotificacionService {
         queue.add(request)
     }
 
-     */
+    */
 
 
 

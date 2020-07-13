@@ -122,11 +122,11 @@ class CandidatoViewHolder(itemView: View, listener: AceptarCandidatoClickListene
 
     override fun onBind(item: Notificacion) {
         nombreCandidato?.text = item.usuarioReceptor!!.nombre
-        posicionCandidato?.text = item.usuarioReceptor.posicion
+        posicionCandidato?.text = item.usuarioReceptor!!.posicion
         direccionPartido?.text = item.partido!!.empresa!!.direccion
 
         fechaPartido?.text = simpleDateFormatter.format(item.partido.fechaDeReserva!!.time)
-        Picasso.get().load(item.usuarioReceptor.foto).into(candidatoFoto)
+        Picasso.get().load(item.usuarioReceptor!!.foto).into(candidatoFoto)
     }
 }
 

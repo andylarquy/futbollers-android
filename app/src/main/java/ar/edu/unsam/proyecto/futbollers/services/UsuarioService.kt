@@ -148,7 +148,7 @@ object UsuarioService {
                 Log.i("MensajeActivity", "[DEBUG]:Communication with API Rest Failed")
                 handleError(context, it, UsuarioService::lambdaManejoErrores)
             })
-        request.retryPolicy = Constants.defaultPolicy
+        request.retryPolicy = Constants.mediumPolicy
 
         queue.add(request)
     }

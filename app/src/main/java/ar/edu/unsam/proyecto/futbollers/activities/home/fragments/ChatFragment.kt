@@ -77,9 +77,6 @@ class ChatFragment : Fragment(), OnRecyclerItemClickListener {
         intent.putExtra("idContacto", contactoSeleccionado.idUsuario!!)
         intent.putExtra("idChat", idChat)
         startActivity(intent)
-
-
-        Toasty.success(context!!, "Mira, el ID de la database va a ser: $idChat", Toast.LENGTH_SHORT).show()
     }
 
 
