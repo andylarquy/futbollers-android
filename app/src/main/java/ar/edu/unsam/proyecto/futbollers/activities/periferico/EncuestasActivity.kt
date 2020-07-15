@@ -112,23 +112,18 @@ class EncuestasActivity : AppCompatActivity(), ContestarEncuestaClickListener {
                     encuestaSeleccionada.respuesta2 = respuesta2!!
                     encuestaSeleccionada.respuesta3 = respuesta3!!
 
-                    Log.i("EncuestasActivity", "Se va a mandar la encuesta")
                     encuestaService.updateEncuesta(this, encuestaSeleccionada, ::callbackUpdateEncuesta)
-                    Log.i("EncuestasActivity", "Mira, la encuesta en teoria se mando a updatear, fijate q onda")
 
                     resetearEncuesta()
 
                     it.dismiss()
                 }else{
-                    Toasty.error(this, "Papi, completa la encuesta, para eso me haces levantar?", Toast.LENGTH_SHORT).show()
+                    Toasty.error(this, "Debe contestar todas las preguntas de la encuesta", Toast.LENGTH_SHORT).show()
 
                 }
             }
             .negativeButton(text = "Cancelar") {
-
                 resetearEncuesta()
-                Toasty.error(this, "Hay que mostrar un error o algo?", Toast.LENGTH_SHORT).show()
-
                 it.dismiss()
             }
             .onDismiss{
