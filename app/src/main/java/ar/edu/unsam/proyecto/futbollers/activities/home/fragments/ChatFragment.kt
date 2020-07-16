@@ -20,6 +20,7 @@ import ar.edu.unsam.proyecto.futbollers.domain.Usuario
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioService
 import ar.edu.unsam.proyecto.futbollers.services.auxiliar.Constants.chatIdBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -33,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.row_contacto.view.*
 
 //TODO: Missing <firebaseAuth> que onda?
-class ChatFragment : Fragment(), OnRecyclerItemClickListener {
+class ChatFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItemClickListener {
 
     lateinit var contactoAdapter: ContactoAdapter
 
@@ -57,6 +58,10 @@ class ChatFragment : Fragment(), OnRecyclerItemClickListener {
         rv.adapter = contactoAdapter
 
         usuarioService.getAmigosDelUsuario(context!!, usuarioLogueado, ::callbackGetAmigos)
+
+        // Si, yo se que esto es malisimo, pero como creimos que iba a haber floating
+        // button hay que hacer refactor para cambiarlo
+        fab.visibility = View.GONE
 
     }
 

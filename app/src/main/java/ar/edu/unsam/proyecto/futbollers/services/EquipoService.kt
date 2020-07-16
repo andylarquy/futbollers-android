@@ -17,6 +17,7 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import es.dmoral.toasty.Toasty
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -184,7 +185,7 @@ object EquipoService {
             },
             Response.ErrorListener {
                 Log.i("EquipoFragment", "[DEBUG]:Communication with API Rest Failed")
-                //handleErrorPostEquipo(context, it, callbackError)
+                handleError(context, it, ::lambdaManejoErroresDelete)
             })
         request.retryPolicy = longPolicy
 
@@ -209,7 +210,7 @@ object EquipoService {
             },
             Response.ErrorListener {
                 Log.i("EquipoFragment", "[DEBUG]:Communication with API Rest Failed")
-                handleError(context, it, EmpresaService::lambdaManejoErrores)
+                handleError(context, it, ::lambdaManejoErrores)
             })
         request.retryPolicy = defaultPolicy
 
@@ -217,11 +218,18 @@ object EquipoService {
     }
 
     fun lambdaManejoErrores(context: Context, statusCode: Int) {
-        if (statusCode == 422) {
-            Toast.makeText(context, "Ese mail ya pertenece a un usuario", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "Error inesperado al comunicarse con el servidor", Toast.LENGTH_SHORT).show()
+        Log.i("EquipoFragment", statusCode.toString())
+        if (statusCode == 404){
+            Toasty.error(context, "No podes abandonar un equipo con partidos pendientes", Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun lambdaManejoErroresDelete(context: Context, statusCode: Int){
+        Log.i("EquipoFragment", statusCode.toString())
+        if (statusCode == 404){
+            Toasty.error(context, "No podes eliminar un equipo con partidos pendientes", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
 }

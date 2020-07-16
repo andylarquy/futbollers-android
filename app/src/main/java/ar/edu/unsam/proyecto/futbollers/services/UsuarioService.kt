@@ -121,7 +121,7 @@ object UsuarioService {
             },
             Response.ErrorListener {
                 Log.i("MensajeActivity", "[DEBUG]:Communication with API Rest Failed")
-                handleError(context, it, UsuarioService::lambdaManejoErrores)
+                handleError(context, it, ::lambdaManejoErrores)
             })
         request.retryPolicy = Constants.defaultPolicy
 

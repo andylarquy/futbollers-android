@@ -99,13 +99,15 @@ class LoginActivity : ToolbarActivity() {
         finish()
     }
 
-    fun callbackErrorUsuarioLogueado(error: Exception){
+    fun callbackErrorUsuarioLogueado(errorMessage: String){
         // DESACTIVA RENDER PANTALLA DE CARGA
         loading_spinner.visibility = View.INVISIBLE
-        Toast.makeText(this, "Las credenciales son invalidas", Toast.LENGTH_SHORT).show()
+        if(errorMessage.isNotBlank()) {
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
-    fun callbackErrorUsuarioLogueadoAutomatico(error: Exception){
+    fun callbackErrorUsuarioLogueadoAutomatico(error: String){
         // DESACTIVA RENDER PANTALLA DE CARGA
         loading_spinner.visibility = View.INVISIBLE
     }

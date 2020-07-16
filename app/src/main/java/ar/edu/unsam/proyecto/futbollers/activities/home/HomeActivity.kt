@@ -53,7 +53,7 @@ class HomeActivity : AppCompatActivity() {
                 fragment =
                     EquipoFragment(floating_action_button.findViewById(R.id.floating_action_button))
             } else if (item.itemId == R.id.action_chat) {
-                fragment = ChatFragment()
+                fragment = ChatFragment(floating_action_button.findViewById(R.id.floating_action_button))
             }
 
             replaceFragment(fragment!!)
