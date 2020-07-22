@@ -41,7 +41,6 @@ class ArmarPartidoActivity : ToolbarActivity(), StepperLayout.StepperListener {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_armar_partido)
         layoutInflater.inflate(R.layout.activity_armar_partido, base_drawer_layout, true)
 
         mStepperLayout = stepperLayout
@@ -64,7 +63,7 @@ class ArmarPartidoActivity : ToolbarActivity(), StepperLayout.StepperListener {
     }
 
     override fun onCompleted(completeButton: View?) {
-        Toast.makeText(this, "Listo, te recibiste!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
     }
 
 }
@@ -88,6 +87,7 @@ class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentSt
                 step1.arguments = b1
                 return step1
             }
+
             1 -> {
                 val step2 = ElegirCanchaFragment()
                 val b2 = Bundle()

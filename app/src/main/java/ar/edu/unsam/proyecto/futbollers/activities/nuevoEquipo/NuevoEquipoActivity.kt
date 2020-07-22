@@ -91,7 +91,6 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
 
         if(b != null) {
             idEquipoAEditar = b.getLong("idEquipo")
-            Log.i("HomeActivity", "DALE")
             Log.i("HomeActivity", idEquipoAEditar.toString())
             equipoService.getEquipoById(this, idEquipoAEditar!!, ::callbackGetEquipoAEditar)
         }
@@ -276,7 +275,7 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
             val image: Image = ImagePicker.getFirstImageOrNull(data)
             if (data === null) {
-                Toasty.error(this, "Mira, no se que hiciste, pero no me vas a hackear. La imagen no puede ser null.", Toast.LENGTH_SHORT).show()
+                Toasty.error(this, "Ha habido un error al procesar la imagen (dependencia de Glide)", Toast.LENGTH_SHORT).show()
             } else {
 
                 val bmImg: Bitmap = BitmapFactory.decodeFile(Uri.parse(image.path).toString())
@@ -290,7 +289,7 @@ class NuevoEquipoActivity : AppCompatActivity(), OnRecyclerItemClickListener, In
                 Handler().postDelayed({
                     Log.i("NuevoEquipoActivity",foto_equipo.toString())
                     if(foto_equipo.drawable === null){
-                        Toasty.error(this,"Ha habido un error al procesar la imagen [DEBUG] Path: "+image.path+"]", Toast.LENGTH_SHORT).show()
+                        Toasty.error(this,"Ha habido un error al procesar la imagen"+image.path+"]", Toast.LENGTH_SHORT).show()
                     }else{
                         imagenSeleccionada = foto_equipo.drawable.toBitmap()
                     }

@@ -32,6 +32,7 @@
 
         android:text="Repita su contrasenia:"
         android:textSize="14sp"
+        android:maxLength="20"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +62,9 @@
             android:id="@+id/nueva_contrasenia1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:maxLength="20"/>
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:text="@={usuarioLogueado.password}"
+                android:maxLength="20"
 
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -109,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:text="@={usuarioLogueado.email}"
+                android:maxLength="50"
 
                 />
         </com.google.android.material.textfield.TextInputLayout>

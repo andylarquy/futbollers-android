@@ -299,10 +299,6 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
 
     override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback) {
 
-
-
-        // TODO: Esto en principio sobra
-        // Handler().postDelayed({ callback.goToNextStep() }, 1000L)
     }
 
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
@@ -365,7 +361,6 @@ class ElegirEquipoVisitanteFragment : ElegirEquipoGenerico(){
             dialogEquipo?.dismiss()
             equipoVisitanteSeleccionado = equipo
             postPartido()
-
         }
 
     }

@@ -16,9 +16,6 @@ class Notificacion {
     //TODO: Al traer las notificaciones ocultar este booleano en el back
     val aceptado: Boolean? = null
 
-    //TODO: Ver que onda
-    //Equipo equipo
-
     fun toJson(o: Notificacion?): JSONObject?{
         val jsonResult = JSONObject(Gson().toJson(o))
         return jsonResult

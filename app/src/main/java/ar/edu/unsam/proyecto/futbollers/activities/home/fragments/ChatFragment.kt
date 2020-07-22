@@ -33,7 +33,6 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.row_contacto.view.*
 
-//TODO: Missing <firebaseAuth> que onda?
 class ChatFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItemClickListener {
 
     lateinit var contactoAdapter: ContactoAdapter

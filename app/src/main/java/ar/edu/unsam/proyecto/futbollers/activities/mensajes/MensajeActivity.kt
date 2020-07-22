@@ -175,7 +175,7 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
         val idContacto = item.idUsuario!!.toLong()
 
         if(usuarioLogueado.tieneId(idContacto)){
-            //Mensaje de salida (TODO: Delega ese if en una funcion papi, no se entiende nada)
+            //Mensaje de salida (TODO: Delegar este if en una funcion, no se entiende nada)
 
             horaMensajeEmisor?.visibility = View.VISIBLE
             mensajeEmisor?.visibility = View.VISIBLE
@@ -218,16 +218,6 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
 
 
         }
-
-
-
-
-
-        //  jugadoNombre.text = item.usuarioReferenciado!!.nombre
-        //   Picasso.get().load(item.usuarioReferenciado.foto).into(jugadorFoto)
-        //  Picasso.get().load(item.foto).into(fotoUsuario)
-        // Picasso.get().load("https://imgur.com/DFcX6vX").into(jugadorFoto);
-
 
     }
 

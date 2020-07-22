@@ -112,7 +112,6 @@ class HomeActivity : AppCompatActivity() {
             PartidoFragment(floating_action_button.findViewById(R.id.floating_action_button))
         )
 
-        //TODO: Revisar
         //https://medium.com/@elye.project/handling-illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-d4ee8b630066
         fragmentTransaction.commitAllowingStateLoss()
     }
@@ -154,7 +153,7 @@ class HomeActivity : AppCompatActivity() {
                 .detach(currentFragment)
                 .attach(currentFragment)
                 .commitAllowingStateLoss()
-            //TODO: Revisar
+
             //https://medium.com/@elye.project/handling-illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-d4ee8b630066
             super.onRestart()
         } catch (error: Throwable) {
@@ -165,7 +164,7 @@ class HomeActivity : AppCompatActivity() {
                     .detach(currentFragment)
                     .attach(currentFragment)
                     .commitAllowingStateLoss()
-                //TODO: Revisar
+
                 //https://medium.com/@elye.project/handling-illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-d4ee8b630066
                 super.onRestart()
             } catch (error: Throwable) {

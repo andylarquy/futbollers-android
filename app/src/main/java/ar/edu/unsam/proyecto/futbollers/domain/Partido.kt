@@ -33,7 +33,6 @@ class Partido {
         return equipo1!!.esOwner(usuario)
     }
 
-    //TODO: Revisar el -1
     fun jugadoresRestantes(): Int {
         return canchaReservada!!.cantidadJugadores!! - cantidadDeConfirmaciones!! - 1
     }

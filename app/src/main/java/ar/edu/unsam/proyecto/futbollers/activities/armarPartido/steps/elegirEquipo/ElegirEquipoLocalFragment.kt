@@ -125,8 +125,6 @@ class ElegirEquipoLocalFragment : ElegirEquipoGenerico() {
             }
         }
 
-        //elegirAmigosAdapter.items = amigos
-
         elegirAmigosAdapter.notifyDataSetChanged()
         integranteAdapter.notifyDataSetChanged()
 

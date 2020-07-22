@@ -130,7 +130,6 @@ object CanchaService {
                         Log.i("ArmarPartidoActivity", "No te asustes, creo que este error inesperado deberia no ser dificil de arreglar")
                     }
                 }
-                //TODO: Corregir esto que salio de patron copypaste (spoiler, nunca va a pasar, mentira paso)
 
         }
     }

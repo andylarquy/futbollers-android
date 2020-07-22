@@ -13,7 +13,11 @@
             type="java.lang.String" />
 
         <variable
-            name="inputType"
+        name="inputType"
+        type="Integer" />
+
+        <variable
+            name="maxLength"
             type="Integer" />
     </data>
 
@@ -30,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@={text}"
             android:inputType="@{inputType}"
+            android:maxLength="@{maxLength}"
 
             />
     </com.google.android.material.textfield.TextInputLayout>

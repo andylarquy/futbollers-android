@@ -91,14 +91,13 @@ class ElegirEmpresaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListe
     override fun onNextClicked(callback: OnNextClickedCallback) {
 
         if (empresaSeleccionada === null) {
-            Toasty.error(context!!, "Debe eleccionar una sede", Toast.LENGTH_SHORT, true).show()
+            Toasty.error(context!!, "Debe seleccionar una sede", Toast.LENGTH_SHORT, true).show()
         } else {
             Handler().postDelayed({ callback.goToNextStep() }, 1000L)
         }
     }
 
     override fun onCompleteClicked(callback: OnCompleteClickedCallback?) {
-        Toast.makeText(this.context, "FIN!!", Toast.LENGTH_SHORT).show()
     }
 
     override fun onBackClicked(callback: OnBackClickedCallback) {

@@ -94,7 +94,8 @@
                             android:id="@+id/input_nombre"
                             android:inputType="textPersonName"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent" />
+                            android:layout_width="match_parent"
+                            android:maxLength="30"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -119,6 +120,7 @@
 
                         android:text="default@mail.com"
                         android:textSize="18sp"
+                        android:maxLength="50"
 
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

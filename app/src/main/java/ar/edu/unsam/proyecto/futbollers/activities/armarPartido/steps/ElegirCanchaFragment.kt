@@ -65,7 +65,6 @@ class ElegirCanchaFragment : Fragment(), BlockingStep, OnRecyclerItemClickListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        //val usuarioLogueado = UsuarioLogueado.usuario
         canchaAdapter = CanchaAdapter(context!!, this)
 
         cancha_seleccionada.visibility = View.INVISIBLE

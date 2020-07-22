@@ -99,8 +99,6 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
                 context.startActivity(intent)
                 activity.finish()
             }
-
-            "Configuracion" -> Toast.makeText(activity, "TODO: Intent Configuracion", Toast.LENGTH_SHORT).show()
         }
 
         return true

@@ -91,8 +91,6 @@ class AmigosActivity : AppCompatActivity(), AgregarAmigoClickListener, ListaAmig
                 }
             }
         })
-
-
     }
 
     override fun onBackPressed() {

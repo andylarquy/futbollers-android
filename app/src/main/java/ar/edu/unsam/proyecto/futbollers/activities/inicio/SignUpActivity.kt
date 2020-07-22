@@ -25,7 +25,6 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
         val binding: ActivitySignUpBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
-        //val binding: ActivitySignUpBinding = ActivitySignUpBinding.inflate(layoutInflater)
 
         binding.setUsuarioNuevo(usuarioNuevo)
 
