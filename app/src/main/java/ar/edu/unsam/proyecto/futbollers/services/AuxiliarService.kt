@@ -1,6 +1,6 @@
 package ar.edu.unsam.proyecto.futbollers.services
 
-import android.content.Context
+
 import android.graphics.Bitmap
 import android.util.Base64.DEFAULT
 import android.util.Base64.encodeToString
@@ -15,6 +15,9 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 import uk.me.hardill.volley.multipart.MultipartRequest
 import java.io.ByteArrayOutputStream
+import android.content.SharedPreferences
+import android.content.Context
+import android.content.Intent
 
 
 object AuxiliarService {
@@ -61,6 +64,7 @@ object AuxiliarService {
     fun lambdaManejoErrores(context: Context, statusCode: Int){
 
     }
+
 
 }
 

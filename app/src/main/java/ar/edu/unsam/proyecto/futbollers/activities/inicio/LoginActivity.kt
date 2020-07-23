@@ -37,6 +37,16 @@ class LoginActivity : ToolbarActivity() {
         //)
         binding.setUsuarioLogueado(usuarioLogueado)
 
+        val b = intent.extras
+        if(b != null) {
+            val cerrarSesion = b.getBoolean("cerrarSesion")
+
+            if(cerrarSesion !== null){
+                if(cerrarSesion){
+                    clearCredentialsStorage()
+                }
+            }
+        }
         text_signUp.setOnClickListener(){
             //GoTo SignupActivty
             val intent = Intent(this, SignUpActivity::class.java).apply{}
@@ -111,5 +121,15 @@ class LoginActivity : ToolbarActivity() {
         // DESACTIVA RENDER PANTALLA DE CARGA
         loading_spinner.visibility = View.INVISIBLE
     }
+
+    fun clearCredentialsStorage(){
+        val sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE)
+        val sharedPrefEdit: SharedPreferences.Editor = sharedPref.edit()
+        sharedPrefEdit.putString("idUsuario", "")
+        sharedPrefEdit.putString("email", "")
+        sharedPrefEdit.putString("password", "")
+        sharedPrefEdit.apply()
+    }
+
 }
 

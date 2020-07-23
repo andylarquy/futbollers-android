@@ -17,5 +17,10 @@
         android:icon="@drawable/drawer_notifications_white"
         android:title="Invitaciones" />
 
+    <item
+        android:icon="@drawable/ic_baseline_exit_to_app_white"
+        android:title="Cerrar sesion" />
+
+
 </menu>
 

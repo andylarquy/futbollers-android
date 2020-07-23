@@ -4,6 +4,8 @@ package ar.edu.unsam.proyecto.futbollers.activities.drawer
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
@@ -14,8 +16,10 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import ar.edu.unsam.proyecto.futbollers.R
 import ar.edu.unsam.proyecto.futbollers.activities.home.HomeActivity
+import ar.edu.unsam.proyecto.futbollers.activities.inicio.LoginActivity
 import ar.edu.unsam.proyecto.futbollers.activities.inicio.SignUpActivity
 import ar.edu.unsam.proyecto.futbollers.activities.periferico.*
+import ar.edu.unsam.proyecto.futbollers.services.AuxiliarService
 import ar.edu.unsam.proyecto.futbollers.services.UsuarioLogueado
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
@@ -26,6 +30,7 @@ import kotlinx.android.synthetic.main.util_drawer_header.view.*
 class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
 
     val usuarioLogueado = UsuarioLogueado.usuario
+    val auxiliar = AuxiliarService
     lateinit var context: Context
     lateinit var activity: Activity
 
@@ -99,9 +104,21 @@ class SetupDrawer : NavigationView.OnNavigationItemSelectedListener {
                 context.startActivity(intent)
                 activity.finish()
             }
+
+            "Cerrar sesion" -> {
+                val intent = Intent(context, LoginActivity::class.java).apply{}
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                val bundle = Bundle()
+                bundle.putBoolean("cerrarSesion",true)
+                intent.putExtras(bundle)
+                context.startActivity(intent)
+                activity.finish()
+            }
         }
 
         return true
     }
+
+
 
 }
