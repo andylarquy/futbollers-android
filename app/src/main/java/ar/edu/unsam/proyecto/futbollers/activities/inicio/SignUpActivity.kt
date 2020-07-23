@@ -33,6 +33,7 @@ class SignUpActivity : AppCompatActivity() {
 
             try {
                 usuarioNuevo.validarSignUp()
+                usuarioNuevo.formatearSexo()
                 signUpService.postUsuarioNuevo(this, usuarioNuevo, ::callbackSignUpUsuario)
             }catch(e: Error){
                 Toasty.error(this, e.message!!, Toast.LENGTH_SHORT).show()

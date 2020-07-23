@@ -92,4 +92,16 @@ class Usuario: BaseObservable() {
         }
     }
 
+    fun formatearSexo(){
+        when (sexo){
+            "F" -> {
+                sexo = "Femenino"
+            }
+
+            "M" -> {
+                sexo = "Masculino"
+            }
+        }
+    }
+
 }
