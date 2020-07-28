@@ -121,6 +121,8 @@ class EquipoFragment(val fab: FloatingActionButton) : Fragment(), OnRecyclerItem
     override fun onDeleteClick(position: Int) {
         val equipoSeleccionado: Equipo = equipoAdapter.getItem(position)
         EquipoService.eliminarEquipo(context!!, equipoSeleccionado, ::callbackEliminarEquipo)
+        activity?.finish()
+        startActivity(activity?.intent)
     }
 
     override fun onAbandonClick(position: Int) {

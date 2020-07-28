@@ -101,7 +101,7 @@ class LoginActivity : ToolbarActivity() {
 
         UsuarioLogueado.usuario = usuario
 
-        guardarCredenciales(usuarioLogueado.email, usuarioLogueado.password, usuarioLogueado.idUsuario.toString())
+        guardarCredenciales(UsuarioLogueado.usuario.email, UsuarioLogueado.usuario.password, UsuarioLogueado.usuario.idUsuario.toString())
         //GoTo HomeActivty
         val intent = Intent(this,
             HomeActivity::class.java).apply{}

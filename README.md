@@ -13,7 +13,7 @@ https://my-json-server.typicode.com/andylarquy/mock-rest-api-futbollers
 
 https://devhints.io/kotlin
 
-## Indio que explica Android
+## Introduccion a Android
 https://www.youtube.com/watch?v=CsxpHOQKk8c&list=PLlxmoA0rQ-Lw5k_QCqVl3rsoJOnb_00UV&index=3&t=0s
 
 ## Data Binding (libreria con la que se puede bindear)

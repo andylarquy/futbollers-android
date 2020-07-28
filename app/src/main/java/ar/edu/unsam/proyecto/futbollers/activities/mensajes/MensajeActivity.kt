@@ -80,6 +80,7 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
         mensajesAdapter = MensajesAdapter(this, this)
         rv.adapter = mensajesAdapter
+        mensajesAdapter.clear()
 
         nombre.setText(nombreContacto)
 
@@ -100,6 +101,8 @@ class MensajeActivity : AppCompatActivity(), OnRecyclerItemClickListener {
                 )
                 enviarNotificacionDeMensaje(txtMensaje.text.toString())
                 txtMensaje.setText("")
+                finish()
+                startActivity(intent)
             }
         }
 
@@ -218,6 +221,7 @@ class MensajesViewHolder(itemView: View, listener: OnRecyclerItemClickListener?)
 
 
         }
+
 
     }
 
